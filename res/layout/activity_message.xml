@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_back_color"
+    tools:context=".MessageActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_bar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/activity_bar_color" >
+
+        <TextView
+            android:id="@+id/tx_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/app_name_zh"
+            android:textColor="@color/activity_bar_title_color"
+            android:textSize="@dimen/activity_typeface_size" />
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/ic_back_sele" />
+
+        <ImageView
+            android:id="@+id/image_info"
+            android:layout_width="50dip"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="12.0dip"
+            android:src="@drawable/ic_info_sel_my" />
+    </RelativeLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/pullToRefreshListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_chat"
+        android:layout_below="@+id/relativeLayout1"
+        android:listSelector="@android:color/transparent"
+        android:paddingBottom="12dp"
+        android:divider="@color/color_white" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+    <LinearLayout
+        android:id="@+id/ll_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/color_white"
+        android:padding="6.0dip" >
+
+        <EditText
+            android:id="@+id/ed_mymessage"
+            android:layout_width="wrap_content"
+            android:layout_height="36.0dip"
+            android:layout_weight="1"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textSize="14sp"
+            android:hint="输入你想说的吧！"
+            android:background="@drawable/edittext_selector"
+            android:ems="10" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/tv_release"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:text="@string/send"
+            android:gravity="center"
+            android:textColor="@color/layout_typeface_sele"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

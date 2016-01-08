@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="horizontal"
+    android:paddingLeft="6.0dip"
+    android:paddingTop="6.0dip" >
+
+    <com.CivilLife.Widget.CircleImageView
+        android:id="@+id/image_pic"
+        android:layout_width="48.0dip"
+        android:layout_height="48.0dip"
+        android:layout_margin="6.0dip"
+        android:src="@drawable/ic_my_nolog_selector" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/image_pic"
+        android:layout_marginLeft="3.0dip"
+        android:layout_toRightOf="@+id/image_pic" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:paddingRight="6.0dip" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="3.0dip" >
+
+                <TextView
+                    android:id="@+id/tx_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="哇！哇塞"
+                    android:textColor="@color/activity_bar_title_color" />
+
+                <TextView
+                    android:id="@+id/tx_floor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="1 楼"
+                    android:textColor="@color/activity_floor__color" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tx_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:text="楼下的我没有桶你胳膊了把；楼下的是我小弟！！！" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/xianbottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_marginTop="3.0dip"
+            android:background="@color/activity_thread_color" />
+    </RelativeLayout>
+
+</RelativeLayout>

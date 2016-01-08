@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical" >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.CivilLife.Widget.CircleImageView
+            android:id="@+id/image_pic"
+            android:layout_width="48.0dip"
+            android:layout_height="48.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="12.0dip"
+            android:src="@drawable/ic_my_nolog_selector" />
+
+        <TextView
+            android:id="@+id/tx_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/image_pic"
+            android:maxLength="18"
+            android:text="@string/app_name_zh"
+            android:textColor="@color/login_sele_weixin"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tx_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12.0dip"
+            android:text="@string/home_item_hot"
+            android:textColor="@color/color_typeface_gray"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/image_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tx_hot"
+            android:src="@drawable/ic_rss_hot"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tx_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12.0dip"
+        android:text=""
+        android:textColor="@color/color_typeface_gray" 
+        android:textSize="18sp"/>
+
+    <com.CivilLife.Widget.GridForScrollView
+        android:id="@+id/image_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12.0dip"
+        android:horizontalSpacing="9dp"
+        android:numColumns="4"
+        android:verticalSpacing="9dp"
+        android:visibility="gone" >
+    </com.CivilLife.Widget.GridForScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layout_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:layout_marginLeft="12.0dip"
+        android:layout_marginRight="12.0dip"
+        android:background="#000000"
+        android:gravity="center" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:background="#000000"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical" >
+
+            <VideoView
+                android:id="@+id/videoView1"
+                android:layout_width="fill_parent"
+                android:layout_height="270dp"
+                android:layout_centerInParent="true"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp" />
+
+            <ImageView
+                android:id="@+id/video_image"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:background="#000000"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:scaleType="fitXY"
+                android:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/pb_waiting"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/image_play"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true"
+                android:background="#00ffffff"
+                android:padding="12dp"
+                android:src="@drawable/ic_video_play_sele" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/xianbottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="3.0dip"
+        android:background="@color/activity_thread_color" />
+
+</LinearLayout>

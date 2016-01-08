@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <!-- 标签 -->
+    <!-- <corners android:radius="100dip" /> -->
+
+    <corners
+        android:bottomLeftRadius="21dip"
+        android:bottomRightRadius="21dip"
+        android:topLeftRadius="21dip"
+        android:topRightRadius="21dip" />
+
+    <stroke
+        android:width="1dip"
+        android:color="@color/color_white" />
+
+</shape>

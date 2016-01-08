@@ -1,0 +1,238 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.app.civillife.ShareActivity" >
+
+  <TextView
+        android:id="@+id/popuback"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#3c3c3c3c"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        
+        
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_share_dialog"
+        android:layout_width="270.0dip"
+        android:layout_height="220.0dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bg_shareapp_dialog"
+        android:clickable="true"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_share_dialog_title"
+            android:layout_width="fill_parent"
+            android:layout_height="35.0dip" >
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_share_close"
+                android:layout_width="70.0dip"
+                android:layout_height="35.0dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" >
+
+                <Button
+                    android:id="@+id/button_share_close"
+                    android:layout_width="50.0dip"
+                    android:layout_height="33.0dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="#ffffff"
+                    android:text="关闭"
+                    android:textColor="@drawable/bt_font_style"
+                    android:textSize="@dimen/title_text_size" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="120.0dip"
+                android:layout_height="35.0dip"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="分享应用到"
+                android:textColor="@color/title_text_color"
+                android:textSize="@dimen/title_text_size" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout_share_dialog_line"
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dip"
+                android:layout_alignParentBottom="true"
+                android:background="#ffdcdcdc"
+                android:orientation="vertical" >
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_play_bottom_share"
+            android:layout_width="fill_parent"
+            android:layout_height="185.0dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/share_item1"
+                android:layout_width="60.0dip"
+                android:layout_height="92.5dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="50.0dip" >
+
+                <LinearLayout
+                    android:layout_width="55.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical" >
+
+                     <Button
+                        android:id="@+id/button_share_qqhaoyou"
+                        android:layout_width="55.0dip"
+                        android:layout_height="55.0dip"
+                        android:background="@drawable/share_bt_qqhaoyou" />
+                    <TextView
+                        android:layout_width="55.0dip"
+                        android:layout_height="20.0dip"
+                        android:gravity="center"
+                        android:text="QQ"
+                        android:textColor="@color/share_items_text_color"
+                        android:textSize="@dimen/share_items_text_size" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/share_item2"
+                android:layout_width="60.0dip"
+                android:layout_height="92.5dip"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="50.0dip"
+                android:layout_toRightOf="@id/share_item1" >
+
+                <LinearLayout
+                    android:layout_width="55.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/button_share_sinaweibo"
+                        android:layout_width="55.0dip"
+                        android:layout_height="55.0dip"
+                        android:background="@drawable/share_bt_sinaweibo" />
+
+                    <TextView
+                        android:layout_width="55.0dip"
+                        android:layout_height="20.0dip"
+                        android:gravity="center"
+                        android:text="新浪微博"
+                        android:textColor="@color/share_items_text_color"
+                        android:textSize="@dimen/share_items_text_size" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/share_item4"
+                android:layout_width="60.0dip"
+                android:layout_height="92.5dip"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/share_item1"
+                android:layout_marginLeft="50.0dip" >
+
+                <LinearLayout
+                    android:layout_width="55.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/button_share_weixin"
+                        android:layout_width="55.0dip"
+                        android:layout_height="55.0dip"
+                        android:background="@drawable/share_bt_weixin" />
+
+                    <TextView
+                        android:layout_width="55.0dip"
+                        android:layout_height="20.0dip"
+                        android:gravity="center"
+                        android:text="微信"
+                        android:textColor="@color/share_items_text_color"
+                        android:textSize="@dimen/share_items_text_size" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/share_item5"
+                android:layout_width="60.0dip"
+                android:layout_height="92.5dip"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="50.0dip"
+                android:layout_toRightOf="@id/share_item4" >
+
+                <LinearLayout
+                    android:layout_width="55.0dip"
+                    android:layout_height="75.0dip"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/button_share_pengyouquan"
+                        android:layout_width="55.0dip"
+                        android:layout_height="55.0dip"
+                        android:background="@drawable/share_bt_pyq" />
+
+                    <TextView
+                        android:layout_width="55.0dip"
+                        android:layout_height="20.0dip"
+                        android:gravity="center"
+                        android:text="朋友圈"
+                        android:textColor="@color/share_items_text_color"
+                        android:textSize="@dimen/share_items_text_size" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_share_dialog_sending"
+            android:layout_width="wrap_content"
+            android:layout_height="40.0dip"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_loadbackgroup"
+            android:gravity="center"
+            android:orientation="horizontal" 
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textview_msg"
+                android:layout_width="80.0dip"
+                android:layout_height="40.0dip"
+                android:layout_marginLeft="20.0dip"
+                android:gravity="center"
+                android:text="登录中..."
+                android:textColor="#ffffffff" />
+
+            <RelativeLayout
+                android:layout_width="40.0dip"
+                android:layout_height="40.0dip"
+                android:layout_marginLeft="5.0dip"
+                android:layout_marginRight="5.0dip"
+                android:layout_toRightOf="@id/textview_msg" >
+
+                <ImageView
+                    android:id="@+id/imageview_load"
+                    android:layout_width="30.0dip"
+                    android:layout_height="30.0dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/pic_loadrefresh"
+                    android:contentDescription="@string/app_name" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

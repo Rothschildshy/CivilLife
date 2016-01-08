@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 意见反馈 -->
+    <item android:drawable="@drawable/icon_feedback_dark" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/icon_feedback_dark" android:state_selected="true"></item>
+    <item android:drawable="@drawable/icon_feedback"></item>
+
+</selector>

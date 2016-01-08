@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/layout_data_null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="140dip"
+            android:layout_height="140dip"
+            android:src="@drawable/icon_data_null" />
+
+        <TextView
+            android:id="@+id/tx_datanull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12.0dip"
+            android:text="暂时没有数据"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_network_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="160dip"
+            android:layout_height="160dip"
+            android:src="@drawable/icon_network_error" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12.0dip"
+            android:text="数据加载失败"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请检查你的手机是否联网"
+            android:textColor="#9d9d9d"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_refresh"
+            android:layout_width="100dip"
+            android:layout_height="30dip"
+            android:layout_margin="6.0dip"
+            android:background="@drawable/btn_refresh_selector"
+            android:text="重新加载"
+            android:textColor="@color/layout_typeface_sele"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

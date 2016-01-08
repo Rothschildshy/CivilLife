@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_bar">48dp</dimen>
+    <dimen name="activity_typeface_size">18sp</dimen>
+    <dimen name="search_size">24sp</dimen>
+    <dimen name="btn_radius">4.0dip</dimen>
+    <dimen name="round_btn_green_tk_corner">6.0dip</dimen>
+    <dimen name="ui_10_dip">10dip</dimen>
+
+    <drawable name="layout_sele">@color/activity_laout_sele_color</drawable>
+    <drawable name="layout_normal">@color/color_white</drawable>
+    <drawable name="home_class_normal">@color/activity_home_class_color</drawable>
+    <drawable name="home_class_selector">@color/activity_bar_title_color</drawable>
+
+    
+     <dimen name="share_items_text_size">12.0sp</dimen>
+    <dimen name="title_text_size">18.0sp</dimen>
+</resources>

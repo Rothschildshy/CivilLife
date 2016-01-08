@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12.0dip" >
+
+        <TextView
+            android:id="@+id/tx_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="23分钟前" />
+
+        <ImageView
+            android:id="@+id/image_del"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="9dp"
+            android:src="@drawable/icon_del" />
+
+        <ImageView
+            android:id="@+id/image_compile"
+            android:layout_width="36.0dip"
+            android:layout_height="36.0dip"
+            android:padding="9dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/image_del"
+            android:src="@drawable/icon_edit2" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tx_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip"
+        android:textSize="16.0sp"
+        android:text="高中班上一个彪悍的女生，标准的五大三粗，她是班委，负责班上的纪律，有天晚自习全班都再讲话，很闹腾，她火了，站起来一拍桌子大喊：谁再讲话谁就是我男朋友，真的只有一秒，全班男生屁都不敢放一个，留下女生们笑抽..."
+        android:textColor="@color/color_typeface_gray"
+        android:layout_marginBottom="6.0dip" />
+
+</LinearLayout>

@@ -1,0 +1,1 @@
+package com.app.civillife.wxapi;import com.umeng.socialize.weixin.view.WXCallbackActivity;public class WXEntryActivity extends WXCallbackActivity {}

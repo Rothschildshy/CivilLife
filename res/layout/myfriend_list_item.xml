@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:orientation="horizontal"
+    android:paddingLeft="6.0dip"
+    android:paddingTop="6.0dip" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/image_poto" 
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/image_time" >
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:paddingRight="6.0dip" >
+
+                <TextView
+                    android:id="@+id/tx_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3.0dip"
+                    android:text="变异怪女人"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3.0dip" >
+
+                    <RelativeLayout
+                        android:id="@+id/layout_gender"
+                        android:layout_width="48dip"
+                        android:layout_height="24.0dip"
+                        android:background="@drawable/nearby_gender_male" >
+
+                        <TextView
+                            android:id="@+id/tx_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="3.0dip"
+                            android:layout_marginLeft="24.0dip"
+                            android:layout_marginTop="3.0dip"
+                            android:text="20"
+                            android:textColor="@color/color_white" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tx_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="12.0dip"
+                        android:text="厦门.思明" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/xianbottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="3.0dip"
+            android:background="@color/activity_thread_color" />
+
+        <ImageView
+            android:id="@+id/image_time"
+            android:layout_width="20.0dip"
+            android:layout_height="20.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/icon_time" />
+    </RelativeLayout>
+
+    <com.CivilLife.Widget.CircleImageView
+        android:id="@+id/image_poto"
+        android:layout_width="48.0dip"
+        android:layout_height="48.0dip"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="6.0dip"
+        android:src="@drawable/ic_my_nolog_selector" />
+
+</RelativeLayout>

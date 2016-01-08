@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_back_color"
+    tools:context=".SearchFriendActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_bar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/activity_bar_color" >
+
+        <TextView
+            android:id="@+id/tx_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/discover_my_feedback"
+            android:textColor="@color/activity_bar_title_color"
+            android:textSize="@dimen/activity_typeface_size" />
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/ic_back_sele" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="48.0dip"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:layout_marginTop="10.0dip"
+        android:background="@drawable/my_item_top_selector_n" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="24.0dip"
+            android:layout_height="24.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="12.0dip"
+            android:src="@drawable/icon_user" />
+
+        <EditText
+            android:id="@+id/edit_user"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="3.0dip"
+            android:layout_toRightOf="@+id/imageView2"
+            android:background="@color/color_white"
+            android:ems="10"
+            android:hint="请输入要查找的用户名、昵称" >
+        </EditText>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="36.0dip"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_marginLeft="36dip"
+        android:layout_marginRight="36dip"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/btn_login_selector"
+        android:text="查  找"
+        android:textColor="@color/btn_sele"
+        android:textSize="20sp" />
+
+</RelativeLayout>

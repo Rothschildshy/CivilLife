@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@drawable/guide_3">
+
+    <Button
+        android:id="@+id/bt_login"
+        android:layout_width="120dip"
+        android:layout_height="42.0dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/myinfo_label" 
+        android:textSize="16sp"
+        android:textColor="@color/btn_sele"
+        android:text="点击进入"/>
+
+</RelativeLayout>

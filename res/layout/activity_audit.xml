@@ -1,0 +1,158 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_back_color"
+    tools:context="com.app.civillife.AuditActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_bar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/activity_bar_color" >
+
+        <TextView
+            android:id="@+id/tx_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/title_audit"
+            android:textColor="@color/activity_bar_title_color"
+            android:textSize="@dimen/activity_typeface_size" />
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/ic_back_sele" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_startaudit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relativeLayout1"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_start"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="12.0dip"
+            android:background="@drawable/audit_message_back"
+            android:paddingLeft="6.0dip"
+            android:paddingRight="6.0dip" />
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="46.0dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12.0dip"
+            android:layout_marginLeft="20.0dip"
+            android:layout_marginRight="20.0dip"
+            android:background="@drawable/btn_login_selector"
+            android:text="@string/start_audit"
+            android:textColor="@color/btn_sele"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_audit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/layout_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48.0dip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/color_black_xian" >
+
+            <Button
+                android:id="@+id/btn_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="0.5dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_audit_sele"
+                android:text="@string/skip_audit"
+                android:textColor="@color/btn_sele" />
+
+            <Button
+                android:id="@+id/btn_funny"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="0.25dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_audit_sele"
+                android:text="@string/funny_audit"
+                android:textColor="@color/btn_sele" />
+
+            <Button
+                android:id="@+id/btn_boring"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0.25dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_audit_sele"
+                android:text="@string/boring_audit"
+                android:textColor="@color/btn_sele" />
+
+            <Button
+                android:id="@+id/btn_report"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0.5dip"
+                android:layout_weight="1"
+                android:background="@drawable/btn_audit_sele"
+                android:text="@string/report_audit"
+                android:textColor="@color/btn_sele" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layout_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layout_btn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            layout="@layout/layout_error_datanull_hint"
+            android:visibility="visible" />
+
+        <ScrollView
+            android:id="@+id/sv_auditlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layout_btn"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            android:layout_alignParentTop="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                
+                android:orientation="vertical" >
+
+                <include layout="@layout/home_info_list_item3" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</RelativeLayout>

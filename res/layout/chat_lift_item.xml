@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tx_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="9.0dip"
+        android:text="12:30"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_marginTop="18dp"
+        android:id="@+id/rl_othermessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tx_time" >
+
+        <com.CivilLife.Widget.CircleImageView
+            android:id="@+id/image_pic_other"
+            android:layout_width="42.0dip"
+            android:layout_height="42.0dip"
+            android:layout_margin="6.0dip"
+            android:src="@drawable/ic_my_nolog_selector" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/image_pic_other"
+            android:layout_marginLeft="3.0dip"
+            android:layout_marginRight="48.0dip"
+            android:layout_marginTop="12.0dip"
+            android:layout_toRightOf="@+id/image_pic_other"
+             >
+
+            <TextView
+                android:id="@+id/tx_content_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/messager_left_background"
+                android:layout_alignParentTop="true"
+                android:padding="12.0dip"
+                android:text="这个界面真的不好做啊啊啊！！！！！" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_memessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp" >
+
+        <com.CivilLife.Widget.CircleImageView
+            android:id="@+id/image_pic_me"
+            android:layout_width="42.0dip"
+            android:layout_height="42.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="6.0dip"
+            android:src="@drawable/ic_my_nolog_selector" />
+
+        <RelativeLayout
+            android:id="@+id/rl_content_me"
+             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/image_pic"
+            android:layout_marginRight="3.0dip"
+            android:layout_marginTop="12.0dip"
+            android:layout_toLeftOf="@+id/image_pic_me"
+       >
+            
+            <TextView
+                android:id="@+id/tx_content_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="12.0dip"
+                android:layout_marginLeft="60dp"
+            	android:background="@drawable/messager_right_background"
+                android:layout_alignParentTop="true"
+                android:text="不好还做？傻啦！！！！！！！！那不然不要做？好好" />
+
+            <ProgressBar
+                android:id="@+id/prb_up"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="26dp"
+                android:padding="3dp"
+                android:layout_marginRight="6dp"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_toresend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:textColor="@color/red"
+            android:text="重新发送" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
