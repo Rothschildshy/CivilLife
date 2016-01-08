@@ -24,7 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 /**
- * 设置界面 
+ * 设置界面  修改这
  * 
  * @author Administrator
  * 
