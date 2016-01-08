@@ -25,7 +25,7 @@ import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
 /**
- * 设置界面   测试git  我也改一次  再一次修改掉
+ * 设置界面 
  * 
  * @author Administrator
  * 
@@ -43,12 +43,6 @@ public class SettingActivity extends BaseActivity {
 		initViews();
 		initEvents();
 		init();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.setting, menu);
-		return true;
 	}
 
 	@Override
