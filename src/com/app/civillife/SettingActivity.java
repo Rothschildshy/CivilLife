@@ -25,7 +25,7 @@ import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
 /**
- * 设置界面   测试git
+ * 设置界面   测试git  我也改一次
  * 
  * @author Administrator
  * 
