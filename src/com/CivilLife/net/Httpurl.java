@@ -16,9 +16,6 @@ public final class Httpurl {
 	// public static String URL = "http://tmssh.247.go-ip.cn/";
 	public static String URL = "http://tmssh.conitm.com/";
 
-	
-	
-	
 	/** 获取 UserID UserNameMD5 UserPassWord **/
 	public static String GetInfo() {
 		return "UserID=" + GlobalVariable.UserID + "&UserName="
@@ -30,7 +27,6 @@ public final class Httpurl {
 	public static String GetXY() {
 		return "&X=" + GlobalVariable.mycoordinates_x + "&Y="
 				+ GlobalVariable.mycoordinates_y;
-
 	}
 
 	/** 检测会员是否登录 **/

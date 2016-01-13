@@ -156,7 +156,7 @@
             <EditText
                 android:id="@+id/ed_content"
                 android:layout_width="match_parent"
-                android:layout_height="150dip"
+                android:layout_height="fill_parent"
                 android:layout_margin="12.0dip"
                 android:background="@drawable/edittext_selector"
                 android:ems="10"

@@ -81,6 +81,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tv_rolling"
+        android:divider="@null"
         ptr:ptrAnimationStyle="flip"
         ptr:ptrMode="both" >
 

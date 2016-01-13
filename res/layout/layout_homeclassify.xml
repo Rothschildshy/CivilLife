@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:divider="@null"
         ptr:ptrAnimationStyle="flip"
         ptr:ptrMode="both" >
     </com.handmark.pulltorefresh.library.PullToRefreshListView>

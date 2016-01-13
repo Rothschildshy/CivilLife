@@ -2,6 +2,16 @@ package com.app.civillife;
 
 import java.util.List;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Variable.GlobalVariable;
 import com.MyView.Widget.PrDialog;
@@ -14,17 +24,8 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
-
 /**
- * 设置界面
+ * 设置界面  我再修改一次
  * 
  * @author Administrator
  * 
@@ -42,6 +43,12 @@ public class SettingActivity extends BaseActivity {
 		initViews();
 		initEvents();
 		init();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.setting, menu);
+		return true;
 	}
 
 	@Override

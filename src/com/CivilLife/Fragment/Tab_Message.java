@@ -58,7 +58,6 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 	private static final int REFRESH_DATA_FINISH = 11;
 	boolean isrequest = false;// 请求时否完成
 	boolean istotime = false;// 请求时间是否结束
-
 	private RelativeLayout mLayout_Hint;
 	private LinearLayout mLayout_DataNull;
 	private LinearLayout mLayout_NetworkError;

@@ -62,7 +62,7 @@
         android:maxLines="5"
         android:padding="12.0dip"
         android:lineSpacingExtra="6dp"
-        android:text="高中班上一个彪悍的女生，标准的五大三粗，她是班委，负责班上的纪律，有天晚自习全班都再讲话，很闹腾，她火了，站起来一拍桌子大喊：谁再讲话谁就是我男朋友，真的只有一秒，全班男生屁都不敢放一个，留下女生们笑抽..."
+        android:text="文章内容"
         android:textColor="@color/color_typeface_gray1"
         android:textSize="18sp" />
 
@@ -84,7 +84,8 @@
         android:layout_margin="12.0dip"
         android:background="#343434"
         android:gravity="center"
-        android:padding="3dp" >
+        android:padding="3dp"
+        >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -210,7 +211,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:src="@drawable/ic_share_selector" />
+
         </RelativeLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="1.0dip"
+        android:src="@color/activity_back_color" />
 
 </LinearLayout>
