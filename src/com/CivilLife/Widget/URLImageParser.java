@@ -23,7 +23,6 @@ public class URLImageParser implements Html.ImageGetter {
     @Override  
     public Drawable getDrawable(String source) {  
         final URLDrawable urlDrawable = new URLDrawable(context);  
-//      Log.d("ChapterActivity", Consts.BASE_URL + source);  
         ImageUtils.loadImageBitmap(context, source, new SimpleImageLoadingListener(){
 			 @Override
 			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {

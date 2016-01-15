@@ -73,7 +73,6 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 	protected void initViews() {
 		mListView = (SwipeMenuListView) findViewById(R.id.swipemenulistview);
 		mLayout = (PullRefreshLayout) findViewById(R.id.pullrefreshlayout);
-
 		mLayout_Hint = (RelativeLayout) findViewById(R.id.layout_hint);
 		mLayout_DataNull = (LinearLayout) findViewById(R.id.layout_data_null);
 		mLayout_NetworkError = (LinearLayout) findViewById(R.id.layout_network_error);

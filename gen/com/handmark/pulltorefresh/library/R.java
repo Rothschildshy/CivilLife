@@ -60,7 +60,7 @@ public final class R {
 		public static final int pullFromStart = 0x7f080012;
 		public static final int pullUpFromBottom = 0x7f080013;
 		public static final int pull_to_refresh_image = 0x7f080166;
-		public static final int pull_to_refresh_progress = 0x7f080138;
+		public static final int pull_to_refresh_progress = 0x7f080139;
 		public static final int pull_to_refresh_sub_text = 0x7f080168;
 		public static final int pull_to_refresh_text = 0x7f080167;
 		public static final int rotate = 0x7f080015;

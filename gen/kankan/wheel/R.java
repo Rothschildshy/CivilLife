@@ -24,7 +24,7 @@ public final class R {
 		public static final int action_settings = 0x7f080210;
 		public static final int back_layout = 0x7f0800f2;
 		public static final int btn_ok = 0x7f0800f7;
-		public static final int button1 = 0x7f080108;
+		public static final int button1 = 0x7f080109;
 		public static final int id_area = 0x7f0800f6;
 		public static final int id_city = 0x7f0800f5;
 		public static final int id_province = 0x7f0800f4;
