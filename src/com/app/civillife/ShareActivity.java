@@ -78,7 +78,7 @@ public class ShareActivity extends BaseActivity {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.popuback:// 点击空白关闭
-			finish();
+			defaultFinish();
 			break;
 		case R.id.button_share_close:// 点击关闭
 			finish();

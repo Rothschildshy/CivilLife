@@ -2,37 +2,9 @@ package com.CivilLife.MyAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
-import Downloadimage.ImageUtils;
-import Requset_getORpost.RequestListener;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.provider.ContactsContract.Contacts.Data;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.VideoView;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Base.BaseApplication;
@@ -50,13 +22,34 @@ import com.app.civillife.ContentDataActivity;
 import com.app.civillife.InfoHomepageActivity;
 import com.app.civillife.R;
 import com.app.civillife.ShareActivity;
-import com.app.civillife.Util.CommonAPI;
 import com.app.civillife.Util.ImagePagerActivity;
 import com.app.civillife.Util.VideoPay;
 import com.app.civillife.Util.Videolistener;
-import com.aysy_mytool.Qlog;
 import com.aysy_mytool.Time;
 import com.aysy_mytool.ToastUtil;
+
+import Downloadimage.ImageUtils;
+import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 /**
  * 首页片段适配器
@@ -238,7 +231,7 @@ public class HomeListViewAdapter extends BaseListAdapter {
 				bundle.putString("imageurl", item2.getUserInfoPicUrl());
 				((BaseActivity) context).startActivityForResult(ShareActivity.class, bundle, 10001);
 //				context.startActivity(new Intent(context,ShareActivity.class));
-				((Activity) context).overridePendingTransition(R.anim.small_2_big, R.anim.fade_out);
+				((Activity) context).overridePendingTransition(R.anim.small_in_big, R.anim.fade_out);
 			}
 		});
 		
@@ -252,7 +245,7 @@ public class HomeListViewAdapter extends BaseListAdapter {
 				seleortpos = mposition;
 				seleortpyte = 1;
 				new RequestTask(context, Favourlistener, false, true, "打赏中")
-						.execute(Httpurl.IsSmile(item1.getID(), "1"));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsSmile(item1.getID(), "1"));
 			}
 		});
 		
@@ -267,7 +260,7 @@ public class HomeListViewAdapter extends BaseListAdapter {
 				seleortpyte=0;
 				
 				new RequestTask(context, Favourlistener, false, true, "打赏中")
-						.execute(Httpurl.IsSmile(item1.getID(), "0"));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsSmile(item1.getID(), "0"));
 			}
 		});
 		
@@ -347,7 +340,6 @@ public class HomeListViewAdapter extends BaseListAdapter {
 		
 		@Override
 		public void onPrepared(MediaPlayer mediaplayer) {      
-//			Qlog.e("","准备好了  ");    
 			holder.pb_waiting.setVisibility(View.GONE);
 			holder.video.setVisibility(View.VISIBLE);  
 		}

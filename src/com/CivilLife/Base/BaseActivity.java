@@ -127,7 +127,7 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 	/** 带有右出动画的退出 **/
 	public void finish() {
 		super.finish();
-		overridePendingTransition(R.anim.start, R.anim.push_right_out);
+//		overridePendingTransition(R.anim.start, R.anim.push_right_out);
 	}
 
 	/** 默认退出 **/

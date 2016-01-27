@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+
+import com.app.civillife.R;
+import com.aysy_mytool.Qlog;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -22,14 +25,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.util.LruCache;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import com.app.civillife.R;
-import com.aysy_mytool.Qlog;
-
-import Requset_getORpost.RequestListener;
 
 /**
  * 支持布局View设置网络图片为背景
@@ -129,7 +124,7 @@ public class ViewLoadManager {
 			} else {
 				ImageLoadTask task = new ImageLoadTask(loadType, null, opl);
 				taskCollection.add(task);
-				task.execute(imageFilePath);
+				task.executeOnExecutor(Executors.newCachedThreadPool(), imageFilePath);
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -20,16 +21,13 @@ import com.CivilLife.Widget.CircleImageView;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
-import com.app.civillife.PublishActivity;
 import com.app.civillife.R;
 import com.app.civillife.SeleImageActivity;
 import com.app.civillife.SeleImageActivity2;
-import com.app.civillife.Util.CommonAPI;
 import com.app.civillife.Util.GetDistance;
 import com.app.civillife.Util.ImagePagerActivity;
 import com.aysy_mytool.GetAgeOrConstellation;
 import com.aysy_mytool.PubUtils;
-import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
 import com.aysy_mytool.Time;
 import com.daimajia.androidanimations.library.Techniques;
@@ -277,11 +275,11 @@ public class MyinfoActivity extends BaseActivity  {
 		mEd_Phonemodel.setText(PhoneBrand);
 
 		// 获取个人资料
-		new RequestTask(this, listener, false, true, "加载中").execute(Httpurl
+		new RequestTask(this, listener, false, true, "加载中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 				.GetMyData());
 		// 获取行业数据
 		new RequestTask(this, Industrylistener, false, false, "加载行业中")
-				.execute(Httpurl.GetIndustryData());
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetIndustryData());
 
 		Spinner_Profession
 				.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -662,7 +660,7 @@ public class MyinfoActivity extends BaseActivity  {
 					birthday, Phonemodel, ProfessionID, Hometown, BigPicUrl,
 					Education, Occupation, YearsOfWorking,graduatedSchool, Speciality);
 			new RequestTask(this, infoMap, UpDatalistener, false, true, "保存数据")
-					.execute(Httpurl.URL);
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 		}
 	}
 

@@ -26,16 +26,17 @@ public final class R {
         public static final int slide_in_from_top=0x7f04000e;
         public static final int slide_out_to_bottom=0x7f04000f;
         public static final int slide_out_to_top=0x7f040010;
-        public static final int small_2_big=0x7f040011;
-        public static final int start=0x7f040012;
-        public static final int start_in=0x7f040013;
-        public static final int start_out=0x7f040014;
-        public static final int umeng_socialize_fade_in=0x7f040015;
-        public static final int umeng_socialize_fade_out=0x7f040016;
-        public static final int umeng_socialize_shareboard_animation_in=0x7f040017;
-        public static final int umeng_socialize_shareboard_animation_out=0x7f040018;
-        public static final int umeng_socialize_slide_in_from_bottom=0x7f040019;
-        public static final int umeng_socialize_slide_out_from_bottom=0x7f04001a;
+        public static final int small_in_big=0x7f040011;
+        public static final int small_out_big=0x7f040012;
+        public static final int start=0x7f040013;
+        public static final int start_in=0x7f040014;
+        public static final int start_out=0x7f040015;
+        public static final int umeng_socialize_fade_in=0x7f040016;
+        public static final int umeng_socialize_fade_out=0x7f040017;
+        public static final int umeng_socialize_shareboard_animation_in=0x7f040018;
+        public static final int umeng_socialize_shareboard_animation_out=0x7f040019;
+        public static final int umeng_socialize_slide_in_from_bottom=0x7f04001a;
+        public static final int umeng_socialize_slide_out_from_bottom=0x7f04001b;
     }
     public static final class array {
         /**  本地数据库sql 

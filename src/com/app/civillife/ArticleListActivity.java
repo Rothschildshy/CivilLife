@@ -1,29 +1,11 @@
 package com.app.civillife;
 
 import java.util.Collection;
+import java.util.concurrent.Executors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import Requset_getORpost.RequestListener;
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.HomeEntity;
@@ -35,6 +17,24 @@ import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
+import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * 师徒社区 同城社区 老乡社区 个人发表文章 好友发表的文章
@@ -128,7 +128,7 @@ public class ArticleListActivity extends BaseActivity {
 			image_article.setVisibility(View.VISIBLE);
 			mTx_Title.setText(R.string.discover_fellow_community);//老乡
 			ARTID=26;
-			new RequestTask(this, onlinerlistener, false, false, "").execute(Httpurl.OnOnlineUsers(Types));
+			new RequestTask(this, onlinerlistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.OnOnlineUsers(Types));
 		} else if (Types == 3) {
 			
 			tv_rolling.setText("");
@@ -136,7 +136,7 @@ public class ArticleListActivity extends BaseActivity {
 			ARTID=27;  
 			image_article.setVisibility(View.VISIBLE);
 			mTx_Title.setText(R.string.discover_city_community);//同城
-			new RequestTask(this, onlinerlistener, false, false, "").execute(Httpurl.OnOnlineUsers(Types));
+			new RequestTask(this, onlinerlistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.OnOnlineUsers(Types));
 		} else if (Types == 4) {
 			String UserName = intent.getStringExtra("UserName");//个人文章
 			userid = intent.getStringExtra("Userid");
@@ -270,11 +270,11 @@ public class ArticleListActivity extends BaseActivity {
 					page = 1;
 					if (Types == 4) {
 						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").execute(Httpurl
+								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 								.GetPersonalarticles(page,userid));
 					} else {
 						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").execute(Httpurl
+								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 								.Hometown1(Types, page));
 					}
 					break;
@@ -282,11 +282,11 @@ public class ArticleListActivity extends BaseActivity {
 					page++;
 					if (Types == 4) {
 						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").execute(Httpurl
+								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 								.GetPersonalarticles(page,userid));
 					} else {
 						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").execute(Httpurl
+								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 								.Hometown1(Types, page));
 					}
 					break;

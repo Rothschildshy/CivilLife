@@ -1,8 +1,8 @@
 package com.app.civillife.Util;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
-import com.CivilLife.Activity.LoginActivity;
 import com.CivilLife.Entity.MyInfoEntity;
 import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.GetMyIngoJson;
@@ -10,7 +10,6 @@ import com.CivilLife.Json.PublicUpJson;
 import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
-import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
 import com.aysy_mytool.ToastUtil;
 import com.baidu.location.BDLocation;
@@ -21,11 +20,8 @@ import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.location.Poi;
 
 import Requset_getORpost.RequestListener;
-import Requset_getORpost.RequestLog;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Button;
 
 /**
  * 利用百度定位SDK封装的定位方法
@@ -155,7 +151,7 @@ public class GetDistance {
 						location.getAddrStr()));
 			}
 			new RequestTask(mContext, listener, false, false, "检测会员是否登录")
-					.execute(Httpurl.IsLogin(GlobalVariable.City));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsLogin(GlobalVariable.City));
 			mLocationClient.stop();
 
 		}
@@ -174,7 +170,7 @@ public class GetDistance {
 				String status = publicEntity.getStatus();
 				if (status.equals("1")) {
 					new RequestTask(mContext, listenerinfo, false, false,
-							"获取昵称和头像").execute(Httpurl.GetPicORNick());
+							"获取昵称和头像").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetPicORNick());
 				}
 			}
 

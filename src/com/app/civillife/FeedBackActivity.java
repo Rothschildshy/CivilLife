@@ -1,24 +1,21 @@
 package com.app.civillife;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.View;
-import android.widget.EditText;
+import java.util.concurrent.Executors;
 
-import com.CivilLife.Activity.LoginActivity;
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.PublicUpJson;
-import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
-import com.aysy_mytool.SpUtils;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import Requset_getORpost.RequestListener;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
 
 /**
  * 意见反馈
@@ -86,7 +83,7 @@ public class FeedBackActivity extends BaseActivity {
 			showShortToast("联系方式不能为空");
 			return;
 		}
-		new RequestTask(this, ReturnAL.FeedBack(Content, Contact), listener, false, true, "数据提交中").execute(Httpurl.URL);
+		new RequestTask(this, ReturnAL.FeedBack(Content, Contact), listener, false, true, "数据提交中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 	}
 
 	RequestListener listener = new RequestListener() {

@@ -128,7 +128,7 @@ public class ViewLoadManager2 {
 	public void setViewBackground(IMAGE_LOAD_TYPE loadType, String imageFilePath,
 			View view) {
 		if (imageFilePath == null || imageFilePath.trim().equals("")) {
-			view.setBackgroundResource(R.drawable.image_default);
+			view.setBackgroundResource(R.drawable.personal_bg);
 			// imageView.setImageResource(R.drawable.image_default);
 
 		} else {
@@ -138,7 +138,7 @@ public class ViewLoadManager2 {
 				view.setBackgroundDrawable(drawable);
 				// imageView.setImageBitmap(bitmap);
 			} else {
-				view.setBackgroundResource(R.drawable.image_default);
+				view.setBackgroundResource(R.drawable.personal_bg);
 				// imageView.setImageResource(R.drawable.image_default);
 				ImageLoadTask task = new ImageLoadTask(loadType, view);
 				taskCollection.add(task);

@@ -39,9 +39,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.app.civillife.R;
-import com.app.civillife.Util.CommonAPI;
 import com.aysy_mytool.Network;
 import com.aysy_mytool.TimeCompare;
 
@@ -51,10 +52,13 @@ import Requset_getORpost.HttpStatus_Code;
 import Requset_getORpost.Myjsonlog;
 import Requset_getORpost.NetException;
 import Requset_getORpost.RequestListener;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * 网络请求 后台任务
@@ -62,6 +66,7 @@ import android.text.TextUtils;
  * @author PWY
  * 
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class RequestTask extends AsyncTask<String, Integer, Object> {
 
 	private static String path;
@@ -96,6 +101,7 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 	private static final int WIFI_CACHE_PAST_DUR = 3;
 	/** 非wifi下设置缓存时间24个小时 超过就删除原来的记录 */
 	private static final int NOWIFI_CACHE_PAST_DUR = 24;
+
 	/**
 	 * 
 	 * @param ct
@@ -136,9 +142,11 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 
 	}
 
+	// 异步开始执行  这里是最终用户调用Excute时的接口
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+//		Log.e("", "异步运行onPreExecute  " + System.currentTimeMillis());
 		if (isShowProssDialog) {
 			// progressDialog = ProgressDialog.createDialog(ct, this, false);
 			if (TextUtils.isEmpty(dlgNote)) {
@@ -152,11 +160,12 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 		}
 	}
 
+	// 异步后台执行  比较耗时的操作都可以放在这里
 	@Override
 	protected Object doInBackground(String... params) {
 		url = params[0];
 		Object result = null;
-
+//		Log.e("", "异步开始doInBackground  " + System.currentTimeMillis());
 		/** 进行缓存操作 start **/
 		String[] data = null;
 		if (isCache) { // 如果是缓存 取数据库缓存中数据
@@ -224,7 +233,7 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 		isGetCache = true;
 		return result;
 	}
-
+    //相当于Handler 处理结果的方式，在这里面可以使用在doInBackground 得到的结果处理操作数据
 	@Override
 	protected void onPostExecute(Object result) {
 		super.onPostExecute(result);
@@ -245,20 +254,47 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 				sendBroadcastReceiverMessage(ct, R.string.network_show_error);
 			}
 		} else {// 正确返回数据
-			if (!CommonAPI.checkDataIsJson((String) result)) {
+			if (!checkDataIsJson((String) result)) {
 				listener.responseException((String) result);
 				return;
-			}  
-			listener.responseResult((String) result);  
+			}
+			listener.responseResult((String) result);
 			if (true) {// 是网络请求的数据才打印网络log
 				Myjsonlog.MyLog(ct, (String) result, url);
-			}    
-			if (isCache) {// 把数据缓存到本地  
+			}
+			if (isCache) {// 把数据缓存到本地
 				DBHelper.getInstance(ct).addOrUpdateURLData(url, (String) result);
-			}  
-		}   
+			}
+		}
+	}
+	public boolean checkDataIsJson(String value) {
+		try {
+			if (value != null) {
+				new JSONObject(value);
+			} else {
+				return false;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
+	
+	//可以使用进度条增加用户体验度
+	@Override
+	protected void onProgressUpdate(Integer... values) {
+		super.onProgressUpdate(values);
+		Log.e("", "请求过程" + System.currentTimeMillis());
+	}
+	//用户调用取消时，要做的操作
+	@Override
+	protected void onCancelled(Object result) {
+		super.onCancelled(result);
+		Log.e("", "终止请求" + System.currentTimeMillis());
+	}
+	
 	/**
 	 * 通过广播发送网络信息
 	 * 
@@ -292,14 +328,12 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 				// set max total connections
 				// 设置最大总连接
 				ConnManagerParams.setMaxTotalConnections(httpParams, DEFAULT_MAX_CONNECTIONS);
-
 				// 使用HTTPS绕过证书验证
 				KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 				trustStore.load(null, null);
 				SSLSocketFactory sf = new SSLSocketFactoryEx(trustStore);
 				// 允许所有主机的验证
 				sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
 				// use expect-continue handshake 使用expect-continue握手
 				HttpProtocolParams.setUseExpectContinue(httpParams, true);
 				// disable stale check 禁用过期支票

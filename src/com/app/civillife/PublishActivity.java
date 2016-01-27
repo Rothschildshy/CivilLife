@@ -2,48 +2,7 @@ package com.app.civillife;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import Downloadimage.ImageUtils;
-import Requset_getORpost.ProgressDialog;
-import Requset_getORpost.RequestListener;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
-import android.media.ThumbnailUtils;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Video.Thumbnails;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.VideoView;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Base.BaseUpload;
@@ -74,6 +33,46 @@ import com.king.photo.activity.PublicWay;
 import com.king.photo.activity.Res;
 import com.king.photo.zoom.FileUtils;
 import com.yixia.camera.demo.service.MediaRecorderActivity;
+
+import Downloadimage.ImageUtils;
+import Requset_getORpost.ProgressDialog;
+import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Video.Thumbnails;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 /**
  * 发布消息界面
@@ -218,7 +217,7 @@ public class PublishActivity extends BaseActivity {
 			titlelist.add(new HomeonetitleEntity(artid, artname));
 		}else{
 			if (GlobalVariable.Data==null&&GlobalVariable.Data.size()==0) {
-				new RequestTask(this, hometitlelistener, true, true, "Loading").execute(Httpurl.homeonetitle);
+				new RequestTask(this, hometitlelistener, true, true, "Loading").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.homeonetitle);
 			}else{
 				titlelist=GlobalVariable.Data;
 			}
@@ -513,7 +512,7 @@ public class PublishActivity extends BaseActivity {
 						new RequestTask(PublishActivity.this,
 								ReturnAL.PublishedArticles(anonymous, mEd_Content.getText().toString(), path, null,
 										seleortID, mod,null,TYPE,iD),
-								publishedarticleslistener, false, false, "发布中").execute(Httpurl.URL);
+								publishedarticleslistener, false, false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 					} else {
 						path += images[i] + ",";
 					}
@@ -528,7 +527,7 @@ public class PublishActivity extends BaseActivity {
 			if (upvoide) {
 				new RequestTask(PublishActivity.this, ReturnAL.PublishedArticles(anonymous,
 						mEd_Content.getText().toString(), null, mediaPath, seleortID, mod,null,TYPE,iD), publishedarticleslistener,
-						false, false, "发布中").execute(Httpurl.URL);
+						false, false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 			} else {
 					new BaseUpload(this).Upload(mediaPath, uplelistener, true, "上传中");
 					
@@ -542,7 +541,7 @@ public class PublishActivity extends BaseActivity {
 
 			new RequestTask(PublishActivity.this,
 					ReturnAL.PublishedArticles(anonymous, mEd_Content.getText().toString(), null, null, seleortID, mod,null,TYPE,iD),
-					publishedarticleslistener, false, false, "发布中").execute(Httpurl.URL);
+					publishedarticleslistener, false, false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 		}
 	}
 
@@ -560,7 +559,7 @@ public class PublishActivity extends BaseActivity {
 			if (isupvoide&&isupvoideimage) {
 				new RequestTask(PublishActivity.this, ReturnAL.PublishedArticles(anonymous,
 						mEd_Content.getText().toString(), null, path, seleortID, mod,upvoideimageurl,TYPE,iD), publishedarticleslistener, false,
-						false, "发布中").execute(Httpurl.URL);
+						false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 			}
 		}
 
@@ -570,7 +569,7 @@ public class PublishActivity extends BaseActivity {
 			if (isupvoide&&isupvoideimage) {
 				new RequestTask(PublishActivity.this, ReturnAL.PublishedArticles(anonymous,
 						mEd_Content.getText().toString(), null, path, seleortID, mod,"",TYPE,iD), publishedarticleslistener, false,
-						false, "发布中").execute(Httpurl.URL);
+						false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 			}
 		}
 		
@@ -589,7 +588,7 @@ public class PublishActivity extends BaseActivity {
 					new RequestTask(PublishActivity.this,
 							ReturnAL.PublishedArticles(anonymous, mEd_Content.getText().toString(), path, null,
 									seleortID, mod,null,TYPE,iD),
-							publishedarticleslistener, false, false, "发布中").execute(Httpurl.URL);
+							publishedarticleslistener, false, false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 				} else {
 					path += jsonObject + ",";
 				}
@@ -600,7 +599,7 @@ public class PublishActivity extends BaseActivity {
 				if (isupvoide&&isupvoideimage) {
 					new RequestTask(PublishActivity.this, ReturnAL.PublishedArticles(anonymous,
 							mEd_Content.getText().toString(), null, path, seleortID, mod,upvoideimageurl,TYPE,iD), publishedarticleslistener, false,
-							false, "发布中").execute(Httpurl.URL);
+							false, "发布中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 				}
 			}
 		}
@@ -765,7 +764,7 @@ public class PublishActivity extends BaseActivity {
 						|| titlelist.get(position).getID().equals("6")) {
 
 					new RequestTask(PublishActivity.this, hometwotitlelistener, true, true, "Loading")
-							.execute(Httpurl.hometwotitle(titlelist.get(position).getID()));
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(titlelist.get(position).getID()));
 				} else {
 					tv_spacing.setVisibility(View.GONE);
 					spinner_title2.setVisibility(View.GONE);
@@ -783,13 +782,13 @@ public class PublishActivity extends BaseActivity {
 	private void ReqEdit() {
 		Qlog.e("", "TYPE "+TYPE);
 		if (TYPE == 1) {
-			new RequestTask(PublishActivity.this, listlistener, false, true, "加载内容中").execute(Httpurl.GetDraft());
+			new RequestTask(PublishActivity.this, listlistener, false, true, "加载内容中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetDraft());
 		} else if (TYPE == 2) {
 			iD = getIntent().getStringExtra("ID");
-			new RequestTask(PublishActivity.this, listlistener, false, true, "加载内容中").execute(Httpurl.GetMyDraft(iD));
+			new RequestTask(PublishActivity.this, listlistener, false, true, "加载内容中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetMyDraft(iD));
 		}else if (TYPE == 10) {
 			String ID = getIntent().getStringExtra("artid");
-			new RequestTask(PublishActivity.this, listlistener, false, true, "加载内容中").execute(Httpurl.GetDraft1(ID));
+			new RequestTask(PublishActivity.this, listlistener, false, true, "加载内容中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetDraft1(ID));
 		}
 	}
 

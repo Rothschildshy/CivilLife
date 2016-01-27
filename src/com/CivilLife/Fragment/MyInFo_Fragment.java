@@ -1,21 +1,7 @@
 package com.CivilLife.Fragment;
 
 import java.util.ArrayList;
-
-import Downloadimage.ImageUtils;
-import Requset_getORpost.RequestListener;
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseFragment;
 import com.CivilLife.Entity.InfoHomeEntity;
@@ -32,8 +18,22 @@ import com.app.civillife.Util.ImagePagerActivity;
 import com.app.civillife.Util.ViewLoadManager2;
 import com.app.civillife.Util.ViewLoadManager2.IMAGE_LOAD_TYPE;
 import com.aysy_mytool.GetAgeOrConstellation;
-import com.aysy_mytool.Qlog;
 import com.aysy_mytool.Time;
+
+import Downloadimage.ImageUtils;
+import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /***
  * 个人中心主页片段
@@ -206,11 +206,11 @@ public class MyInFo_Fragment extends BaseFragment {
 		} else {// 不是进行添加
 			if (Master_Apprentice) {// 添加师傅
 				new RequestTask(getActivity(), listener, false, true, "发送拜师请求")
-						.execute(Httpurl.AddFriend(Master_Apprentice,
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.AddFriend(Master_Apprentice,
 								info.getID()));
 			} else {// 添加好友
 				new RequestTask(getActivity(), listener, false, true, "发送好友请求")
-						.execute(Httpurl.AddFriend(Master_Apprentice,
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.AddFriend(Master_Apprentice,
 								info.getID()));
 			}
 
@@ -258,7 +258,7 @@ public class MyInFo_Fragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				new RequestTask(getActivity(), DELlistener, false, true,
-						"解除好友关系").execute(Httpurl.DelFriend(1, id));
+						"解除好友关系").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelFriend(1, id));
 			}
 		});
 	}

@@ -1,26 +1,7 @@
 package com.app.civillife;
 
 import java.util.Collection;
-
-import Requset_getORpost.RequestListener;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.AdapterView.OnItemClickListener;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.MyManageEntity;
@@ -33,7 +14,6 @@ import com.CivilLife.Widget.AlertDialogEx;
 import com.CivilLife.Widget.AlertDialogEx.Builder;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
-import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -43,6 +23,22 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
 import com.baoyz.widget.PullRefreshLayout;
 import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
+
+import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * 管理我的文字
@@ -292,7 +288,7 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 			@Override
 			public void onClick(View v) {
 				new RequestTask(ManageActivity.this, DELlistener, false, true,
-						"删除中").execute(Httpurl.DelMyManage(id));
+						"删除中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelMyManage(id));
 			}
 		});
 	}
@@ -351,12 +347,12 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 				case 0:
 					page = 1;
 					new RequestTask(ManageActivity.this, listener, false,
-							false, "数据加载").execute(Httpurl.GetMyManage(page));
+							false, "数据加载").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetMyManage(page));
 					break;
 				case 1:
 					page++;
 					new RequestTask(ManageActivity.this, listener, false,
-							false, "数据加载").execute(Httpurl.GetMyManage(page));
+							false, "数据加载").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetMyManage(page));
 					break;
 				}
 				try {

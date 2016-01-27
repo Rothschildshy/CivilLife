@@ -2,6 +2,7 @@ package com.app.civillife;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Base.BaseViewPageAdapter;
@@ -10,7 +11,6 @@ import com.CivilLife.Fragment.MyInFo_Fragment;
 import com.CivilLife.Json.InfoHomeJson;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
-import com.aysy_mytool.Qlog;
 import com.handmark.pulltorefresh.extras.viewpager.PullToRefreshViewPager;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -135,7 +135,7 @@ public class InfoHomepageActivity extends BaseActivity {
 		// loadData(0);// 默认请求第一页数据
 
 		new RequestTask(InfoHomepageActivity.this, listlistener, false, true,
-				"加载内容").execute(Httpurl.Hometown(Type, page, userid));
+				"加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class InfoHomepageActivity extends BaseActivity {
 
 			// loadData(0);// 默认请求第一页数据
 			new RequestTask(InfoHomepageActivity.this, listlistener, false,
-					true, "加载内容").execute(Httpurl.Hometown(Type, page, userid));
+					true, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
 
 			break;
 		default:
@@ -166,13 +166,13 @@ public class InfoHomepageActivity extends BaseActivity {
 				case 0:
 					page = 1;
 					new RequestTask(InfoHomepageActivity.this, listlistener,
-							false, false, "加载内容").execute(Httpurl.Hometown(
+							false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(
 							Type, page, userid));
 					break;
 				case 1:
 					page++;
 					new RequestTask(InfoHomepageActivity.this, listlistener,
-							false, false, "加载内容").execute(Httpurl.Hometown(
+							false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(
 							Type, page, userid));
 					break;
 				}

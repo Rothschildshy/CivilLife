@@ -1,26 +1,7 @@
 package com.CivilLife.Fragment;
 
 import java.util.Collection;
-
-import Requset_getORpost.RequestListener;
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseFragment;
 import com.CivilLife.Entity.MessageEntity;
@@ -28,7 +9,6 @@ import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.MessageJson;
 import com.CivilLife.Json.PublicUpJson;
 import com.CivilLife.MyAdapter.MessageListViewAdapter;
-import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.app.civillife.MessageActivity;
@@ -41,6 +21,24 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
 import com.baoyz.widget.PullRefreshLayout;
 import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
+
+import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /***
  * 消息片段
@@ -250,7 +248,7 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 			@Override
 			public void onClick(View v) {
 				new RequestTask(getActivity(), DELlistener, false, true, "删除中")
-						.execute(Httpurl.DelMessage(id));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelMessage(id));
 			}
 		});
 	}
@@ -296,14 +294,14 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 					page = 1;
 					new RequestTask(getActivity(), GetMessageList, false,
 							false, "Login..")
-							.execute(Httpurl.MessageList(page));
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.MessageList(page));
 
 					break;
 				case 1:
 					page++;
 					new RequestTask(getActivity(), GetMessageList, false,
 							false, "Login..")
-							.execute(Httpurl.MessageList(page));
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.MessageList(page));
 
 					break;
 				}

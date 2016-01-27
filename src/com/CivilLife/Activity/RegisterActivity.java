@@ -1,5 +1,7 @@
 package com.CivilLife.Activity;
 
+import java.util.concurrent.Executors;
+
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.PublicUpJson;
@@ -12,13 +14,9 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import Requset_getORpost.RequestListener;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 /**
@@ -112,7 +110,7 @@ public class RegisterActivity extends BaseActivity {
 		}
 		// 下面开始进行请求操作
 		new RequestTask(RegisterActivity.this, ReturnAL.RegisterMap(user, passWd, nickname), listener, false, true, "注册中")
-				.execute(Httpurl.URL);
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 	}
 
 	// 注册回调

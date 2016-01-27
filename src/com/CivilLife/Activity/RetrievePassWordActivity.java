@@ -1,5 +1,7 @@
 package com.CivilLife.Activity;
 
+import java.util.concurrent.Executors;
+
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.PublicUpJson;
@@ -12,12 +14,10 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import Requset_getORpost.RequestListener;
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 /**
@@ -118,7 +118,7 @@ public class RetrievePassWordActivity extends BaseActivity {
 		}
 		Type = true;
 		new RequestTask(RetrievePassWordActivity.this, ReturnAL.VerificationMap(user, "", email), listener, false, true,
-				"验证中").execute(Httpurl.URL);
+				"验证中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 	}
 
 	// 注册回调
@@ -136,7 +136,7 @@ public class RetrievePassWordActivity extends BaseActivity {
 				if (Type) {// 说明是验证的
 					Type = false;
 					new RequestTask(RetrievePassWordActivity.this, ReturnAL.VerificationMap(user, passWd, email),
-							listener, false, true, "修改中").execute(Httpurl.URL);
+							listener, false, true, "修改中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 				} else {// 修改成功的
 					showShortToast("修改成功！");
 					Bundle bundle = new Bundle();

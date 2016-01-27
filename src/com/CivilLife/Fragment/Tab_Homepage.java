@@ -1,6 +1,7 @@
 package com.CivilLife.Fragment;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseFragment;
 import com.CivilLife.Entity.HomeonetitleEntity;
@@ -15,7 +16,6 @@ import com.MyView.Widget.HorizontalListView;
 import com.app.civillife.AuditActivity;
 import com.app.civillife.PublishActivity;
 import com.app.civillife.R;
-import com.umeng.socialize.utils.Log;
 
 import Requset_getORpost.RequestListener;
 import android.content.Intent;
@@ -97,7 +97,7 @@ public class Tab_Homepage extends BaseFragment {
 
 	@Override
 	protected void init() {
-		new RequestTask(getActivity(), hometitlelistener, true, true, "Loading").execute(Httpurl.homeonetitle);
+		new RequestTask(getActivity(), hometitlelistener, true, true, "Loading").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.homeonetitle);
 	}
 
 	// 获取标题列表
@@ -219,21 +219,21 @@ public class Tab_Homepage extends BaseFragment {
 			if (object.getID().equals("3")) {
 				seleorttwo = 0;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
-						.execute(Httpurl.hometwotitle(object.getID()));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
 				mtoptitle.setText(object.getArticleClassName());
 				titleadapter.selseortitem = arg2;
 				titleadapter.notifyDataSetChanged();
 			} else if (object.getID().equals("5")) {
 				seleorttwo = 1;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
-						.execute(Httpurl.hometwotitle(object.getID()));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
 				mtoptitle.setText(object.getArticleClassName());
 				titleadapter.selseortitem = arg2;
 				titleadapter.notifyDataSetChanged();
 			} else if (object.getID().equals("6")) {
 				seleorttwo = 2;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
-						.execute(Httpurl.hometwotitle(object.getID()));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
 				mtoptitle.setText(object.getArticleClassName());
 				titleadapter.selseortitem = arg2;
 				titleadapter.notifyDataSetChanged();

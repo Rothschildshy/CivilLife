@@ -1,6 +1,24 @@
 package com.app.civillife;
 
 import java.util.Collection;
+import java.util.concurrent.Executors;
+
+import com.CivilLife.Base.BaseActivity;
+import com.CivilLife.Entity.MyFriendEntity;
+import com.CivilLife.Entity.PublicEntity;
+import com.CivilLife.Json.MyFriendJson;
+import com.CivilLife.Json.PublicUpJson;
+import com.CivilLife.MyAdapter.MyFriendListViewAdapter;
+import com.CivilLife.net.Httpurl;
+import com.CivilLife.net.RequestTask;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
+import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
+import com.baoyz.widget.PullRefreshLayout;
+import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
@@ -19,23 +37,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.CivilLife.Base.BaseActivity;
-import com.CivilLife.Entity.MyFriendEntity;
-import com.CivilLife.Entity.PublicEntity;
-import com.CivilLife.Json.MyFriendJson;
-import com.CivilLife.Json.PublicUpJson;
-import com.CivilLife.MyAdapter.MyFriendListViewAdapter;
-import com.CivilLife.net.Httpurl;
-import com.CivilLife.net.RequestTask;
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
-import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
-import com.baoyz.widget.PullRefreshLayout;
-import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
 
 /**
  * 我的筑友 我的徒弟 我的师傅 界面
@@ -221,7 +222,7 @@ public class MyFriendActivity extends BaseActivity implements
 			@Override
 			public void onClick(View v) {
 				new RequestTask(MyFriendActivity.this, DELlistener, false,
-						true, DelMessage).execute(Httpurl.DelFriend(Type, id));
+						true, DelMessage).executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelFriend(Type, id));
 			}
 		});
 	}
@@ -327,14 +328,14 @@ public class MyFriendActivity extends BaseActivity implements
 				case 0:
 					page = 1;
 					new RequestTask(MyFriendActivity.this, listener, false,
-							false, Message).execute(Httpurl.FriendList(Type,
+							false, Message).executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.FriendList(Type,
 							page));
 
 					break;
 				case 1:
 					page++;
 					new RequestTask(MyFriendActivity.this, listener, false,
-							false, Message).execute(Httpurl.FriendList(Type,
+							false, Message).executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.FriendList(Type,
 							page));
 					break;
 				}

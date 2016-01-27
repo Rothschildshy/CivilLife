@@ -1,37 +1,27 @@
 package com.CivilLife.MyAdapter;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Base.BaseApplication;
 import com.CivilLife.Base.BaseListAdapter;
-import com.CivilLife.Entity.HomeEntity;
 import com.CivilLife.Entity.MyManageEntity;
 import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.PublicUpJson;
-import com.CivilLife.Variable.RequestCode;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
-import com.app.civillife.ManageActivity;
-import com.app.civillife.PublishActivity;
 import com.app.civillife.R;
 import com.aysy_mytool.Time;
 import com.aysy_mytool.ToastUtil;
-import com.umeng.socialize.utils.Log;
 
 import Requset_getORpost.RequestListener;
+import android.content.Context;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * 管理我的文字 添加修改
@@ -106,7 +96,7 @@ public class ManageListViewAdapter extends BaseListAdapter {
 					public void onClick(View v) {
 						MyManageEntity item=(MyManageEntity) getItem(position);
 						new RequestTask(context, DELlistener, false, true,
-								"删除中").execute(Httpurl.DelMyManage(item.getID()));
+								"删除中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelMyManage(item.getID()));
 					}
 				});
 			}

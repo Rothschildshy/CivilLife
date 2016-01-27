@@ -1,6 +1,7 @@
 package com.CivilLife.Activity;
 
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,12 +15,8 @@ import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
-import com.MyView.Widget.PrDialog;
 import com.app.civillife.R;
-import com.app.civillife.Util.GetDistance;
-import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
-import com.aysy_mytool.ToastUtil;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -34,20 +31,15 @@ import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import Requset_getORpost.RequestListener;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 登陆界面
@@ -182,7 +174,7 @@ public class LoginActivity extends BaseActivity {
 			return;
 		}
 		new RequestTask(LoginActivity.this, ReturnAL.LoginMap(User, PassWd), listener, false, true, "登陆中")
-				.execute(Httpurl.URL);
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 	}
 
 	// 普通登陆回调
@@ -363,7 +355,7 @@ public class LoginActivity extends BaseActivity {
 			public void responseException(String errorMessage) {
 
 			}
-		}, false, true, "登陆中").execute(Httpurl.ToKenLogin(access_token, Type,nickName));
+		}, false, true, "登陆中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.ToKenLogin(access_token, Type,nickName));
 
 	}
 

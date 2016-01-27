@@ -1,8 +1,7 @@
 package com.app.civillife.Service;
 
-import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
-import com.CivilLife.Activity.MainActivity;
 import com.CivilLife.Entity.PushEntity;
 import com.CivilLife.Json.PushJson;
 import com.CivilLife.Variable.GlobalVariable;
@@ -14,7 +13,6 @@ import com.app.civillife.R;
 import com.aysy_mytool.Qlog;
 
 import Requset_getORpost.RequestListener;
-import android.R.string;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,17 +20,20 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
-
+/*
+ * 聊天推送
+ */
 public class MessageService extends Service {
 
 	private NotificationManager manager;
 	public PushJson savepush;
 
+	// 请求时间间隔
+	private int Time=10000;
 	@Override
 	public IBinder onBind(Intent intent) {
 		return new MyBind();
@@ -50,7 +51,8 @@ public class MessageService extends Service {
 		manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		handler = new Handler();
 		if (GlobalVariable.push) {
-			new RequestTask(MessageService.this, listener, false, false, "").execute(Httpurl.Push());
+			new RequestTask(MessageService.this, listener, false, false, "")
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Push());
 		}
 
 	}
@@ -60,14 +62,15 @@ public class MessageService extends Service {
 		if (GlobalVariable.push) {
 			handler.postDelayed(new Runnable() {
 				public void run() {
-//					 Log.e("", "更新数据中...");
-					// Notification();  
+					// Log.e("", "更新数据中...");
+					// Notification();
 					// handler.postAtTime(this,4000);
-					new RequestTask(MessageService.this, listener, false, false, "").execute(Httpurl.Push());
+					new RequestTask(MessageService.this, listener, false, false, "")
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Push());
 					// Log.e("", "更新数据中... "+Httpurl.Push());
 					// handler.postDelayed(this, 10000);
 				}
-			}, 60000);
+			}, Time);
 		}
 	}
 
@@ -147,7 +150,7 @@ public class MessageService extends Service {
 			intent.putExtra("TYPE", 0);
 			intent.putExtra("comment", false);
 			intent.putExtra("ToUserId", id);
-			
+
 			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			notification.setLatestEventInfo(this, title, content, pendingIntent);
 			manager.notify(-Integer.valueOf(id), notification);// 发动通知,id由自己指定，每一个Notification对应的唯一标志

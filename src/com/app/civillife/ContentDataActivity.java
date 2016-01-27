@@ -1,39 +1,14 @@
 package com.app.civillife;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Parcelable;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.VideoView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.HomeEntity;
 import com.CivilLife.Entity.PublicEntity;
-import com.CivilLife.Entity.SmiledataEntity;
 import com.CivilLife.Json.HomeJson;
 import com.CivilLife.Json.PublicUpJson;
 import com.CivilLife.MyAdapter.CommentListViewAdapter;
@@ -55,13 +30,30 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
-import com.umeng.socialize.utils.Log;
 
 import Downloadimage.ImageUtils;
 import Requset_getORpost.RequestListener;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 /**
  * 发布的文章详情
@@ -211,7 +203,7 @@ public class ContentDataActivity extends BaseActivity {
 		}
 		if (intent.getIntExtra("TYPE", -1) == 0) {
 			String ToUserId = intent.getStringExtra("ToUserId");
-			new RequestTask(this, listener, false, true, "").execute(Httpurl
+			new RequestTask(this, listener, false, true, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 					.GetIDArticle(ToUserId));
 		} else {
 			homeEntity = intent.getParcelableExtra("HomeEntity");
@@ -264,7 +256,7 @@ public class ContentDataActivity extends BaseActivity {
 				homeEntity.getVideoThumbnailsPicUrl(), video_image, false);
 		mScrollView.setMode(Mode.BOTH);
 		new RequestTask(this, contentlistener, false, false, "拼命加载中...")
-				.execute(Httpurl.Contenturl(homeEntity.getID(), "1"));
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Contenturl(homeEntity.getID(), "1"));
 	}
 
 	// 好文不好文判定
@@ -343,7 +335,7 @@ public class ContentDataActivity extends BaseActivity {
 			bundle.putString("imageurl", homeEntity.getUserInfoPicUrl());
 			startActivityForResult(ShareActivity.class, bundle, 10001);
 			// context.startActivity(new Intent(context,ShareActivity.class));
-			overridePendingTransition(R.anim.small_2_big, R.anim.fade_out);
+			overridePendingTransition(R.anim.small_in_big, R.anim.fade_out);
 			break;
 		case R.id.tx_updata:// 提交评论
 			if (tologin()) {
@@ -358,13 +350,13 @@ public class ContentDataActivity extends BaseActivity {
 			isoperation = true;
 			new RequestTask(this, ReturnAL.ContentMap(homeEntity.getID(),
 					content), Commentlistener, false, true, "发表中...")
-					.execute(Httpurl.URL);
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 			break;
 		case R.id.radio_favour:// 好文
 			// if (isstr!=1) {
 			isstr = 1;
 			new RequestTask(this, Favourlistener, false, true, "打赏中...")
-					.execute(Httpurl.IsSmile(homeEntity.getID(), "1"));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsSmile(homeEntity.getID(), "1"));
 			isoperation = true;
 			// }else{
 			// ToastUtil.showToast(this, "您已经打赏");
@@ -374,7 +366,7 @@ public class ContentDataActivity extends BaseActivity {
 			// if (isstr!=0) {
 			isstr = 0;
 			new RequestTask(this, Favourlistener, false, true, "打赏中...")
-					.execute(Httpurl.IsSmile(homeEntity.getID(), "0"));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsSmile(homeEntity.getID(), "0"));
 			isoperation = true;
 			// }else{
 			// ToastUtil.showToast(this, "您已经打赏");
@@ -421,7 +413,7 @@ public class ContentDataActivity extends BaseActivity {
 				mLa_CommentEdit.setVisibility(View.GONE);
 				isComment = true;
 				new RequestTask(ContentDataActivity.this, contentlistener,
-						false, false, "拼命加载中...").execute(Httpurl.Contenturl(
+						false, false, "拼命加载中...").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Contenturl(
 						homeEntity.getID(), "1"));
 			}
 			showShortToast(publicUpJson.getAl().get(0).getMessage());
@@ -560,13 +552,13 @@ public class ContentDataActivity extends BaseActivity {
 				case 0:
 					page = 1;
 					new RequestTask(ContentDataActivity.this, contentlistener,
-							false, false, "拼命加载中...").execute(Httpurl
+							false, false, "拼命加载中...").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 							.Contenturl(homeEntity.getID(), page + ""));
 					break;
 				case 1:
 					page++;
 					new RequestTask(ContentDataActivity.this, contentlistener,
-							false, false, "拼命加载中...").execute(Httpurl
+							false, false, "拼命加载中...").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
 							.Contenturl(homeEntity.getID(), page + ""));
 					break;
 				}

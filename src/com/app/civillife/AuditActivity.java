@@ -3,6 +3,22 @@ package com.app.civillife;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+
+import com.CivilLife.Base.BaseActivity;
+import com.CivilLife.Entity.HomeEntity;
+import com.CivilLife.Json.HomeJson;
+import com.CivilLife.Json.PublicUpJson;
+import com.CivilLife.MyAdapter.HomeimagegridviewAdapter;
+import com.CivilLife.Variable.GlobalVariable;
+import com.CivilLife.Widget.CircleImageView;
+import com.CivilLife.Widget.GridForScrollView;
+import com.CivilLife.net.Httpurl;
+import com.CivilLife.net.RequestTask;
+import com.app.civillife.Util.ImagePagerActivity;
+import com.app.civillife.Util.VideoPay;
+import com.app.civillife.Util.Videolistener;
+import com.aysy_mytool.ToastUtil;
 
 import Downloadimage.ImageUtils;
 import Requset_getORpost.RequestListener;
@@ -21,20 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
-import com.CivilLife.Base.BaseActivity;
-import com.CivilLife.Entity.HomeEntity;
-import com.CivilLife.Json.HomeJson;
-import com.CivilLife.Json.PublicUpJson;
-import com.CivilLife.MyAdapter.HomeimagegridviewAdapter;
-import com.CivilLife.Variable.GlobalVariable;
-import com.CivilLife.Widget.CircleImageView;
-import com.CivilLife.Widget.GridForScrollView;
-import com.CivilLife.net.Httpurl;
-import com.CivilLife.net.RequestTask;
-import com.app.civillife.Util.ImagePagerActivity;
-import com.app.civillife.Util.VideoPay;
-import com.app.civillife.Util.Videolistener;
-import com.aysy_mytool.ToastUtil;
 
 /**
  * 审核界面
@@ -140,24 +142,24 @@ public class AuditActivity extends BaseActivity {
 			mLa_Start.setVisibility(View.GONE);
 			mLa_Audit.setVisibility(View.VISIBLE);
 			new RequestTask(this, getauditlistener, false, true, "努力加载中")
-					.execute(Httpurl.GetAuditArticle(page));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			break;
 		case R.id.btn_skip:// 跳过
 			page++;
 			new RequestTask(this, getauditlistener, false, true, "努力加载中")
-					.execute(Httpurl.GetAuditArticle(page));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			break;
 		case R.id.btn_funny:// 好文
 			new RequestTask(this, Submititlistener, false, true, "努力加载中")
-					.execute(Httpurl.SubmitAuditArticle(homeEntity.getID(), 1));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.SubmitAuditArticle(homeEntity.getID(), 1));
 			break;
 		case R.id.btn_boring:// 没劲
 			new RequestTask(this, Submititlistener, false, true, "努力加载中")
-					.execute(Httpurl.SubmitAuditArticle(homeEntity.getID(), 0));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.SubmitAuditArticle(homeEntity.getID(), 0));
 			break;
 		case R.id.btn_report:// 举报
 			new RequestTask(this, Reporttitlistener, false, true, "举报中")
-					.execute(Httpurl.ReportAuditArticle(homeEntity.getID()));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.ReportAuditArticle(homeEntity.getID()));
 			break;
 		case R.id.image_pic:// 跳转个人主页中心
 			if (homeEntity.getNickname().equals("匿名")) {
@@ -197,7 +199,7 @@ public class AuditActivity extends BaseActivity {
 			sv_auditlayout.setVisibility(View.VISIBLE);
 
 			new RequestTask(this, getauditlistener, false, true, "努力加载中")
-					.execute(Httpurl.GetAuditArticle(page));
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 
 			break;
 
@@ -317,7 +319,7 @@ public class AuditActivity extends BaseActivity {
 				page++;
 				new RequestTask(AuditActivity.this, getauditlistener, false,
 						true, "努力加载中...")
-						.execute(Httpurl.GetAuditArticle(page));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			} else {
 				showShortToast("审核失败！请稍后在试！");
 			}
@@ -344,7 +346,7 @@ public class AuditActivity extends BaseActivity {
 				page++;
 				new RequestTask(AuditActivity.this, getauditlistener, false,
 						true, "努力加载中...")
-						.execute(Httpurl.GetAuditArticle(page));
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			}
 		}
 

@@ -1,6 +1,7 @@
 package com.CivilLife.Fragment;
 
 import java.util.Collection;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseFragment;
 import com.CivilLife.Entity.HomeEntity;
@@ -37,7 +38,7 @@ import android.widget.RelativeLayout;
  * @author Administrator
  * 
  */
-@SuppressLint("ValidFragment")
+@SuppressLint({ "ValidFragment", "NewApi" })
 public class Homeclassify_Fragment extends BaseFragment {
 	private PullToRefreshListView mListView;
 	private static final int LOAD_DATA_FINISH = 10;
@@ -73,9 +74,8 @@ public class Homeclassify_Fragment extends BaseFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return FragmentCache(R.layout.layout_homeclassify, inflater,container);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return FragmentCache(R.layout.layout_homeclassify, inflater, container);
 	}
 
 	@Override
@@ -95,54 +95,51 @@ public class Homeclassify_Fragment extends BaseFragment {
 
 		mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
 
-					@Override
-					public void onPullDownToRefresh(
-							PullToRefreshBase refreshView) {
-						loadData(0);
-					}
+			@Override
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+				loadData(0);
+			}
 
-					@Override
-					public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-						loadData(1);
-					}
-				});
+			@Override
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+				loadData(1);
+			}
+		});
 
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Bundle bundle = new Bundle();
 				HomeEntity item = (HomeEntity) adapter.getDatas().get(arg2 - 1);
 				bundle.putBoolean("comment", false);
 				bundle.putParcelable("HomeEntity", item);
-				startActivityForResult(ContentDataActivity.class, bundle,
-						RequestCode.publiccode);
+				startActivityForResult(ContentDataActivity.class, bundle, RequestCode.publiccode);
 			}
 		});
 	}
-	
+
 	@Override
 	protected void init() {
 		adapter = new HomeListViewAdapter(mApplication, getActivity(), null);
 		mListView.setAdapter(adapter);
-		listView = mListView.getRefreshableView();  
-		
+		listView = mListView.getRefreshableView();
+
 		mListView.setOnScrollListener(new OnScrollListener() {
 
 			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) { 
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				if (adapter.ispay != -1) {
 					int firstPosition = listView.getFirstVisiblePosition();
 					int Lastposition = listView.getLastVisiblePosition();
-					if (adapter.ispay + 1 < firstPosition  
-							|| adapter.ispay + 1 > Lastposition) {
-						adapter.InitVideo();    
+					if (adapter.ispay + 1 < firstPosition || adapter.ispay + 1 > Lastposition) {
+						adapter.InitVideo();
 					}
 				}
-			}  
+			}
 
 			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {  
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
 
 			}
 		});
@@ -161,9 +158,7 @@ public class Homeclassify_Fragment extends BaseFragment {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-
-			HomeJson homeJson = HomeJson.readJsonToSendmsgObject(getActivity(),
-					jsonObject);
+			HomeJson homeJson = HomeJson.readJsonToSendmsgObject(getActivity(), jsonObject);
 			if (homeJson == null) {
 				isrequest = true;
 				stoprequest();
@@ -176,8 +171,7 @@ public class Homeclassify_Fragment extends BaseFragment {
 				return;
 			}
 			if (page != 1) {
-				homeJson.getAl().addAll(0,
-						(Collection<? extends HomeEntity>) adapter.getDatas());
+				homeJson.getAl().addAll(0, (Collection<? extends HomeEntity>) adapter.getDatas());
 			}
 			mLayout_Hint.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
@@ -233,13 +227,16 @@ public class Homeclassify_Fragment extends BaseFragment {
 				switch (type) {
 				case 0:
 					page = 1;
-					new RequestTask(getActivity(), listlistener, false, false,
-							"加载内容").execute(RequesturlUrl(page));
+					//Executors.newCachedThreadPool()  无限制的线程池
+					new RequestTask(getActivity(), listlistener, false, false, "加载内容")
+							.executeOnExecutor(Executors.newCachedThreadPool(), RequesturlUrl(page));
+					//AsyncTask.THREAD_POOL_EXECUTOR   调用默认设置好的5个线程池
+//					new RequestTask(getActivity(), listlistener, false, false, "加载内容")
+//							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, RequesturlUrl(page));
 					break;
 				case 1:
 					page++;
-					new RequestTask(getActivity(), listlistener, false, false,
-							"加载内容").execute(RequesturlUrl(page));
+					new RequestTask(getActivity(), listlistener, false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), RequesturlUrl(page));
 					break;
 				}
 				try {
@@ -274,25 +271,27 @@ public class Homeclassify_Fragment extends BaseFragment {
 	private HomeListViewAdapter adapter;
 	private ListView listView;
 
-	public void stoprequest() {  
+	public void stoprequest() {
 		if (isrequest && istotime) {
 			Message _Msg = mHandler.obtainMessage(REFRESH_DATA_FINISH);
 			mHandler.sendMessage(_Msg);
 		}
 	}
+
 	@Override
-	public void onPause() {  
-		if (adapter.videoPay!=null) {
+	public void onPause() {
+		if (adapter.videoPay != null) {
 			adapter.videoPay.setPause();
 			adapter.setVideoPay(null);
-			adapter.ispay=-1;  
+			adapter.ispay = -1;
 			adapter.notifyDataSetChanged();
 		}
 		super.onPause();
 	}
+
 	@Override
 	public void onDestroy() {
-		
+
 		super.onDestroy();
 	}
 }

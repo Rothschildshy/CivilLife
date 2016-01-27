@@ -2,6 +2,7 @@ package com.app.civillife;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.MessagelistEntity;
@@ -14,7 +15,6 @@ import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
 import com.app.civillife.Service.MessageChatService;
 import com.app.civillife.Service.MessageChatService.MyBind;
-import com.app.civillife.Service.MessageService;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -24,12 +24,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;  
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -224,7 +223,7 @@ public class MessageActivity extends BaseActivity {
 			}
 			listView.setSelection(adapter.getCount()-1);    
 			page=1;
-			new RequestTask(MessageActivity.this, messagelistener, false, false, "").execute(Httpurl.ChatMessageList(toUserId, page));
+			new RequestTask(MessageActivity.this, messagelistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.ChatMessageList(toUserId, page));
 		}
 
 		
@@ -270,7 +269,7 @@ public class MessageActivity extends BaseActivity {
 			adapter.setmDatas(al);
 			adapter.notifyDataSetChanged();  
 			listView.setSelection(adapter.getCount()-1);  
-			new RequestTask(this,ReturnAL.ToMessageList(mes, toUserId),releaselistener, false, false, "").execute(Httpurl.URL);
+			new RequestTask(this,ReturnAL.ToMessageList(mes, toUserId),releaselistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 			break;
 		case R.id.image_info:
 			Bundle bundle = new Bundle();
@@ -305,7 +304,7 @@ public class MessageActivity extends BaseActivity {
 				switch (type) {
 				case 0:
 					page++;
-					new RequestTask(MessageActivity.this, messagelistener, false, false, "").execute(Httpurl.ChatMessageList(toUserId, page));
+					new RequestTask(MessageActivity.this, messagelistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.ChatMessageList(toUserId, page));
 					break;       
 				case 1:
 					break;
