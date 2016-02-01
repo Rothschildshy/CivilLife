@@ -50,8 +50,7 @@
     <string name="record_preview_tab_theme">主题</string>
     <string name="record_preview_tab_filter">滤镜</string>
     <string name="record_preview_building">视频生成中…</string>
-    <string name="app_name">CivilLife</string>
-    <string name="app_name_zh">土木湿生活</string>
+    <string name="app_name">土木湿生活</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_splash">SplashActivity</string>

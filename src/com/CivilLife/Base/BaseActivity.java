@@ -178,5 +178,10 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 		}
 		return false;
 	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
 
 }

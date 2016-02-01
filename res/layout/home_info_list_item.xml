@@ -29,7 +29,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/image_pic"
             android:maxLength="18"
-            android:text="@string/app_name_zh"
+            android:text="@string/app_name"
             android:textColor="@color/login_sele_weixin"
             android:textSize="16sp" />
 

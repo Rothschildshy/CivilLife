@@ -3,6 +3,9 @@ package com.king.photo.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.king.photo.zoom.PhotoView;
+import com.king.photo.zoom.ViewPagerFixed;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,18 +14,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.app.civillife.PublishActivity;
-import com.king.photo.zoom.PhotoView;
-import com.king.photo.zoom.ViewPagerFixed;
 
 /**
  * 这个是用于进行图片浏览时的界面

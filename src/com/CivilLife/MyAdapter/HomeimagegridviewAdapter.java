@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 /**
- * 首页片段适配器
+ * 首页图片布局适配器
  * 
  * @author Administrator
  * 

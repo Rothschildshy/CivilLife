@@ -63,12 +63,12 @@ public class Homeclassify_Fragment extends BaseFragment {
 
 	public String RequesturlUrl(int page) {
 		String requesturl = Httpurl.newtitle(page);
-		if (str.equals("-1")) {
+		if (str.equals("-1")) {//固定标题  段子
 			requesturl = Httpurl.newtitle(page);
-		} else if (str.equals("-2")) {
+		} else if (str.equals("-2")) {  //固定标题  精华
 			requesturl = Httpurl.essencetitle(page);
 		} else {
-			requesturl = Httpurl.nofixedtitle(str, page + "", null);
+			requesturl = Httpurl.nofixedtitle(str, page);
 		}
 		return requesturl;
 	}

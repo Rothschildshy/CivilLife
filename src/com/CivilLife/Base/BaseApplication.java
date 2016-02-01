@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.CivilLife.net.RequestTask;
+import com.aysy_mytool.Qlog;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -30,7 +32,7 @@ public class BaseApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
+		
 		application = this;
 
 		// 设置拍摄视频缓存路径
@@ -44,8 +46,14 @@ public class BaseApplication extends Application {
 		} else {
 			VCamera.setVideoCachePath(dcim + "/WeChatJuns/");
 		}
+		
+		// 设置开发debug模式 true为调试模式 打印日志 输出日志
+		boolean IsDebug=true;
+		RequestTask.IsLog = IsDebug;
+		Qlog.DEBUG=IsDebug;
 		// 开启log输出,ffmpeg输出到logcat
-		VCamera.setDebugMode(true);
+		VCamera.setDebugMode(IsDebug);
+		
 		// 初始化拍摄SDK，必须
 		VCamera.initialize(this);
 

@@ -29,7 +29,6 @@ public class CommentListViewAdapter extends BaseListAdapter {
 
 	public CommentListViewAdapter(BaseApplication application, Context context, List<? extends Object> datas) {
 		super(application, context, datas);
-		// TODO Auto-generated constructor stub
 		this.context = context;
 	}
 

@@ -84,6 +84,7 @@ public class HomeListViewAdapter extends BaseListAdapter {
 		this.context = context;
 	}
 
+	@SuppressWarnings("static-access")
 	@SuppressLint("ResourceAsColor")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -102,7 +103,6 @@ public class HomeListViewAdapter extends BaseListAdapter {
 			holder.mRb_Disapprove = (RadioButton) convertView.findViewById(R.id.radio_disapprove);
 			holder.mIm_Comment = (ImageView) convertView.findViewById(R.id.image_comment);
 			holder.mIm_Share = (ImageView) convertView.findViewById(R.id.image_share);
-			holder.mLa_Video = (RelativeLayout) convertView.findViewById(R.id.layout_video);
 			holder.mIm_Play = (ImageButton) convertView.findViewById(R.id.image_play);
 			holder.layout_video = (RelativeLayout) convertView.findViewById(R.id.layout_video);
 			holder.pb_waiting = (ProgressBar) convertView.findViewById(R.id.pb_waiting);
@@ -123,7 +123,6 @@ public class HomeListViewAdapter extends BaseListAdapter {
 		ImageUtils.loadImage1(context, userInfoPicUrl, holder.mIm_Pic, R.drawable.ic_my_nolog_selector, R.drawable.ic_my_nolog_selector,GlobalVariable.WifiDown);
 		holder.mTx_Name.setText(item.getNickname());    
 		holder.mTx_Content.setText(Html.fromHtml(item.getContent(), new URLImageParser(context, holder.mTx_Content), null));    
-		holder.mTx_CommentNum.setText(item.getReviews());   
 		if (!TextUtils.isEmpty(item.getPicUrl())) {  
 			String[] images = item.getPicUrl().split(",");    
 			List<String> asList = Arrays.asList(images);  
@@ -397,7 +396,6 @@ public class HomeListViewAdapter extends BaseListAdapter {
 		ImageView mIm_Share;// 分享
 		ImageButton mIm_Play;// 视频播放  
 		GridForScrollView mImageGR;// 图片墙
-		RelativeLayout mLa_Video;// 视频布局
 		VideoView video;// 视频
 		RadioButton mRb_Favour;// 好文
 		RadioButton mRb_Disapprove;// 不好文

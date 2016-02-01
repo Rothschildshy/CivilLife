@@ -68,7 +68,8 @@ import android.util.Log;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class RequestTask extends AsyncTask<String, Integer, Object> {
-
+	/** 是否开启打印日志 调试模式为true 上线模式为false */
+	public static boolean IsLog = true;
 	private static String path;
 	/** 调用者上下文 */
 	private Context ct;
@@ -142,11 +143,11 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 
 	}
 
-	// 异步开始执行  这里是最终用户调用Excute时的接口
+	// 异步开始执行 这里是最终用户调用Excute时的接口
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-//		Log.e("", "异步运行onPreExecute  " + System.currentTimeMillis());
+		// Log.e("", "异步运行onPreExecute " + System.currentTimeMillis());
 		if (isShowProssDialog) {
 			// progressDialog = ProgressDialog.createDialog(ct, this, false);
 			if (TextUtils.isEmpty(dlgNote)) {
@@ -160,12 +161,12 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 		}
 	}
 
-	// 异步后台执行  比较耗时的操作都可以放在这里
+	// 异步后台执行 比较耗时的操作都可以放在这里
 	@Override
 	protected Object doInBackground(String... params) {
 		url = params[0];
 		Object result = null;
-//		Log.e("", "异步开始doInBackground  " + System.currentTimeMillis());
+		// Log.e("", "异步开始doInBackground " + System.currentTimeMillis());
 		/** 进行缓存操作 start **/
 		String[] data = null;
 		if (isCache) { // 如果是缓存 取数据库缓存中数据
@@ -233,7 +234,8 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 		isGetCache = true;
 		return result;
 	}
-    //相当于Handler 处理结果的方式，在这里面可以使用在doInBackground 得到的结果处理操作数据
+
+	// 相当于Handler 处理结果的方式，在这里面可以使用在doInBackground 得到的结果处理操作数据
 	@Override
 	protected void onPostExecute(Object result) {
 		super.onPostExecute(result);
@@ -259,14 +261,15 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 				return;
 			}
 			listener.responseResult((String) result);
-			if (true) {// 是网络请求的数据才打印网络log
-				Myjsonlog.MyLog(ct, (String) result, url);
+			if (isGetCache && IsLog) {// 是网络请求的数据才 且调试模式下 打印网络log
+				Myjsonlog.MyLog(ct, requestlist, (String) result, url);
 			}
 			if (isCache) {// 把数据缓存到本地
 				DBHelper.getInstance(ct).addOrUpdateURLData(url, (String) result);
 			}
 		}
 	}
+
 	public boolean checkDataIsJson(String value) {
 		try {
 			if (value != null) {
@@ -281,20 +284,18 @@ public class RequestTask extends AsyncTask<String, Integer, Object> {
 		return true;
 	}
 
-	
-	//可以使用进度条增加用户体验度
+	// 可以使用进度条增加用户体验度
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
-		Log.e("", "请求过程" + System.currentTimeMillis());
 	}
-	//用户调用取消时，要做的操作
+
+	// 用户调用取消时，要做的操作
 	@Override
 	protected void onCancelled(Object result) {
 		super.onCancelled(result);
-		Log.e("", "终止请求" + System.currentTimeMillis());
 	}
-	
+
 	/**
 	 * 通过广播发送网络信息
 	 * 

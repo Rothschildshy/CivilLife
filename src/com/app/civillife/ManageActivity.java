@@ -4,11 +4,14 @@ import java.util.Collection;
 import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
+import com.CivilLife.Entity.HomeEntity;
 import com.CivilLife.Entity.MyManageEntity;
 import com.CivilLife.Entity.PublicEntity;
+import com.CivilLife.Json.HomeJson;
 import com.CivilLife.Json.MyManageJson;
 import com.CivilLife.Json.PublicUpJson;
 import com.CivilLife.MyAdapter.ManageListViewAdapter;
+import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.Variable.RequestCode;
 import com.CivilLife.Widget.AlertDialogEx;
 import com.CivilLife.Widget.AlertDialogEx.Builder;
@@ -23,9 +26,12 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
 import com.baoyz.widget.PullRefreshLayout;
 import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,11 +40,14 @@ import android.os.Message;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.AbsListView.OnScrollListener;
 
 /**
  * 管理我的文字
@@ -46,10 +55,10 @@ import android.widget.RelativeLayout;
  * @author Administrator
  * 
  */
-public class ManageActivity extends BaseActivity implements XOnRefreshListener {
+public class ManageActivity extends BaseActivity {
 	private ManageListViewAdapter mAdapter;
-	private SwipeMenuListView mListView;
-	private PullRefreshLayout mLayout;
+	private PullToRefreshListView mListView;
+	private ListView listView;
 	private int page = 1;
 	private static final int LOAD_DATA_FINISH = 10;
 	private static final int REFRESH_DATA_FINISH = 11;
@@ -72,8 +81,7 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 
 	@Override
 	protected void initViews() {
-		mLayout = (PullRefreshLayout) findViewById(R.id.pullrefreshlayout);
-		mListView = (SwipeMenuListView) findViewById(R.id.swipemenulistview);
+		mListView = (PullToRefreshListView) findViewById(R.id.pullToRefreshListView);
 
 		mLayout_Hint = (RelativeLayout) findViewById(R.id.layout_hint);
 		mLayout_DataNull = (LinearLayout) findViewById(R.id.layout_data_null);
@@ -82,128 +90,66 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 		mBtn_Refresh.setOnClickListener(this);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void initEvents() {
 		findViewById(R.id.image_back).setOnClickListener(this);
+		mAdapter = new ManageListViewAdapter(mApplication, this, null);
+		listView = mListView.getRefreshableView();
+		mListView.setAdapter(mAdapter);
+		mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
+
+			@Override
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+				loadData(0);
+			}
+
+			@Override
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+				loadData(1);
+			}
+		});
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Bundle bundle = new Bundle();
+				HomeEntity item = (HomeEntity) mAdapter.getDatas().get(arg2 - 1);
+				bundle.putBoolean("comment", false);
+				bundle.putParcelable("HomeEntity", item);
+				startActivityForResult(ContentDataActivity.class, bundle, RequestCode.publiccode);
+			}
+		});
+		// 设置视频播放的控制
+		mListView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+				if (mAdapter.ispay != -1) {
+					int firstPosition = listView.getFirstVisiblePosition();
+					int Lastposition = listView.getLastVisiblePosition();
+					if (mAdapter.ispay + 1 < firstPosition || mAdapter.ispay + 1 > Lastposition) {
+						mAdapter.InitVideo();
+					}
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+
+			}
+		});
 	}
 
 	@Override
 	protected void init() {
-		boolean isFirstdelete = SpUtils.getBoolean(ManageActivity.this, "isFirstdelete");
-		if (!isFirstdelete) {
-			new AlertDialogEx(this).setBuilder(new Builder(this).setMessage("可以侧滑删除文字，来管理您的文字！").setPositiveButton("知道了，不再提示！", new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					SpUtils.saveBoolean(ManageActivity.this, "isFirstdelete", true);
-				}
-			}, true).show());
-		}
-		// 先设置颜色在设置风格，颜色固定4个，否则异常
-		mLayout.setColorSchemeColors(new int[] { Color.RED, Color.BLUE,
-				Color.YELLOW, Color.GREEN });
-		mLayout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);
-		mAdapter = new ManageListViewAdapter(mApplication, this, null);  
-		mListView.setAdapter(mAdapter);
-		// 设置是否使用上拉加载功能
-		mListView.setPullLoadEnable(false);
-		// ListView 行点击跳转
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				MyManageEntity info = (MyManageEntity) mAdapter.getDatas().get(
-						arg2);
-				String id = info.getID();
-				open(id);
-			}
-		});
-		// 下拉布局刷新监听
-		mLayout.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-				loadData(0);
-			}
-		});
-		mListView.setXOnRefreshListener(this);
-		// step 2. listener item click event PublishActivity
-		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public void onMenuItemClick(final int position, SwipeMenu menu,
-					int index) {
-				MyManageEntity info = (MyManageEntity) mAdapter.getDatas().get(
-						position);
-				final String id = info.getID();
-				switch (index) {
-				case 0:
-					// open
-					open(id);
-					break;
-				case 1:
-					mHandler.post(new Runnable() {
-
-						@Override
-						public void run() {
-							// delete
-							delete(id);
-							mAdapter.notifyDataSetChanged();
-							// 菜单回弹事件
-							mListView.smoothOpenOrCloseMenu(position);
-						}
-					});
-					break;
-				}
-			}
-		});
-		// step 1. create a MenuCreator
-		SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-			@Override
-			public void create(SwipeMenu menu) {
-				// create "open" item
-				SwipeMenuItem openItem = new SwipeMenuItem(
-						getApplicationContext());
-				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-						0xCE)));
-				// set item width
-				openItem.setWidth(dp2px(90));
-				// set item title
-				openItem.setTitle("编辑");
-				// set item title fontsize
-				openItem.setTitleSize(18);
-				// set item title font color
-				openItem.setTitleColor(Color.WHITE);
-				// add to menu
-				menu.addMenuItem(openItem);
-
-				// create "delete" item
-				SwipeMenuItem deleteItem = new SwipeMenuItem(
-						getApplicationContext());
-				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-						0x3F, 0x25)));
-				// set item width
-				deleteItem.setWidth(dp2px(90));
-				// set a icon
-				deleteItem.setIcon(R.drawable.ic_delete);
-				// add to menu
-				menu.addMenuItem(deleteItem);
-			}
-		};
-		// set creator
-		mListView.setMenuCreator(creator);
-
-		mLayout.post(new Runnable() {
-
+		// 自动下拉刷新
+		mListView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mLayout.setRefreshing(true);
-				loadData(0);
+				mListView.setRefreshing(true);
 			}
-		});
+		}, 1000);
 	}
 
 	@Override
@@ -215,11 +161,16 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 		case R.id.btn_refresh:
 			mLayout_Hint.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
-
 			page = 1;
-			mLayout.setRefreshing(true);
-			loadData(0);
 
+			mListView.setRefreshing(true);
+			// 自动下拉刷新
+			mListView.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					loadData(0);
+				}
+			}, 2000);
 			break;
 		default:
 			break;
@@ -229,41 +180,32 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 	// 获取个人发表的文章信息
 	RequestListener listener = new RequestListener() {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-//			Qlog.e("", "jsonObject管理我的文章  "+jsonObject);
-			MyManageJson Myjson = MyManageJson.readJsonToSendmsgObject(
-					ManageActivity.this, jsonObject);
-			if (Myjson == null) {
+			HomeJson homeJson = HomeJson.readJsonToSendmsgObject(ManageActivity.this, jsonObject);
+			if (homeJson == null) {
 				isrequest = true;
 				stoprequest();
 				if (page == 1) {
 					mLayout_Hint.setVisibility(View.VISIBLE);
 					mLayout_DataNull.setVisibility(View.VISIBLE);
 					mLayout_NetworkError.setVisibility(View.GONE);
-				}else{
+				} else {
 					showShortToast("没有更多数据");
 				}
 				page -= 1;
 				return;
 			}
 			if (page != 1) {
-				Myjson.getAl().addAll(
-						0,
-						(Collection<? extends MyManageEntity>) mAdapter
-								.getDatas());
+				homeJson.getAl().addAll(0, (Collection<? extends HomeEntity>) mAdapter.getDatas());
 			}
-			if (page == 1 && Myjson.getAl().size() > 9) {
-				// 当第一页数据超过九条的时候设置可上拉加载
-				mListView.setPullLoadEnable(true);
-			}
-
 			mLayout_Hint.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
 
-			mAdapter.setmDatas(Myjson.getAl());
+			mAdapter.setmDatas(homeJson.getAl());
+			// mAdapter.hm.clear();
 			mAdapter.notifyDataSetChanged();
-			mLayout.setRefreshing(false);
 			isrequest = true;
 			stoprequest();
 		}
@@ -282,63 +224,6 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 		}
 	};
 
-	private void delete(final String id) {
-		PromptDialogs("确定删除文字吗？", new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				new RequestTask(ManageActivity.this, DELlistener, false, true,
-						"删除中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelMyManage(id));
-			}
-		});
-	}
-
-	private void open(String id) {
-		Bundle bundle = new Bundle();
-		bundle.putInt("TYPE", 2);
-		bundle.putString("ID", id);
-		startActivityForResult(PublishActivity.class, bundle,
-				RequestCode.publiccode);
-	}
-
-	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-				getResources().getDisplayMetrics());
-	}
-
-	RequestListener DELlistener = new RequestListener() {
-
-		@Override
-		public void responseResult(String jsonObject) {
-			
-			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(
-					ManageActivity.this, jsonObject);
-			if (publicjson == null) {
-				return;
-			}
-			PublicEntity publicEntity = publicjson.getAl().get(0);
-			String status = publicEntity.getStatus();
-			if (status.equals("1")) {
-				page = 1;
-				mLayout.setRefreshing(true);
-				loadData(0);
-			} else {
-				showShortToast(publicEntity.getMessage());
-			}
-
-		}
-
-		@Override
-		public void responseException(String errorMessage) {
-			showShortToast(errorMessage);
-		}
-	};
-
-	@Override
-	public void onLoadMore() {
-		loadData(1);
-	}
-
 	public void loadData(final int type) {
 		new Thread() {
 			@Override
@@ -346,13 +231,13 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 				switch (type) {
 				case 0:
 					page = 1;
-					new RequestTask(ManageActivity.this, listener, false,
-							false, "数据加载").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetMyManage(page));
+					new RequestTask(ManageActivity.this, listener, false, false, "数据加载").executeOnExecutor(
+							Executors.newCachedThreadPool(), Httpurl.GetPersonalarticles(page, GlobalVariable.UserID));
 					break;
 				case 1:
 					page++;
-					new RequestTask(ManageActivity.this, listener, false,
-							false, "数据加载").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetMyManage(page));
+					new RequestTask(ManageActivity.this, listener, false, false, "数据加载").executeOnExecutor(
+							Executors.newCachedThreadPool(), Httpurl.GetPersonalarticles(page, GlobalVariable.UserID));
 					break;
 				}
 				try {
@@ -372,13 +257,12 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case REFRESH_DATA_FINISH:
-				mLayout.setRefreshing(false);// 下拉刷新完成
-				mListView.stopLoadMore();// 加载更多完成
+				mListView.onRefreshComplete(); // 下拉刷新完成
 				istotime = false;
 				isrequest = false;
 				break;
 			case LOAD_DATA_FINISH:
-				mListView.stopLoadMore();// 加载更多完成
+				// mListView.onLoadMoreComplete(); // 加载更多完成
 				break;
 			default:
 				break;
@@ -390,6 +274,22 @@ public class ManageActivity extends BaseActivity implements XOnRefreshListener {
 		if (isrequest && istotime) {
 			Message _Msg = mHandler.obtainMessage(REFRESH_DATA_FINISH);
 			mHandler.sendMessage(_Msg);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent data) {
+		super.onActivityResult(arg0, arg1, data);
+		if (data != null) {
+			if (arg0 == RequestCode.publiccode && arg1 == 34) {
+				// 自动下拉刷新
+				mListView.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						mListView.setRefreshing(true);
+					}
+				}, 1000);
+			}
 		}
 	}
 }

@@ -28,6 +28,7 @@ import com.umeng.socialize.exception.SocializeException;
 import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import Requset_getORpost.RequestListener;
@@ -94,9 +95,9 @@ public class LoginActivity extends BaseActivity {
 		findViewById(R.id.layout_login_qq).setOnClickListener(this);
 		findViewById(R.id.layout_login_weibo).setOnClickListener(this);
 		findViewById(R.id.btn_login).setOnClickListener(this);
-		mTx_Register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
+		mTx_Register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);// 下划线
 		mTx_Register.setOnClickListener(this);
-		mTx_Forgetpw.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
+		mTx_Forgetpw.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);// 下划线
 		mTx_Forgetpw.setOnClickListener(this);
 	}
 
@@ -150,9 +151,10 @@ public class LoginActivity extends BaseActivity {
 			break;
 		}
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode==event.KEYCODE_BACK) {
+		if (keyCode == event.KEYCODE_BACK) {
 			setResult(0, new Intent());
 			finish();
 		}
@@ -194,7 +196,7 @@ public class LoginActivity extends BaseActivity {
 				nickName = userNameMD5;
 				userPassWord = publicEntity.getUserPassWord();
 				// 普通登录是没头像的需要清空头像
-				profile_image_url="";
+				profile_image_url = "";
 				GlobalVariable.UserImage = profile_image_url;
 				SpUtils.saveString(LoginActivity.this, GlobalVariable.USERIMAGE, profile_image_url);
 				LoginSucceed();
@@ -224,9 +226,10 @@ public class LoginActivity extends BaseActivity {
 		GlobalVariable.UserPassWord = userPassWord;
 		SpUtils.saveString(this, GlobalVariable.USERPW, userPassWord);
 
-//		Log.e("", "");
-//		Qlog.e("登录数据", "UserID:" + userID + "\nUserImage:" + profile_image_url + "\nuserNameMD5:" + userNameMD5 + "\nuserName:"
-//				+ nickName + "\nuserPassWord:" + userPassWord);
+		// Log.e("", "");
+		// Qlog.e("登录数据", "UserID:" + userID + "\nUserImage:" +
+		// profile_image_url + "\nuserNameMD5:" + userNameMD5 + "\nuserName:"
+		// + nickName + "\nuserPassWord:" + userPassWord);
 		showShortToast("登陆成功！");
 		SetResult(10002, null);
 	}
@@ -253,7 +256,7 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onComplete(Bundle value, SHARE_MEDIA platform) {
 				DismssProssDialog();
-//				Qlog.e("===", "value:" + value.toString());
+				// Qlog.e("===", "value:" + value.toString());
 				String uid = value.getString("uid");
 				if (!TextUtils.isEmpty(uid)) {
 					ShowProgressDialog("获取资料");
@@ -286,32 +289,35 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onComplete(int status, Map<String, Object> info) {
 				if (info != null) {
-//					Qlog.e("", "回调信息：" + info.toString());
+					// Qlog.e("", "回调信息：" + info.toString());
 					String access_token = null;
 					switch (mold) {
 					case 0:// WeiXin的token
 						access_token = value.getString("access_token");
 						nickName = (String) info.get("nickname");
 						profile_image_url = (String) info.get("headimgurl");
-//						Qlog.e("", "WX Token:" + access_token + "\n" + "名称:" + nickName + "\n" + "图片：" + profile_image_url);
+						// Qlog.e("", "WX Token:" + access_token + "\n" + "名称:"
+						// + nickName + "\n" + "图片：" + profile_image_url);
 						break;
 					case 1:// QQ的token
 						access_token = value.getString("access_token");
 						nickName = (String) info.get("screen_name");
 						profile_image_url = (String) info.get("profile_image_url");
-//						Qlog.e("", "QQ Token:" + access_token + "\n" + "名称:" + nickName + "\n" + "图片：" + profile_image_url);
+						// Qlog.e("", "QQ Token:" + access_token + "\n" + "名称:"
+						// + nickName + "\n" + "图片：" + profile_image_url);
 						break;
 					case 2:// Sina的token
 						access_token = value.getString("access_key");
 						nickName = (String) info.get("screen_name");
 						profile_image_url = (String) info.get("profile_image_url");
-//						Qlog.e("", "WB Token:" + access_token + "\n" + "名称:" + nickName + "\n" + "图片：" + profile_image_url);
+						// Qlog.e("", "WB Token:" + access_token + "\n" + "名称:"
+						// + nickName + "\n" + "图片：" + profile_image_url);
 						break;
 					default:
 						break;
 					}
 					DismssProssDialog();
-					getHttpUtils(access_token, mold,nickName);
+					getHttpUtils(access_token, mold, nickName);
 				}
 			}
 
@@ -319,13 +325,13 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	// 第三方授权登陆回调
-	private void getHttpUtils(String access_token, int Type,String nickName) {
+	private void getHttpUtils(String access_token, int Type, String nickName) {
 		new RequestTask(this, new RequestListener() {
 			private String message;
 
 			@Override
 			public void responseResult(String jsonObject) {
-				try { 
+				try {
 					JSONObject jo = new JSONObject(jsonObject);
 					JSONArray jsonArray = jo.getJSONArray("Data");
 					for (int i = 0; i < jsonArray.length(); i++) {
@@ -344,8 +350,8 @@ public class LoginActivity extends BaseActivity {
 						GlobalVariable.UserImage = profile_image_url;
 						SpUtils.saveString(LoginActivity.this, GlobalVariable.USERIMAGE, profile_image_url);
 						LoginSucceed();
-						
-					}  
+
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -355,7 +361,8 @@ public class LoginActivity extends BaseActivity {
 			public void responseException(String errorMessage) {
 
 			}
-		}, false, true, "登陆中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.ToKenLogin(access_token, Type,nickName));
+		}, false, true, "登陆中").executeOnExecutor(Executors.newCachedThreadPool(),
+				Httpurl.ToKenLogin(access_token, Type, nickName));
 
 	}
 

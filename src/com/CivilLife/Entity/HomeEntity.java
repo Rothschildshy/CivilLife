@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 
 public class HomeEntity extends BaseEntity implements Parcelable {
-	public String ID;
+	public String ID;//文章ID
 	public String Content;
 	public String PicUrl;
 	public String VideoUrl;
@@ -20,7 +20,7 @@ public class HomeEntity extends BaseEntity implements Parcelable {
 	public String Praise;
 	public String Praises;
 	public String Reviews;
-	public String  Anonymous;
+	public String Anonymous;
 	public String Parent_ArticleClassNameID;
 	public String Message;
 	public String AddTime;

@@ -52,12 +52,13 @@ public class ArticleListActivity extends BaseActivity {
 	int Types;
 	boolean isrequest = false;// 请求时否完成
 	boolean istotime = false;// 请求时间是否结束
-	private int ARTID=-1;//社区id
+	private int ARTID = -1;// 社区id
 	private RelativeLayout mLayout_Hint;
 	private LinearLayout mLayout_DataNull;
 	private LinearLayout mLayout_NetworkError;
 	private Button mBtn_Refresh;
-	private int num=666;
+	private String City;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,9 +80,9 @@ public class ArticleListActivity extends BaseActivity {
 		mLayout_NetworkError = (LinearLayout) findViewById(R.id.layout_network_error);
 		mBtn_Refresh = (Button) findViewById(R.id.btn_refresh);
 		mBtn_Refresh.setOnClickListener(this);
-		image_article.setOnClickListener(this);   
-		
-	}  
+		image_article.setOnClickListener(this);
+
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -102,12 +103,12 @@ public class ArticleListActivity extends BaseActivity {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				Bundle bundle = new Bundle();
 				HomeEntity item = (HomeEntity) adapter.getDatas().get(arg2 - 1);
 				bundle.putBoolean("comment", false);
 				bundle.putParcelable("HomeEntity", item);
-				startActivityForResult(ContentDataActivity.class, bundle,RequestCode.publiccode);
+				startActivityForResult(ContentDataActivity.class, bundle, RequestCode.publiccode);
 			}
 		});
 	}
@@ -116,34 +117,34 @@ public class ArticleListActivity extends BaseActivity {
 	protected void init() {
 		Intent intent = getIntent();
 		Types = intent.getIntExtra("type", 0);
-		
+
 		if (Types == 1) {
-			
+
 			image_article.setVisibility(View.VISIBLE);
-			mTx_Title.setText(R.string.discover_overman_community);//师徒
+			mTx_Title.setText(R.string.discover_overman_community);// 师徒
 		} else if (Types == 2) {
-			
 			tv_rolling.setText("");
 			tv_rolling.setVisibility(View.VISIBLE);
 			image_article.setVisibility(View.VISIBLE);
-			mTx_Title.setText(R.string.discover_fellow_community);//老乡
-			ARTID=26;
-			new RequestTask(this, onlinerlistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.OnOnlineUsers(Types));
+			mTx_Title.setText(R.string.discover_fellow_community);// 老乡
+			ARTID = 26;
+			new RequestTask(this, onlinerlistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(),
+					Httpurl.OnOnlineUsers(Types));
 		} else if (Types == 3) {
-			
 			tv_rolling.setText("");
 			tv_rolling.setVisibility(View.VISIBLE);
-			ARTID=27;  
+			ARTID = 27;
 			image_article.setVisibility(View.VISIBLE);
-			mTx_Title.setText(R.string.discover_city_community);//同城
-			new RequestTask(this, onlinerlistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.OnOnlineUsers(Types));
+			mTx_Title.setText(R.string.discover_city_community);// 同城
+			new RequestTask(this, onlinerlistener, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(),
+					Httpurl.OnOnlineUsers(Types));
 		} else if (Types == 4) {
-			String UserName = intent.getStringExtra("UserName");//个人文章
+			String UserName = intent.getStringExtra("UserName");// 个人文章
 			userid = intent.getStringExtra("Userid");
 			mTx_Title.setText(UserName);
-			
+
 		}
-		
+
 		adapter = new HomeListViewAdapter(mApplication, this, null);
 		mListView.setAdapter(adapter);
 		listView = mListView.getRefreshableView();
@@ -154,8 +155,7 @@ public class ArticleListActivity extends BaseActivity {
 				if (adapter.ispay != -1) {
 					int firstPosition = listView.getFirstVisiblePosition();
 					int Lastposition = listView.getLastVisiblePosition();
-					if (adapter.ispay + 1 < firstPosition
-							|| adapter.ispay + 1 > Lastposition) {
+					if (adapter.ispay + 1 < firstPosition || adapter.ispay + 1 > Lastposition) {
 						adapter.InitVideo();
 					}
 				}
@@ -182,7 +182,6 @@ public class ArticleListActivity extends BaseActivity {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-			// android.util.Log.e("", " jsonObject社区 "+jsonObject);
 			HomeJson homeJson = HomeJson.readJsonToSendmsgObject(ArticleListActivity.this, jsonObject);
 			if (homeJson == null) {
 				isrequest = true;
@@ -198,7 +197,7 @@ public class ArticleListActivity extends BaseActivity {
 				return;
 			}
 			if (page != 1) {
-				homeJson.getAl().addAll(0,(Collection<? extends HomeEntity>) adapter.getDatas());
+				homeJson.getAl().addAll(0, (Collection<? extends HomeEntity>) adapter.getDatas());
 			}
 			mLayout_Hint.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
@@ -236,13 +235,12 @@ public class ArticleListActivity extends BaseActivity {
 			}
 			Bundle bundle = new Bundle();
 			bundle.putInt("TYPE", 10);
-			bundle.putString("artid", ARTID+"");  
+			bundle.putString("artid", ARTID + "");
 			bundle.putString("artname", mTx_Title.getText().toString());
-//			android.util.Log.e("seleorttitle2", seleorttitle2+"");
 			startActivityForResult(PublishActivity.class, bundle, RequestCode.publiccode);
 			break;
 
-		case R.id.btn_refresh:   
+		case R.id.btn_refresh:
 			mLayout_Hint.setVisibility(View.GONE);
 			mListView.setVisibility(View.VISIBLE);
 			page = 1;
@@ -269,25 +267,21 @@ public class ArticleListActivity extends BaseActivity {
 				case 0:
 					page = 1;
 					if (Types == 4) {
-						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-								.GetPersonalarticles(page,userid));
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容").executeOnExecutor(
+								Executors.newCachedThreadPool(), Httpurl.GetPersonalarticles(page, userid));
 					} else {
-						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-								.Hometown1(Types, page));
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容")
+								.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown1(Types, page));
 					}
 					break;
 				case 1:
 					page++;
 					if (Types == 4) {
-						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-								.GetPersonalarticles(page,userid));
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容").executeOnExecutor(
+								Executors.newCachedThreadPool(), Httpurl.GetPersonalarticles(page, userid));
 					} else {
-						new RequestTask(ArticleListActivity.this, listlistener,
-								false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-								.Hometown1(Types, page));
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容")
+								.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown1(Types, page));
 					}
 					break;
 				}
@@ -332,60 +326,63 @@ public class ArticleListActivity extends BaseActivity {
 			mHandler.sendMessage(_Msg);
 		}
 	}
+
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		super.onActivityResult(arg0, arg1, arg2);
-		if (arg2!=null) {
-			// 自动下拉刷新
-			mListView.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					mListView.setRefreshing(true);
-				}
-			}, 1000);
+		if (arg2 != null) {
+			if (arg0 == RequestCode.publiccode && arg1 == 33) {
+
+				// 自动下拉刷新
+				mListView.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						mListView.setRefreshing(true);
+					}
+				}, 1000);
+			}
 		}
 	}
-	
-	/**社区人数统计**/
-	RequestListener onlinerlistener=new RequestListener() {
-		
+
+	/** 社区人数统计 **/
+	RequestListener onlinerlistener = new RequestListener() {
+
 		@Override
 		public void responseResult(String jsonObject) {
-//			Log.e("", "jsonObject  "+jsonObject);
 			try {
-				JSONObject object=new JSONObject(jsonObject);  
+				JSONObject object = new JSONObject(jsonObject);
 				JSONArray DataArray = object.getJSONArray("Data");
 				JSONObject object2 = DataArray.getJSONObject(0);
 				String OnlineUsers = object2.getString("OnlineUsers");
-				tv_rolling.setVisibility(View.VISIBLE);  
-				String city=GlobalVariable.City;
-//				Log.e("", "city  "+city);  
-				if (city.equals("null,null")) {  
-					city="福建省，厦门市（定位失败！选择了默认城市）";     
-//					city="福建省，厦门市";  
-				}  
-				if (Types==3) { 
-					tv_rolling.setText("来自"+city+"的同城人数"+OnlineUsers+"人，请遵守法律法规，共同遵维护社区秩序！");
-				}else if(Types==2){
-					tv_rolling.setText("来自"+city+"的老乡人数"+OnlineUsers+"人，请遵守法律法规，共同遵维护社区秩序！"); 
+				tv_rolling.setVisibility(View.VISIBLE);
+				String city = GlobalVariable.City;
+				if (city.equals("null,null")) {
+					city = "福建省，厦门市（定位失败！选择了默认城市）";
 				}
-				tv_rolling.setFocusableInTouchMode(true); 
-				tv_rolling.setFocusable(true);  
+				if (Types == 3) {
+					City = "同城";
+				} else if (Types == 2) {
+					City = "老乡";
+				}
+				tv_rolling.setText("来自" + city + "的" + City + "人数" + OnlineUsers + "人，请遵守法律法规，共同遵维护社区秩序！");
+				tv_rolling.setFocusableInTouchMode(true);
+				tv_rolling.setFocusable(true);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-		}    
-		
+		}
+
 		@Override
 		public void responseException(String errorMessage) {
-			tv_rolling.setVisibility(View.VISIBLE);    
-			if (Types==3) {
-				tv_rolling.setText("来自"+GlobalVariable.City+"的同城人数???"+"人，请遵守法律法规，共同遵维护社区秩序！");
-			}else if(Types==2){
-				tv_rolling.setText("来自"+GlobalVariable.City+"的老乡人数???"+"人，请遵守法律法规，共同遵维护社区秩序！");
+			tv_rolling.setVisibility(View.VISIBLE);
+			if (Types == 3) {
+				City = "同城";
+			} else if (Types == 2) {
+				City = "老乡";
 			}
+			tv_rolling.setText("来自" + GlobalVariable.City + "的" + City + "人数???" + "人，请遵守法律法规，共同遵维护社区秩序！");
 			tv_rolling.setFocusableInTouchMode(true);
-			tv_rolling.setFocusable(true); 
+			tv_rolling.setFocusable(true);
 		}
 	};
 }

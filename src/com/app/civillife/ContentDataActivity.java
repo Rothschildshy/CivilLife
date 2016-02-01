@@ -79,7 +79,6 @@ public class ContentDataActivity extends BaseActivity {
 	private VideoView video;// 视频
 	private GridView mImageGR;// 图标墙
 	private LinearLayout mLa_CommentEdit;// 评论布局
-	private RelativeLayout mLa_Video;// 视频布局
 	private ImageView mIm_Play;// 视频播放
 	private ImageView video_image;// 视频缩略图
 	private EditText mEd_Comment;// 评论输入框
@@ -101,26 +100,21 @@ public class ContentDataActivity extends BaseActivity {
 
 		mListView = (ListViewScrollView) findViewById(R.id.pullToRefreshListView);
 		mScrollView = (PullToRefreshScrollView) findViewById(R.id.pullToRefreshScrollView);
-		mHeadLyout = (LinearLayout) getLayoutInflater().inflate(
-				R.layout.home_info_list_item2, null);
+		mHeadLyout = (LinearLayout) getLayoutInflater().inflate(R.layout.home_info_list_item2, null);
 		mIm_Pic = (CircleImageView) mHeadLyout.findViewById(R.id.image_pic);
 		mTx_Name = (TextView) mHeadLyout.findViewById(R.id.tx_name);
 		mTx_Content = (TextView) mHeadLyout.findViewById(R.id.tx_content);
 		mImageGR = (GridView) mHeadLyout.findViewById(R.id.image_gridView);
 		video = (VideoView) mHeadLyout.findViewById(R.id.videoView1);
-		mLa_Video = (RelativeLayout) findViewById(R.id.layout_video);
 		mIm_Play = (ImageView) mHeadLyout.findViewById(R.id.image_play);
 		video_image = (ImageView) mHeadLyout.findViewById(R.id.video_image);
 		mTx_FunnyNum = (TextView) mHeadLyout.findViewById(R.id.tx_funny_num);
-		mTx_CommentNum = (TextView) mHeadLyout
-				.findViewById(R.id.tx_comment_num);
+		mTx_CommentNum = (TextView) mHeadLyout.findViewById(R.id.tx_comment_num);
 		mRb_Favour = (RadioButton) mHeadLyout.findViewById(R.id.radio_favour);
-		mRb_Disapprove = (RadioButton) mHeadLyout
-				.findViewById(R.id.radio_disapprove);
+		mRb_Disapprove = (RadioButton) mHeadLyout.findViewById(R.id.radio_disapprove);
 		mLa_CommentEdit = (LinearLayout) findViewById(R.id.layout_edit_comment);
 		mEd_Comment = (EditText) findViewById(R.id.edit_comment);
-		layout_video = (RelativeLayout) mHeadLyout
-				.findViewById(R.id.layout_video);
+		layout_video = (RelativeLayout) mHeadLyout.findViewById(R.id.layout_video);
 		pb_waiting = (ProgressBar) mHeadLyout.findViewById(R.id.pb_waiting);
 		tv_addtime = (TextView) mHeadLyout.findViewById(R.id.tv_addtime);
 	}
@@ -143,10 +137,8 @@ public class ContentDataActivity extends BaseActivity {
 		mImageGR.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Intent intent = new Intent(ContentDataActivity.this,
-						ImagePagerActivity.class);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Intent intent = new Intent(ContentDataActivity.this, ImagePagerActivity.class);
 				ArrayList<String> al = new ArrayList<String>();
 				al.addAll(asList);
 				intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, al);
@@ -154,19 +146,17 @@ public class ContentDataActivity extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-		mScrollView
-				.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
-					@Override
-					public void onPullDownToRefresh(
-							@SuppressWarnings("rawtypes") PullToRefreshBase refreshView) {
-						loadData(0);
-					}
+		mScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
+			@Override
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+				loadData(0);
+			}
 
-					@Override
-					public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-						loadData(1);
-					}
-				});
+			@Override
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+				loadData(1);
+			}
+		});
 
 	}
 
@@ -175,8 +165,7 @@ public class ContentDataActivity extends BaseActivity {
 		@Override
 		public void responseResult(String jsonObject) {
 			@SuppressWarnings("static-access")
-			HomeJson json = new HomeJson().readJsonToSendmsgObject(
-					ContentDataActivity.this, jsonObject);
+			HomeJson json = new HomeJson().readJsonToSendmsgObject(ContentDataActivity.this, jsonObject);
 			if (json != null) {
 				homeEntity = json.getAl().get(0);
 				setData(json.getAl().get(0));
@@ -203,8 +192,8 @@ public class ContentDataActivity extends BaseActivity {
 		}
 		if (intent.getIntExtra("TYPE", -1) == 0) {
 			String ToUserId = intent.getStringExtra("ToUserId");
-			new RequestTask(this, listener, false, true, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-					.GetIDArticle(ToUserId));
+			new RequestTask(this, listener, false, true, "").executeOnExecutor(Executors.newCachedThreadPool(),
+					Httpurl.GetIDArticle(ToUserId));
 		} else {
 			homeEntity = intent.getParcelableExtra("HomeEntity");
 			setData(homeEntity);
@@ -212,35 +201,30 @@ public class ContentDataActivity extends BaseActivity {
 
 	}
 
+	@SuppressWarnings("static-access")
 	private void setData(HomeEntity homeEntity) {
 
-		if (!TextUtils.isEmpty(homeEntity.getUserInfoPicUrl())
-				&& !homeEntity.getNickname().equals("匿名")) {
-			ImageUtils.loadImage1(this, homeEntity.getUserInfoPicUrl(),
-					mIm_Pic, R.drawable.ic_my_nolog_selector,
+		if (!TextUtils.isEmpty(homeEntity.getUserInfoPicUrl()) && !homeEntity.getNickname().equals("匿名")) {
+			ImageUtils.loadImage1(this, homeEntity.getUserInfoPicUrl(), mIm_Pic, R.drawable.ic_my_nolog_selector,
 					R.drawable.ic_my_nolog_selector, GlobalVariable.WifiDown);
 		}
 		mTx_Name.setText(homeEntity.getNickname());
 		// Html解析
-		mTx_Content.setText(Html.fromHtml(homeEntity.getContent(),
-				new URLImageParser(this, mTx_Content), null));
+		mTx_Content.setText(Html.fromHtml(homeEntity.getContent(), new URLImageParser(this, mTx_Content), null));
 		// mTx_Content.setText(homeEntity.getContent());
 		mTx_FunnyNum.setText(homeEntity.getPraises() + "好文");
 		mTx_CommentNum.setText(homeEntity.getReviews() + "评论");
-		tv_addtime.setText(Time.handTime(homeEntity.getAddTime(),
-				"yyyy/MM/dd HH:mm:ss"));
+		tv_addtime.setText(Time.handTime(homeEntity.getAddTime(), "yyyy/MM/dd HH:mm:ss"));
 		if (!TextUtils.isEmpty(homeEntity.getPicUrl())) {
 			String[] images = homeEntity.getPicUrl().split(",");
 			asList = Arrays.asList(images);
-			HomeimagegridviewAdapter adapter = new HomeimagegridviewAdapter(
-					mApplication, this, asList);
+			HomeimagegridviewAdapter adapter = new HomeimagegridviewAdapter(mApplication, this, asList);
 			mImageGR.setAdapter(adapter);
 			mImageGR.setVisibility(View.VISIBLE);
 		}
 		if (!TextUtils.isEmpty(homeEntity.getVideoUrl())) {
 			layout_video.setVisibility(View.VISIBLE);
-			videoPay = new VideoPay(this, video, homeEntity.getVideoUrl(),
-					videolistener);
+			videoPay = new VideoPay(this, video, homeEntity.getVideoUrl(), videolistener);
 		} else {
 			layout_video.setVisibility(View.GONE);
 		}
@@ -250,13 +234,11 @@ public class ContentDataActivity extends BaseActivity {
 		mListView.addHeaderView(mHeadLyout);
 		mListView.setAdapter(contentadapter);
 		setRefrsh();
-
 		setRidio();
-		new ImageUtils().loadImage3(this,
-				homeEntity.getVideoThumbnailsPicUrl(), video_image, false);
+		new ImageUtils().loadImage3(this, homeEntity.getVideoThumbnailsPicUrl(), video_image, false);
 		mScrollView.setMode(Mode.BOTH);
-		new RequestTask(this, contentlistener, false, false, "拼命加载中...")
-				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Contenturl(homeEntity.getID(), "1"));
+		new RequestTask(this, contentlistener, false, false, "拼命加载中").executeOnExecutor(Executors.newCachedThreadPool(),
+				Httpurl.Contenturl(homeEntity.getID(), "1"));
 	}
 
 	// 好文不好文判定
@@ -330,8 +312,7 @@ public class ContentDataActivity extends BaseActivity {
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", homeEntity.getNickname());
 			bundle.putString("Content", homeEntity.getContent());
-			bundle.putString("shareURL", "http://tmssh.conitm.com/share-"
-					+ homeEntity.getID() + ".html");
+			bundle.putString("shareURL", "http://tmssh.conitm.com/share-" + homeEntity.getID() + ".html");
 			bundle.putString("imageurl", homeEntity.getUserInfoPicUrl());
 			startActivityForResult(ShareActivity.class, bundle, 10001);
 			// context.startActivity(new Intent(context,ShareActivity.class));
@@ -348,15 +329,14 @@ public class ContentDataActivity extends BaseActivity {
 				return;
 			}
 			isoperation = true;
-			new RequestTask(this, ReturnAL.ContentMap(homeEntity.getID(),
-					content), Commentlistener, false, true, "发表中...")
+			new RequestTask(this, ReturnAL.ContentMap(homeEntity.getID(), content), Commentlistener, false, true, "发表中")
 					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 			break;
 		case R.id.radio_favour:// 好文
 			// if (isstr!=1) {
 			isstr = 1;
-			new RequestTask(this, Favourlistener, false, true, "打赏中...")
-					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsSmile(homeEntity.getID(), "1"));
+			new RequestTask(this, Favourlistener, false, true, "打赏中").executeOnExecutor(Executors.newCachedThreadPool(),
+					Httpurl.IsSmile(homeEntity.getID(), "1"));
 			isoperation = true;
 			// }else{
 			// ToastUtil.showToast(this, "您已经打赏");
@@ -365,8 +345,8 @@ public class ContentDataActivity extends BaseActivity {
 		case R.id.radio_disapprove:// 不好文
 			// if (isstr!=0) {
 			isstr = 0;
-			new RequestTask(this, Favourlistener, false, true, "打赏中...")
-					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.IsSmile(homeEntity.getID(), "0"));
+			new RequestTask(this, Favourlistener, false, true, "打赏中").executeOnExecutor(Executors.newCachedThreadPool(),
+					Httpurl.IsSmile(homeEntity.getID(), "0"));
 			isoperation = true;
 			// }else{
 			// ToastUtil.showToast(this, "您已经打赏");
@@ -399,22 +379,19 @@ public class ContentDataActivity extends BaseActivity {
 
 		@Override
 		public void responseResult(String jsonObject) {
-			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(
-					ContentDataActivity.this, jsonObject);
+			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(ContentDataActivity.this, jsonObject);
 			if (publicUpJson == null) {
 				setRidio();
 				return;
 			}
 			if (publicUpJson.getAl().get(0).getStatus().equals("1")) {
-				homeEntity.setReviews(CommonAPI.toInteger(homeEntity
-						.getReviews()) + 1 + "");
+				homeEntity.setReviews(CommonAPI.toInteger(homeEntity.getReviews()) + 1 + "");
 				mTx_CommentNum.setText(homeEntity.getReviews() + "评论");
 				mEd_Comment.setText("");
 				mLa_CommentEdit.setVisibility(View.GONE);
 				isComment = true;
-				new RequestTask(ContentDataActivity.this, contentlistener,
-						false, false, "拼命加载中...").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Contenturl(
-						homeEntity.getID(), "1"));
+				new RequestTask(ContentDataActivity.this, contentlistener, false, false, "拼命加载中").executeOnExecutor(
+						Executors.newCachedThreadPool(), Httpurl.Contenturl(homeEntity.getID(), "1"));
 			}
 			showShortToast(publicUpJson.getAl().get(0).getMessage());
 		}
@@ -422,25 +399,22 @@ public class ContentDataActivity extends BaseActivity {
 		@Override
 		public void responseException(String errorMessage) {
 			setRidio();
-			showMessage(errorMessage);
+			showShortToast(errorMessage);
 		}
 	};
 	RequestListener contentlistener = new RequestListener() {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-			HomeJson homeJson = HomeJson.readJsonToSendmsgObject(
-					ContentDataActivity.this, jsonObject);
+			HomeJson homeJson = HomeJson.readJsonToSendmsgObject(ContentDataActivity.this, jsonObject);
 			if (homeJson == null) {
 				isrequest = true;
 				stoprequest();
 				return;
 			}
 			if (page != 1 && !isComment) {
-				homeJson.getAl().addAll(
-						0,
-						(Collection<? extends HomeEntity>) contentadapter
-								.getDatas());
+				homeJson.getAl().addAll(0, (Collection<? extends HomeEntity>) contentadapter.getDatas());
 			}
 			isComment = false;
 			contentadapter.setmDatas(homeJson.getAl());
@@ -460,8 +434,7 @@ public class ContentDataActivity extends BaseActivity {
 
 		@Override
 		public void responseResult(String jsonObject) {
-			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(
-					ContentDataActivity.this, jsonObject);
+			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(ContentDataActivity.this, jsonObject);
 			if (publicUpJson == null) {
 				// isstr=-1;
 				setRidio();
@@ -469,26 +442,24 @@ public class ContentDataActivity extends BaseActivity {
 			}
 			PublicEntity publicEntity = publicUpJson.getAl().get(0);
 			if (publicEntity.getStatus().equals("1")) {
-				ToastUtil.showToast(ContentDataActivity.this, "谢谢客官打赏...");
+				ToastUtil.showToast(ContentDataActivity.this, "谢谢客官打赏");
 				if (isstr == 1) {
 					homeEntity.setPraise("1");
-					homeEntity.setPraises(Integer.valueOf(homeEntity
-							.getPraises().toString()) + 1 + "");
-					mTx_FunnyNum.setText(homeEntity.getPraises());
+					homeEntity.setPraises(Integer.valueOf(homeEntity.getPraises().toString()) + 1 + "");
+					mTx_FunnyNum.setText(homeEntity.getPraises() + "好文");
 
 				} else if (isstr == 0) {
 					homeEntity.setPraise("0");
-					Integer valueOf = Integer.valueOf(homeEntity.getPraises()
-							.toString());
+					Integer valueOf = Integer.valueOf(homeEntity.getPraises().toString());
 					if (valueOf > 0) {
 						valueOf = valueOf - 1;
 					}
 					homeEntity.setPraises(valueOf + "");
-					mTx_FunnyNum.setText(homeEntity.getPraises());
+					mTx_FunnyNum.setText(homeEntity.getPraises() + "好文");
 				}
 
 			} else {
-				ToastUtil.showToast(ContentDataActivity.this, "打赏失败...");
+				ToastUtil.showToast(ContentDataActivity.this, "打赏失败");
 			}
 			// isstr=-1;
 		}
@@ -502,13 +473,15 @@ public class ContentDataActivity extends BaseActivity {
 	};
 
 	public void setRefrsh() {
-		new Handler().postDelayed(new Runnable() {
+		new RequestTask(ContentDataActivity.this, contentlistener, false, true, "加载评论")
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Contenturl(homeEntity.getID(), page + ""));
 
-			@Override
-			public void run() {
-				mScrollView.setRefreshing(true);
-			}
-		}, 500);
+		// new Handler().postDelayed(new Runnable() {
+		// @Override
+		// public void run() {
+		// mScrollView.setRefreshing(true);
+		// }
+		// }, 500);
 	}
 
 	private Handler mHandler = new Handler() {
@@ -551,15 +524,13 @@ public class ContentDataActivity extends BaseActivity {
 				switch (type) {
 				case 0:
 					page = 1;
-					new RequestTask(ContentDataActivity.this, contentlistener,
-							false, false, "拼命加载中...").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-							.Contenturl(homeEntity.getID(), page + ""));
+					new RequestTask(ContentDataActivity.this, contentlistener, false, false, "拼命加载中").executeOnExecutor(
+							Executors.newCachedThreadPool(), Httpurl.Contenturl(homeEntity.getID(), page + ""));
 					break;
 				case 1:
 					page++;
-					new RequestTask(ContentDataActivity.this, contentlistener,
-							false, false, "拼命加载中...").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-							.Contenturl(homeEntity.getID(), page + ""));
+					new RequestTask(ContentDataActivity.this, contentlistener, false, false, "拼命加载中").executeOnExecutor(
+							Executors.newCachedThreadPool(), Httpurl.Contenturl(homeEntity.getID(), page + ""));
 					break;
 				}
 				try {

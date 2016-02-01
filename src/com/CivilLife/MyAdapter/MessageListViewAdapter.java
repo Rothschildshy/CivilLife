@@ -27,7 +27,7 @@ import android.widget.TextView;
 public class MessageListViewAdapter extends BaseListAdapter implements OnClickListener{
 	protected static final Context Tab_Message = null;
 	private Context context;
-	private com.CivilLife.Fragment.Tab_Message mess;
+	private Tab_Message mess;
 
 	public MessageListViewAdapter(BaseApplication application, Context context, List<? extends Object> datas,Tab_Message mess) {
 		super(application, context, datas);

@@ -44,7 +44,6 @@ public class ImagePagerActivity extends FragmentActivity {
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
 		ArrayList<String>  list= getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
 
-
 		mPager = (HackyViewPager) findViewById(R.id.pager);
 		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
 				getSupportFragmentManager(), list);

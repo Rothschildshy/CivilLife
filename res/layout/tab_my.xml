@@ -127,7 +127,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/ImageView32"
                     android:layout_toRightOf="@+id/image_pci"
-                    android:text="@string/app_name_zh"
+                    android:text="@string/app_name"
                     android:textColor="@color/layout_typeface_sele"
                     android:textSize="18.0dip" />
             </RelativeLayout>

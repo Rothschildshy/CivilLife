@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -30,22 +32,226 @@
             android:id="@+id/image_compile"
             android:layout_width="36.0dip"
             android:layout_height="36.0dip"
-            android:padding="9dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:layout_toLeftOf="@+id/image_del"
+            android:padding="9dp"
             android:src="@drawable/icon_edit2" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12.0dip"
+        android:visibility="gone" >
+
+        <com.CivilLife.Widget.CircleImageView
+            android:id="@+id/image_pic"
+            android:layout_width="48.0dip"
+            android:layout_height="48.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="12.0dip"
+            android:src="@drawable/ic_my_nolog_selector" />
+
+        <TextView
+            android:id="@+id/tx_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/image_pic"
+            android:maxLength="18"
+            android:text="@string/app_name"
+            android:textColor="@color/login_sele_weixin"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tx_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12.0dip"
+            android:text="@string/home_item_hot"
+            android:textColor="@color/color_typeface_gray"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/image_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tx_hot"
+            android:src="@drawable/ic_rss_hot"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tx_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10.0dip"
-        android:paddingRight="10.0dip"
-        android:textSize="16.0sp"
-        android:text="高中班上一个彪悍的女生，标准的五大三粗，她是班委，负责班上的纪律，有天晚自习全班都再讲话，很闹腾，她火了，站起来一拍桌子大喊：谁再讲话谁就是我男朋友，真的只有一秒，全班男生屁都不敢放一个，留下女生们笑抽..."
-        android:textColor="@color/color_typeface_gray"
-        android:layout_marginBottom="6.0dip" />
+        android:ellipsize="end"
+        android:lineSpacingExtra="6dp"
+        android:maxLines="5"
+        android:padding="12.0dip"
+        android:text="文章内容"
+        android:textColor="@color/color_typeface_gray1"
+        android:textSize="18sp" />
+
+    <com.CivilLife.Widget.GridForScrollView
+        android:id="@+id/image_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12.0dip"
+        android:horizontalSpacing="9dp"
+        android:numColumns="4"
+        android:verticalSpacing="9dp"
+        android:visibility="gone" >
+    </com.CivilLife.Widget.GridForScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layout_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12.0dip"
+        android:background="#343434"
+        android:gravity="center"
+        android:padding="3dp" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:background="#000000"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <VideoView
+                android:id="@+id/videoView1"
+                android:layout_width="fill_parent"
+                android:layout_height="270dp"
+                android:layout_centerInParent="true"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp" />
+
+            <ImageView
+                android:id="@+id/video_image"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="15dp"
+                android:scaleType="fitXY"
+                android:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/pb_waiting"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/image_play"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true"
+                android:background="#00ffffff"
+                android:padding="12dp"
+                android:src="@drawable/ic_video_play_sele" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12.0dip" >
+
+        <TextView
+            android:id="@+id/tx_funny_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2.0dip"
+            android:text="1314好文"
+            android:textColor="@color/color_typeface_gray" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="•"
+            android:textColor="@color/color_typeface_gray" />
+
+        <TextView
+            android:id="@+id/tx_comment_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2.0dip"
+            android:text="121评论"
+            android:textColor="@color/color_typeface_gray" />
+
+        <TextView
+            android:id="@+id/tv_addtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.93"
+            android:gravity="right"
+            android:text="0秒前"
+            android:textColor="@color/color_typeface_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <!--
+             <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        -->
+
+        <RadioButton
+            android:id="@+id/radio_favour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_favour_selector" />
+
+        <RadioButton
+            android:id="@+id/radio_disapprove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_disapprove_selector" />
+        <!-- </RadioGroup> -->
+
+        <ImageView
+            android:id="@+id/image_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_selector" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/image_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_share_selector" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="1.0dip"
+        android:src="@color/activity_back_color" />
 
 </LinearLayout>

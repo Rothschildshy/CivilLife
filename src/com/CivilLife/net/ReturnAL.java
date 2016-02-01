@@ -64,11 +64,14 @@ public final class ReturnAL {
 
 	// 发表文章
 	/**
-	 * 匿名：Anonymous（0=不选 1=选中） 文字内容：Content 图片地址：PicUrl 视频地址：VideoUrl
-	 * 发布栏目ID：ArticleClassNameID（无子栏目直接取父级栏目ID，有子栏目的取子栏目ID） 当前用户定位经纬度XY坐标：X坐标：X
-	 * Y坐标：Y(这里经纬度XY是单独分开存的，用于每个栏目按附近人发布的文章排序) 隐藏Input名称：Action
-	 * 值：Article_Release 发送和保存草稿（发送需要加隐藏Input名称：mod值为空，保存草稿需要加隐藏Input名称：mod
-	 * 值：SaveDraft））
+	 * 匿名：Anonymous（0=不选 1=选中） 
+	 * 文字内容：Content 
+	 * 图片地址：PicUrl 
+	 * 视频地址：VideoUrl
+	 * 发布栏目ID：ArticleClassNameID（无子栏目直接取父级栏目ID，有子栏目的取子栏目ID） 
+	 * 当前用户定位经纬度XY坐标：X坐标：X Y坐标：Y(这里经纬度XY是单独分开存的，用于每个栏目按附近人发布的文章排序) 
+	 * 隐藏Input名称：Action值：Article_Release 
+	 * 发送和保存草稿（发送需要加隐藏Input名称：mod值为空，保存草稿需要加隐藏Input名称：mod值：SaveDraft））
 	 **/
 	public static ArrayList<BasicNameValuePair> PublishedArticles(boolean anonymous, String content, String PicUrl,
 			String VideoUrl, String ArticleClassNameID, String mod,String imageUrl,int TYPE,String id) {
@@ -95,10 +98,10 @@ public final class ReturnAL {
 
 		al.add(new BasicNameValuePair("x", GlobalVariable.mycoordinates_x));
 		al.add(new BasicNameValuePair("y", GlobalVariable.mycoordinates_y));  
-		if (TYPE==2) {
+		if (TYPE==2) {//管理我的文字
 			al.add(new BasicNameValuePair("Action", "uiam"));
 			al.add(new BasicNameValuePair("ID", id));
-		}else{
+		}else{//正常发布
 			al.add(new BasicNameValuePair("Action", "Article_Release"));
 		}
 		al.add(new BasicNameValuePair("mod", mod));
