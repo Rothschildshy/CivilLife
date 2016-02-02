@@ -19,6 +19,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
 import com.baoyz.widget.PullRefreshLayout;
 import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
@@ -44,8 +45,7 @@ import android.widget.TextView;
  * @author mac
  * 
  */
-public class MyFriendActivity extends BaseActivity implements
-		XOnRefreshListener {
+public class MyFriendActivity extends BaseActivity implements XOnRefreshListener {
 	private MyFriendListViewAdapter mAdapter;
 	private TextView mTx_Title;
 
@@ -58,6 +58,11 @@ public class MyFriendActivity extends BaseActivity implements
 	private boolean istotime = false;// 请求时间是否结束
 	private String Message;
 	private String DelMessage;
+	private int Type;
+	private RelativeLayout mLayout_Hint;
+	private LinearLayout mLayout_DataNull;
+	private LinearLayout mLayout_NetworkError;
+	private Button mBtn_Refresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +111,7 @@ public class MyFriendActivity extends BaseActivity implements
 		}
 
 		// 先设置颜色在设置风格，颜色固定4个，否则异常
-		mLayout.setColorSchemeColors(new int[] { Color.RED, Color.BLUE,
-				Color.YELLOW, Color.GREEN });
+		mLayout.setColorSchemeColors(new int[] { Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN });
 		mLayout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);
 		mAdapter = new MyFriendListViewAdapter(mApplication, this, null, Type);
 		mListView.setAdapter(mAdapter);
@@ -117,9 +121,17 @@ public class MyFriendActivity extends BaseActivity implements
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Intent intent = new Intent(MyFriendActivity.this, InfoHomepageActivity.class);
+				MyFriendEntity friendEntity = (MyFriendEntity) mAdapter.getItem(arg2);
+				intent.putExtra("type", 5);
+				intent.putExtra("username", friendEntity.getNickname());
+				if (Type == 1) {
+					intent.putExtra("userid", friendEntity.getUserFriendsID());
+				} else {
+					intent.putExtra("userid", friendEntity.getUserID());
+				}
+				startActivity(intent);
 			}
 		});
 		// 下拉布局刷新监听
@@ -134,15 +146,13 @@ public class MyFriendActivity extends BaseActivity implements
 		// step 2. listener item click event
 		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
-			public void onMenuItemClick(final int position, SwipeMenu menu,
-					int index) {
+			public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
 
 				mHandler.post(new Runnable() {
 
 					@Override
 					public void run() {
-						MyFriendEntity info = (MyFriendEntity) mAdapter
-								.getDatas().get(position);
+						MyFriendEntity info = (MyFriendEntity) mAdapter.getDatas().get(position);
 						String id = info.getID();
 						// delete
 						delete(id);
@@ -159,11 +169,9 @@ public class MyFriendActivity extends BaseActivity implements
 			@Override
 			public void create(SwipeMenu menu) {
 				// create "delete" item
-				SwipeMenuItem deleteItem = new SwipeMenuItem(
-						getApplicationContext());
+				SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-						0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -183,18 +191,6 @@ public class MyFriendActivity extends BaseActivity implements
 				loadData(0);
 			}
 		});
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Intent intent = new Intent(MyFriendActivity.this, InfoHomepageActivity.class);
-				MyFriendEntity friendEntity=(MyFriendEntity) mAdapter.getItem(arg2);
-				intent.putExtra("type", 5);
-				intent.putExtra("username", friendEntity.getNickname());
-				intent.putExtra("userid", friendEntity.getUserFriendsID());
-				startActivity(intent);
-			}	
-		});
 	}
 
 	@Override
@@ -209,7 +205,6 @@ public class MyFriendActivity extends BaseActivity implements
 			page = 1;
 			mLayout.setRefreshing(true);
 			loadData(0);
-
 			break;
 		default:
 			break;
@@ -221,24 +216,23 @@ public class MyFriendActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(View v) {
-				new RequestTask(MyFriendActivity.this, DELlistener, false,
-						true, DelMessage).executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelFriend(Type, id));
+				new RequestTask(MyFriendActivity.this, DELlistener, false, true, DelMessage)
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.DelFriend(Type, id));
 			}
 		});
 	}
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-				getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 
 	// 获取好友列表
 	RequestListener listener = new RequestListener() {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-			MyFriendJson Myjson = MyFriendJson.readJsonToSendmsgObject(
-					MyFriendActivity.this, jsonObject);
+			MyFriendJson Myjson = MyFriendJson.readJsonToSendmsgObject(MyFriendActivity.this, jsonObject);
 			if (Myjson == null) {
 				isrequest = true;
 				stoprequest();
@@ -253,10 +247,7 @@ public class MyFriendActivity extends BaseActivity implements
 				return;
 			}
 			if (page != 1) {
-				Myjson.getAl().addAll(
-						0,
-						(Collection<? extends MyFriendEntity>) mAdapter
-								.getDatas());
+				Myjson.getAl().addAll(0, (Collection<? extends MyFriendEntity>) mAdapter.getDatas());
 			}
 			if (page == 1 && Myjson.getAl().size() > 9) {
 				// 当第一页数据超过九条的时候设置可上拉加载
@@ -292,8 +283,7 @@ public class MyFriendActivity extends BaseActivity implements
 
 		@Override
 		public void responseResult(String jsonObject) {
-			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(
-					MyFriendActivity.this, jsonObject);
+			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(MyFriendActivity.this, jsonObject);
 			if (publicjson == null) {
 				return;
 			}
@@ -327,16 +317,14 @@ public class MyFriendActivity extends BaseActivity implements
 				switch (type) {
 				case 0:
 					page = 1;
-					new RequestTask(MyFriendActivity.this, listener, false,
-							false, Message).executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.FriendList(Type,
-							page));
+					new RequestTask(MyFriendActivity.this, listener, false, false, Message)
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.FriendList(Type, page));
 
 					break;
 				case 1:
 					page++;
-					new RequestTask(MyFriendActivity.this, listener, false,
-							false, Message).executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.FriendList(Type,
-							page));
+					new RequestTask(MyFriendActivity.this, listener, false, false, Message)
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.FriendList(Type, page));
 					break;
 				}
 				try {
@@ -369,16 +357,25 @@ public class MyFriendActivity extends BaseActivity implements
 			}
 		};
 	};
-	private int Type;
-	private RelativeLayout mLayout_Hint;
-	private LinearLayout mLayout_DataNull;
-	private LinearLayout mLayout_NetworkError;
-	private Button mBtn_Refresh;
 
 	public void stoprequest() {
 		if (isrequest && istotime) {
 			Message _Msg = mHandler.obtainMessage(REFRESH_DATA_FINISH);
 			mHandler.sendMessage(_Msg);
 		}
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

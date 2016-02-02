@@ -14,6 +14,7 @@ import com.CivilLife.net.RequestTask;
 import com.handmark.pulltorefresh.extras.viewpager.PullToRefreshViewPager;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
@@ -40,10 +41,6 @@ public class InfoHomepageActivity extends BaseActivity {
 	private static final int REFRESH_DATA_FINISH = 11;
 	// 页数
 	private int page = 1;
-	// 请求地址
-	@SuppressWarnings("unused")
-	private String str;
-
 	private boolean isrequest = false;// 请求时否完成
 	private boolean istotime = false;// 请求时间是否结束
 	private String userid = "";
@@ -54,6 +51,10 @@ public class InfoHomepageActivity extends BaseActivity {
 	private Button mBtn_Refresh;
 
 	private boolean Master_Apprentice = false;// 是否是师徒
+	private int LeftOrRight = 0;
+	private int Type;
+	private Message _Msg;
+	private MyAdpter myAdpter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,32 +87,28 @@ public class InfoHomepageActivity extends BaseActivity {
 		myAdpter = new MyAdpter(fm, this, null);
 		vp.setAdapter(myAdpter);
 
-		mViewPager
-				.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
+		mViewPager.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
 
-					@Override
-					public void onPullDownToRefresh(
-							PullToRefreshBase refreshView) {
-						LeftOrRight = 0;
-						loadData(LeftOrRight);
-					}
+			@Override
+			public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+				LeftOrRight = 0;
+				loadData(LeftOrRight);
+			}
 
-					@Override
-					public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-						LeftOrRight = 1;
-						loadData(LeftOrRight);
-					}
-				});
+			@Override
+			public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+				LeftOrRight = 1;
+				loadData(LeftOrRight);
+			}
+		});
 	}
-
-	private int LeftOrRight = 0;
 
 	@Override
 	protected void init() {
 		Intent intent = getIntent();
 		Type = intent.getIntExtra("type", 0);
 		if (Type == 1) {// 拜师
-			Master_Apprentice=true;
+			Master_Apprentice = true;
 			mTx_Title.setText(R.string.discover_overman);
 		} else if (Type == 2) {// 附近
 			mTx_Title.setText(R.string.discover_nearby);
@@ -129,13 +126,11 @@ public class InfoHomepageActivity extends BaseActivity {
 			mTx_Title.setText("搜索筑友:" + userid);
 		} else if (Type == 7) {// 搜索师傅
 			userid = intent.getStringExtra("content");
-			Master_Apprentice=true;
+			Master_Apprentice = true;
 			mTx_Title.setText("搜索师傅:" + userid);
 		}
-		// loadData(0);// 默认请求第一页数据
-
-		new RequestTask(InfoHomepageActivity.this, listlistener, false, true,
-				"加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
+		new RequestTask(InfoHomepageActivity.this, listlistener, false, true, "加载内容")
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
 	}
 
 	@Override
@@ -149,8 +144,8 @@ public class InfoHomepageActivity extends BaseActivity {
 			mViewPager.setVisibility(View.VISIBLE);
 
 			// loadData(0);// 默认请求第一页数据
-			new RequestTask(InfoHomepageActivity.this, listlistener, false,
-					true, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
+			new RequestTask(InfoHomepageActivity.this, listlistener, false, true, "加载内容")
+					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
 
 			break;
 		default:
@@ -165,15 +160,13 @@ public class InfoHomepageActivity extends BaseActivity {
 				switch (type) {
 				case 0:
 					page = 1;
-					new RequestTask(InfoHomepageActivity.this, listlistener,
-							false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(
-							Type, page, userid));
+					new RequestTask(InfoHomepageActivity.this, listlistener, false, false, "加载内容")
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
 					break;
 				case 1:
 					page++;
-					new RequestTask(InfoHomepageActivity.this, listlistener,
-							false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(
-							Type, page, userid));
+					new RequestTask(InfoHomepageActivity.this, listlistener, false, false, "加载内容")
+							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown(Type, page, userid));
 					break;
 				}
 				try {
@@ -205,7 +198,6 @@ public class InfoHomepageActivity extends BaseActivity {
 			isrequest = false;
 		};
 	};
-	private int Type;
 
 	public void stoprequest(int type2) {
 		if (isrequest && istotime) {
@@ -224,8 +216,7 @@ public class InfoHomepageActivity extends BaseActivity {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-			InfoHomeJson homeJson = InfoHomeJson.readJsonToSendmsgObject(
-					InfoHomepageActivity.this, jsonObject);
+			InfoHomeJson homeJson = InfoHomeJson.readJsonToSendmsgObject(InfoHomepageActivity.this, jsonObject);
 			if (homeJson == null) {
 				isrequest = true;
 				stoprequest(LeftOrRight);
@@ -240,9 +231,7 @@ public class InfoHomepageActivity extends BaseActivity {
 				return;
 			}
 			if (page != 1) {
-				homeJson.getAl().addAll(0,
-						(Collection<? extends InfoHomeEntity>) myAdpter
-								.getDatas());
+				homeJson.getAl().addAll(0, (Collection<? extends InfoHomeEntity>) myAdpter.getDatas());
 			}
 
 			mLayout_Hint.setVisibility(View.GONE);
@@ -268,22 +257,32 @@ public class InfoHomepageActivity extends BaseActivity {
 			mViewPager.setVisibility(View.GONE);
 		}
 	};
-	private Message _Msg;
-	private MyAdpter myAdpter;
 
 	// 一级 viewpager 适配器
 	class MyAdpter extends BaseViewPageAdapter {
 
-		public MyAdpter(FragmentManager fm, Context context,
-				List<? extends Object> datas) {
+		public MyAdpter(FragmentManager fm, Context context, List<? extends Object> datas) {
 			super(fm, context, datas);
 		}
 
 		@Override
 		public android.support.v4.app.Fragment getItem(int position) {
-			InfoHomeEntity info = (InfoHomeEntity) myAdpter.getDatas().get(
-					position);
-			return new MyInFo_Fragment(info,Master_Apprentice);
+			InfoHomeEntity info = (InfoHomeEntity) myAdpter.getDatas().get(position);
+			return new MyInFo_Fragment(info, Master_Apprentice);
 		}
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

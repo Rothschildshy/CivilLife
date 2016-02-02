@@ -31,6 +31,7 @@ import com.king.photo.activity.ImageItem;
 import com.king.photo.activity.PublicWay;
 import com.king.photo.activity.Res;
 import com.king.photo.zoom.FileUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.yixia.camera.demo.service.MediaRecorderActivity;
 
 import Downloadimage.ImageUtils;
@@ -112,6 +113,18 @@ public class PublishActivity extends BaseActivity {
 	private boolean isupvoideimage = true;// 视频缩略图上传 是否成功
 	private boolean isupvoide = false;// 视频上传 是否成功
 	private String upvoideimageurl;// 视频缩略图地址
+	private String path = "";// 上传路径
+	private int pathnum = 0;
+	private ImageView mcamera;
+	private ImageView mphoto;
+	private VideoPay videoPay;
+	private RelativeLayout layout_video;
+	private ArrayAdapter<String> arr_adapter2;
+	private ProgressBar pb_waiting;
+	private String videopath;
+	private ImageView video_image;
+	private TextView mTx_save;
+	private String iD;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -548,9 +561,6 @@ public class PublishActivity extends BaseActivity {
 		}
 	}
 
-	private String path = "";// 上传路径
-	private int pathnum = 0;
-
 	/** 视频缩略图 上传文件回调 **/
 	RequestListener uplelistener1 = new RequestListener() {
 
@@ -754,10 +764,6 @@ public class PublishActivity extends BaseActivity {
 			showMessage(errorMessage);
 		}
 	};
-	private ImageView mcamera;
-	private ImageView mphoto;
-	private VideoPay videoPay;
-	private RelativeLayout layout_video;
 
 	private void TackType() {
 		// 适配器
@@ -988,11 +994,17 @@ public class PublishActivity extends BaseActivity {
 		};
 	};
 
-	private ArrayAdapter<String> arr_adapter2;
-	private ProgressBar pb_waiting;
-	private String videopath;
-	private ImageView video_image;
-	private TextView mTx_save;
-	private String iD;
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
 
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

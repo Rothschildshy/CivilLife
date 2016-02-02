@@ -16,9 +16,11 @@ import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
 import com.app.civillife.R;
+import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -28,7 +30,6 @@ import com.umeng.socialize.exception.SocializeException;
 import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
-import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import Requset_getORpost.RequestListener;
@@ -54,7 +55,6 @@ public class LoginActivity extends BaseActivity {
 	private UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 	private int code;
 	private int mold;
-	private String Name;
 	private String profile_image_url;
 	private EditText mEd_User;
 	private EditText mEd_PassWd;
@@ -62,6 +62,8 @@ public class LoginActivity extends BaseActivity {
 	private String userNameMD5;
 	private String nickName;
 	private String userPassWord;
+	private TextView mTx_Register;
+	private TextView mTx_Forgetpw;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +154,7 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == event.KEYCODE_BACK) {
@@ -212,8 +215,6 @@ public class LoginActivity extends BaseActivity {
 			showShortToast(errorMessage);
 		}
 	};
-	private TextView mTx_Register;
-	private TextView mTx_Forgetpw;
 
 	private void LoginSucceed() {
 		// 缓存用户信息
@@ -289,7 +290,7 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onComplete(int status, Map<String, Object> info) {
 				if (info != null) {
-					// Qlog.e("", "回调信息：" + info.toString());
+					Qlog.e("", "回调信息：" + info.toString());
 					String access_token = null;
 					switch (mold) {
 					case 0:// WeiXin的token
@@ -327,8 +328,6 @@ public class LoginActivity extends BaseActivity {
 	// 第三方授权登陆回调
 	private void getHttpUtils(String access_token, int Type, String nickName) {
 		new RequestTask(this, new RequestListener() {
-			private String message;
-
 			@Override
 			public void responseResult(String jsonObject) {
 				try {
@@ -384,4 +383,17 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

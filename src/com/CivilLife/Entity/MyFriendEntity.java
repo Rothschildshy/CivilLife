@@ -15,6 +15,7 @@ import android.text.TextUtils;
 public class MyFriendEntity extends BaseEntity {
 	public String ID;
 	public String UserFriendsID;
+	public String UserID;
 	public String AID;
 	public String MasterID;
 	public String PicUrl;
@@ -97,7 +98,13 @@ public class MyFriendEntity extends BaseEntity {
 	public void setBirthday(String birthday) {
 		Birthday = birthday;
 	}
-	
-	
-	
+
+	public String getUserID() {
+		return UserID;
+	}
+
+	public void setUserID(String userID) {
+		UserID = userID;
+	}
+
 }

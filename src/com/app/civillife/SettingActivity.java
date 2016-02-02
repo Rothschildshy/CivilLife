@@ -2,6 +2,19 @@ package com.app.civillife;
 
 import java.util.List;
 
+import com.CivilLife.Base.BaseActivity;
+import com.CivilLife.Variable.GlobalVariable;
+import com.MyView.Widget.PrDialog;
+import com.MyView.Widget.SwitchView;
+import com.MyView.Widget.SwitchView.OnStateChangedListener;
+import com.aysy_mytool.CleanManager;
+import com.aysy_mytool.GetAppVersion;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -12,20 +25,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.CivilLife.Base.BaseActivity;
-import com.CivilLife.Variable.GlobalVariable;
-import com.MyView.Widget.PrDialog;
-import com.MyView.Widget.SwitchView;
-import com.MyView.Widget.SwitchView.OnStateChangedListener;
-import com.aysy_mytool.CleanManager;
-import com.aysy_mytool.GetAppVersion;
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
-
 /**
- * 设置界面  我再修改一次
+ * 设置界面 
  * 
  * @author Administrator
  * 
@@ -36,6 +37,7 @@ public class SettingActivity extends BaseActivity {
 	private String totalCacheSize;
 	private SwitchView mSB_Gain;
 	private SwitchView mSB_Notice;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,15 +92,15 @@ public class SettingActivity extends BaseActivity {
 		mSB_Gain.setOnStateChangedListener(new OnStateChangedListener() {
 			@Override
 			public void toggleToOn() {
-				GlobalVariable.WifiDown=true;
+				GlobalVariable.WifiDown = true;
 				mSB_Gain.toggleSwitch(true); // 以动画效果切换到打开的状态
 				showShortToast("打开模式");
-				
+
 			}
 
 			@Override
 			public void toggleToOff() {
-				GlobalVariable.WifiDown=false;
+				GlobalVariable.WifiDown = false;
 				// 原本为打开的状态，被点击后
 				mSB_Gain.toggleSwitch(false);
 				showShortToast("关闭模式");
@@ -113,19 +115,19 @@ public class SettingActivity extends BaseActivity {
 		mSB_Notice.setOnStateChangedListener(new OnStateChangedListener() {
 			@Override
 			public void toggleToOn() {
-				GlobalVariable.push=true;
+				GlobalVariable.push = true;
 				mSB_Notice.toggleSwitch(true); // 以动画效果切换到打开的状态
 				showShortToast("打开推送");
-				
+
 			}
-			
+
 			@Override
 			public void toggleToOff() {
-				GlobalVariable.push=false;
+				GlobalVariable.push = false;
 				// 原本为打开的状态，被点击后
 				mSB_Notice.toggleSwitch(false);
 				showShortToast("关闭推送");
-				
+
 			}
 		});
 	}
@@ -136,7 +138,7 @@ public class SettingActivity extends BaseActivity {
 		case R.id.image_back:
 			finish();
 			break;
-		case R.id.layout_cache:// 清除缓存  
+		case R.id.layout_cache:// 清除缓存
 			Cache();
 			break;
 		case R.id.layout_review:// 赏个好评
@@ -224,5 +226,19 @@ public class SettingActivity extends BaseActivity {
 		} else {
 			showShortToast("当前手机没有安装应用市场");
 		}
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

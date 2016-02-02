@@ -10,6 +10,7 @@ import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.os.Bundle;
@@ -83,7 +84,8 @@ public class FeedBackActivity extends BaseActivity {
 			showShortToast("联系方式不能为空");
 			return;
 		}
-		new RequestTask(this, ReturnAL.FeedBack(Content, Contact), listener, false, true, "数据提交中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
+		new RequestTask(this, ReturnAL.FeedBack(Content, Contact), listener, false, true, "数据提交中")
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 	}
 
 	RequestListener listener = new RequestListener() {
@@ -110,4 +112,17 @@ public class FeedBackActivity extends BaseActivity {
 		}
 	};
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

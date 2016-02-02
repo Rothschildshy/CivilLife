@@ -6,14 +6,12 @@ import com.app.civillife.BookStoreActivity;
 import com.app.civillife.InfoHomepageActivity;
 import com.app.civillife.R;
 import com.app.civillife.ToolActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
 
 /***
  * 发现片段
@@ -25,8 +23,7 @@ public class Tab_Discover extends BaseFragment {
 	private View layout;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (layout == null) {
 			layout = inflater.inflate(R.layout.tab_discover, container, false);
 			initViews();
@@ -49,15 +46,12 @@ public class Tab_Discover extends BaseFragment {
 	protected void initEvents() {
 		layout.findViewById(R.id.layout_overman).setOnClickListener(this);
 		layout.findViewById(R.id.layout_tool).setOnClickListener(this);
-		layout.findViewById(R.id.layout_master_community).setOnClickListener(
-				this);
+		layout.findViewById(R.id.layout_master_community).setOnClickListener(this);
 		layout.findViewById(R.id.layout_nearby).setOnClickListener(this);
 		layout.findViewById(R.id.layout_fellow).setOnClickListener(this);
-		layout.findViewById(R.id.layout_ellow_community).setOnClickListener(
-				this);
+		layout.findViewById(R.id.layout_ellow_community).setOnClickListener(this);
 		layout.findViewById(R.id.layout_city_peer).setOnClickListener(this);
-		layout.findViewById(R.id.layout_city_community)
-				.setOnClickListener(this);
+		layout.findViewById(R.id.layout_city_community).setOnClickListener(this);
 		layout.findViewById(R.id.layout_bookstore).setOnClickListener(this);
 	}
 
@@ -119,12 +113,12 @@ public class Tab_Discover extends BaseFragment {
 			bundle.putInt("type", 3);
 			startActivity(ArticleListActivity.class, bundle);
 			break;
-		case R.id.layout_bookstore:// 建筑书城  
+		case R.id.layout_bookstore:// 建筑书城
 			// if (tologin()) {
 			// return;
 			// }
 			startActivity(BookStoreActivity.class);
-			break;  
+			break;
 		case R.id.layout_tool:// 工具
 			// if (tologin()) {
 			// return;
@@ -136,4 +130,15 @@ public class Tab_Discover extends BaseFragment {
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("Tab_Discover"); // 统计页面，"MainScreen"为页面名称，可自定义
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Tab_Discover");// 统计页面，"MainScreen"为页面名称，可自定义
+	}
 }

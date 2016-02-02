@@ -1,15 +1,15 @@
 package com.app.civillife;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import com.CivilLife.Base.BaseActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.umeng.analytics.MobclickAgent;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * 搜索 好友 师傅
@@ -85,4 +85,17 @@ public class SearchFriendActivity extends BaseActivity {
 		}
 	}
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

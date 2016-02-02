@@ -1,16 +1,15 @@
 package com.CivilLife.Activity;
 
+import com.app.civillife.R;
+import com.umeng.analytics.MobclickAgent;
+import com.zhy.guidepagerlib.GuideContoler;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-
-import com.app.civillife.R;
-import com.zhy.guidepagerlib.GuideContoler;
-import com.zhy.guidepagerlib.GuideContoler.ShapeType;
 
 /**
  * 引导页
@@ -26,10 +25,11 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		initViewPager();
 	}
+
 	/** 使用写好的库初始化引导页面 **/
 	private void initViewPager() {
 		GuideContoler contoler = new GuideContoler(this);
-//		 contoler.setmShapeType(ShapeType.RECT);//设置指示器的形状为矩形，默认是圆形
+		// contoler.setmShapeType(ShapeType.RECT);//设置指示器的形状为矩形，默认是圆形
 		int[] imgIds = { R.drawable.guide_1, R.drawable.guide_2 };
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = inflater.inflate(R.layout.pager_four, null);
@@ -54,6 +54,20 @@ public class SplashActivity extends Activity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

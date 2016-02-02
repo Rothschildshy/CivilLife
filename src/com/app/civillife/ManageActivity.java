@@ -5,49 +5,31 @@ import java.util.concurrent.Executors;
 
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Entity.HomeEntity;
-import com.CivilLife.Entity.MyManageEntity;
-import com.CivilLife.Entity.PublicEntity;
 import com.CivilLife.Json.HomeJson;
-import com.CivilLife.Json.MyManageJson;
-import com.CivilLife.Json.PublicUpJson;
 import com.CivilLife.MyAdapter.ManageListViewAdapter;
 import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.Variable.RequestCode;
-import com.CivilLife.Widget.AlertDialogEx;
-import com.CivilLife.Widget.AlertDialogEx.Builder;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
-import com.aysy_mytool.SpUtils;
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
-import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
-import com.baoyz.widget.PullRefreshLayout;
-import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.AbsListView.OnScrollListener;
 
 /**
  * 管理我的文字
@@ -291,5 +273,19 @@ public class ManageActivity extends BaseActivity {
 				}, 1000);
 			}
 		}
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -1,20 +1,5 @@
 package com.CivilLife.Fragment;
 
-import Downloadimage.ImageUtils;
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
 import com.CivilLife.Activity.LoginActivity;
 import com.CivilLife.Activity.MyinfoActivity;
 import com.CivilLife.Base.BaseFragment;
@@ -29,6 +14,23 @@ import com.app.civillife.SearchFriendActivity;
 import com.app.civillife.SettingActivity;
 import com.app.civillife.Util.GetDistance;
 import com.aysy_mytool.SpUtils;
+import com.umeng.analytics.MobclickAgent;
+
+import Downloadimage.ImageUtils;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 /**
  * 我的片段
@@ -36,6 +38,7 @@ import com.aysy_mytool.SpUtils;
  * @author Administrator
  * 
  */
+@SuppressLint("HandlerLeak")
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Tab_My extends BaseFragment {
 	private ScrollView mScrollView;
@@ -46,8 +49,7 @@ public class Tab_My extends BaseFragment {
 	private TextView mTx_Naem;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return FragmentCache(R.layout.tab_my, inflater, container);
 	}
 
@@ -86,18 +88,9 @@ public class Tab_My extends BaseFragment {
 		} else {
 			ShowLogin();
 		}
-		
-			
+
 	}
-	@Override
-	public void onResume() {  
-		super.onResume();
-		if (!TextUtils.isEmpty(GlobalVariable.UserID)) {
-			ShowLogin();
-		}
-	}
-	
-	
+
 	@Override
 	public void onClick(View v) {
 		Bundle bundle = new Bundle();
@@ -202,12 +195,10 @@ public class Tab_My extends BaseFragment {
 		GlobalVariable.UserPassWord = userPassWord;
 		SpUtils.saveString(getActivity(), GlobalVariable.USERPW, userPassWord);
 		GlobalVariable.UserImage = UserImage;
-		SpUtils.saveString(getActivity(), GlobalVariable.USERIMAGE,
-				userPassWord);
+		SpUtils.saveString(getActivity(), GlobalVariable.USERIMAGE, userPassWord);
 
 	}
-	
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -225,8 +216,7 @@ public class Tab_My extends BaseFragment {
 		mLa_LonOut.setVisibility(View.VISIBLE);
 		mLa_Individual.setVisibility(View.VISIBLE);
 		if (!TextUtils.isEmpty(GlobalVariable.UserImage)) {
-			ImageUtils.loadImage1(getActivity(), GlobalVariable.UserImage,
-					mIm_Pic, R.drawable.ic_my_nolog_selector,
+			ImageUtils.loadImage1(getActivity(), GlobalVariable.UserImage, mIm_Pic, R.drawable.ic_my_nolog_selector,
 					R.drawable.ic_my_nolog_selector, GlobalVariable.WifiDown);
 		} else {
 			mIm_Pic.setImageResource(R.drawable.ic_my_nolog_selector);
@@ -241,9 +231,7 @@ public class Tab_My extends BaseFragment {
 				boolean login = (Boolean) msg.obj;
 				if (login) {
 					if (!TextUtils.isEmpty(GlobalVariable.UserImage)) {
-						ImageUtils.loadImage(getActivity(),
-								GlobalVariable.UserImage, mIm_Pic,
-								GlobalVariable.WifiDown);
+						ImageUtils.loadImage(getActivity(), GlobalVariable.UserImage, mIm_Pic, GlobalVariable.WifiDown);
 					} else {
 						mIm_Pic.setImageResource(R.drawable.ic_my_nolog_selector);
 					}
@@ -253,4 +241,18 @@ public class Tab_My extends BaseFragment {
 		};
 	};
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!TextUtils.isEmpty(GlobalVariable.UserID)) {
+			ShowLogin();
+		}
+		MobclickAgent.onPageStart("Tab_My"); // 统计页面，"MainScreen"为页面名称，可自定义
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Tab_My");// 统计页面，"MainScreen"为页面名称，可自定义
+	}
 }

@@ -17,6 +17,7 @@ import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
@@ -58,6 +59,11 @@ public class ArticleListActivity extends BaseActivity {
 	private LinearLayout mLayout_NetworkError;
 	private Button mBtn_Refresh;
 	private String City;
+	private HomeListViewAdapter adapter;
+	private String userid;
+	private ListView listView;
+	private ImageView image_article;
+	private TextView tv_rolling;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -314,11 +320,6 @@ public class ArticleListActivity extends BaseActivity {
 			}
 		};
 	};
-	private HomeListViewAdapter adapter;
-	private String userid;
-	private ListView listView;
-	private ImageView image_article;
-	private TextView tv_rolling;
 
 	public void stoprequest() {
 		if (isrequest && istotime) {
@@ -385,4 +386,18 @@ public class ArticleListActivity extends BaseActivity {
 			tv_rolling.setFocusable(true);
 		}
 	};
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

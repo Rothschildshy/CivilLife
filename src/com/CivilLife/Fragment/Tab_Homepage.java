@@ -16,6 +16,7 @@ import com.MyView.Widget.HorizontalListView;
 import com.app.civillife.AuditActivity;
 import com.app.civillife.PublishActivity;
 import com.app.civillife.R;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.content.Intent;
@@ -43,10 +44,15 @@ public class Tab_Homepage extends BaseFragment {
 	private int seleorttwo = -1; // 标记你选中的二级菜单
 	ArrayList<HomeonetitleEntity> Data = new ArrayList<HomeonetitleEntity>();
 	ArrayList<HomeonetitleEntity> Data1 = new ArrayList<HomeonetitleEntity>();
-//	ArrayList<HomeonetitleEntity> als = new ArrayList<HomeonetitleEntity>();
-	String seleorttitle1="";
-	String seleorttitle2="";
-	
+	// ArrayList<HomeonetitleEntity> als = new ArrayList<HomeonetitleEntity>();
+	String seleorttitle1 = "";
+	String seleorttitle2 = "";
+	private HomehorizontallvAdapter titleadapter, twotitleadapter;
+	private HorizontalListView hlv_titlename, hlv_twotitlename;
+	private MyAdpter myAdpter;
+	private MytwoAdpter mytwoAdpter;
+	private CustomViewPager[] vps;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return FragmentCache(R.layout.tab_home, inflater, container);
@@ -75,7 +81,7 @@ public class Tab_Homepage extends BaseFragment {
 		image_back.setOnClickListener(this);
 		findViewById(R.id.image_audit).setOnClickListener(this);
 		findViewById(R.id.image_add_article).setOnClickListener(this);
-		
+
 		titleadapter = new HomehorizontallvAdapter(mApplication, getActivity(), Data);
 		hlv_titlename.setAdapter(titleadapter);
 		hlv_titlename.setOnItemClickListener(new TitleOnItemClickListener());
@@ -97,32 +103,32 @@ public class Tab_Homepage extends BaseFragment {
 
 	@Override
 	protected void init() {
-		new RequestTask(getActivity(), hometitlelistener, true, true, "Loading").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.homeonetitle);
+		new RequestTask(getActivity(), hometitlelistener, true, true, "Loading")
+				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.homeonetitle);
 	}
 
 	// 获取标题列表
 	RequestListener hometitlelistener = new RequestListener() {
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
 			HomeoneTitleJson readJsonToSendmsgObject = HomeoneTitleJson.readJsonToSendmsgObject(getActivity(),
 					jsonObject);
-			if (readJsonToSendmsgObject == null) {  
+			if (readJsonToSendmsgObject == null) {
 				return;
 			}
 			Data.add(new HomeonetitleEntity(0 + "", "最新"));
 			Data.add(new HomeonetitleEntity(0 + "", "精华"));// 先加载固定的两个标题
 			Data.addAll(1, readJsonToSendmsgObject.getAl());
 			titleadapter.setmDatas(Data);
-//			als.clear();
-//			als.addAll(Data);  
+			// als.clear();
+			// als.addAll(Data);
 			titleadapter.notifyDataSetChanged();
-			myAdpter.notifyDataSetChanged(); 
-			GlobalVariable.Data.clear();  
-			GlobalVariable.Data=readJsonToSendmsgObject.getAl();
-//			GlobalVariable.Data.remove(GlobalVariable.Data.size()-1);
-//			GlobalVariable.Data.remove(0); 
+			myAdpter.notifyDataSetChanged();
+			GlobalVariable.Data.clear();
+			GlobalVariable.Data = readJsonToSendmsgObject.getAl();
+			// GlobalVariable.Data.remove(GlobalVariable.Data.size()-1);
+			// GlobalVariable.Data.remove(0);
 		}
 
 		@Override
@@ -133,11 +139,8 @@ public class Tab_Homepage extends BaseFragment {
 			myAdpter.notifyDataSetChanged();
 		}
 	};
-	//
-	private HomehorizontallvAdapter titleadapter, twotitleadapter;
-	private HorizontalListView hlv_titlename, hlv_twotitlename;
-	private MyAdpter myAdpter;
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -146,7 +149,7 @@ public class Tab_Homepage extends BaseFragment {
 				return;
 			}
 			startActivity(AuditActivity.class);
-			break;  
+			break;
 		case R.id.image_add_article:// 发布
 			if (tologin()) {
 				return;
@@ -155,7 +158,7 @@ public class Tab_Homepage extends BaseFragment {
 			bundle.putInt("TYPE", 1);
 			bundle.putString("seleorttitle1", seleorttitle1);
 			bundle.putString("seleorttitle2", seleorttitle2);
-//			android.util.Log.e("seleorttitle2", seleorttitle2+"");
+			// android.util.Log.e("seleorttitle2", seleorttitle2+"");
 			startActivityForResult(PublishActivity.class, bundle, RequestCode.publiccode);
 			break;
 		case R.id.image_back:// 二级返回
@@ -167,7 +170,7 @@ public class Tab_Homepage extends BaseFragment {
 			hlv_twotitlename.setVisibility(View.GONE);
 			image_back.setVisibility(View.GONE);
 			image_logo.setVisibility(View.VISIBLE);
-			mtoptitle.setVisibility(View.GONE);  
+			mtoptitle.setVisibility(View.GONE);
 			titleadapter.selseortitem = 0;
 
 			titleadapter.notifyDataSetChanged();
@@ -212,10 +215,11 @@ public class Tab_Homepage extends BaseFragment {
 	// 一级 横向listview item点击事件
 	class TitleOnItemClickListener implements OnItemClickListener {
 
+		@SuppressWarnings("static-access")
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 			HomeonetitleEntity object = (HomeonetitleEntity) titleadapter.getDatas().get(arg2);
-			seleorttitle1=object.getID();
+			seleorttitle1 = object.getID();
 			if (object.getID().equals("3")) {
 				seleorttwo = 0;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
@@ -249,20 +253,20 @@ public class Tab_Homepage extends BaseFragment {
 	// 二级 横向listview item点击事件
 	class TitletwoOnItemClickListener implements OnItemClickListener {
 
+		@SuppressWarnings("static-access")
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 			HomeonetitleEntity item = (HomeonetitleEntity) twotitleadapter.getItem(arg2);
-			seleorttitle2=item.getID();
+			seleorttitle2 = item.getID();
 			twotitleadapter.selseortitem = arg2;
-			twotitleadapter.notifyDataSetChanged();  
-			vps[seleorttwo].setCurrentItem(arg2);  
+			twotitleadapter.notifyDataSetChanged();
+			vps[seleorttwo].setCurrentItem(arg2);
 			mytwoAdpter.notifyDataSetChanged();
 		}
 	}
 
 	// 二级 viewpager 适配器
 	class MytwoAdpter extends android.support.v4.app.FragmentPagerAdapter {
-
 
 		public MytwoAdpter(FragmentManager fm) {
 			super(fm);
@@ -271,13 +275,13 @@ public class Tab_Homepage extends BaseFragment {
 		@Override
 		public android.support.v4.app.Fragment getItem(int arg0) {
 			HomeonetitleEntity object = (HomeonetitleEntity) Data1.get(arg0);
-//			if (object.getArticleClassName().equals("最新")) {
-//				return new Homeclassify_Fragment("-1");
-//			} else if (object.getArticleClassName().equals("精华")) {
-//				return new Homeclassify_Fragment("-2");
-//			} else {
-				return new Homeclassify_Fragment(object.getID());
-//			}
+			// if (object.getArticleClassName().equals("最新")) {
+			// return new Homeclassify_Fragment("-1");
+			// } else if (object.getArticleClassName().equals("精华")) {
+			// return new Homeclassify_Fragment("-2");
+			// } else {
+			return new Homeclassify_Fragment(object.getID());
+			// }
 		}
 
 		@Override
@@ -293,6 +297,7 @@ public class Tab_Homepage extends BaseFragment {
 	// 获取二级标题内容
 	RequestListener hometwotitlelistener = new RequestListener() {
 
+		@SuppressWarnings("static-access")
 		@Override
 		public void responseResult(String jsonObject) {
 			HomeoneTitleJson readJsonToSendmsgObject = HomeoneTitleJson.readJsonToSendmsgObject(getActivity(),
@@ -331,19 +336,29 @@ public class Tab_Homepage extends BaseFragment {
 			showmsg(errorMessage);
 		}
 	};
-	private MytwoAdpter mytwoAdpter;
-	private CustomViewPager[] vps;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-//		if (data != null) {
-//			if (mytwoAdpter != null) {
-//				mytwoAdpter.notifyDataSetChanged();
-//			}
-//			if (myAdpter != null) {
-//				myAdpter.notifyDataSetChanged();
-//			}
-//		}
+		// if (data != null) {
+		// if (mytwoAdpter != null) {
+		// mytwoAdpter.notifyDataSetChanged();
+		// }
+		// if (myAdpter != null) {
+		// myAdpter.notifyDataSetChanged();
+		// }
+		// }
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("Tab_Homepage"); // 统计页面，"MainScreen"为页面名称，可自定义
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Tab_Homepage");// 统计页面，"MainScreen"为页面名称，可自定义
 	}
 }

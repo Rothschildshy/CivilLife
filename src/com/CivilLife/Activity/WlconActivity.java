@@ -3,21 +3,18 @@ package com.CivilLife.Activity;
 import com.CivilLife.Variable.GlobalVariable;
 import com.app.civillife.R;
 import com.app.civillife.Util.GetDistance;
-import com.aysy_mytool.GetAgeOrConstellation;
 import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
+import com.umeng.analytics.MobclickAgent;
 
-import android.os.Bundle;
-import android.os.Handler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageView;
 
 /**
  * 欢迎界面
@@ -25,15 +22,12 @@ import android.widget.ImageView;
 
 public class WlconActivity extends Activity {
 
-	private ImageView mImaeg;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wlcon);
 		GetDistance.location(this, null).start();// 开启定位
 
-		mImaeg = (ImageView) findViewById(R.id.imageView1);
 		new Handler().postDelayed(new Runnable() {
 			private Editor edit;
 
@@ -113,4 +107,17 @@ public class WlconActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

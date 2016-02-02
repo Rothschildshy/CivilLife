@@ -31,9 +31,11 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.umeng.analytics.MobclickAgent;
 
 import Downloadimage.ImageUtils;
 import Requset_getORpost.RequestListener;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -61,6 +63,7 @@ import android.widget.VideoView;
  * @author mac
  * 
  */
+@SuppressLint({ "InflateParams", "HandlerLeak" })
 public class ContentDataActivity extends BaseActivity {
 	private ListViewScrollView mListView;
 	private static final int LOAD_DATA_FINISH = 10;
@@ -85,6 +88,16 @@ public class ContentDataActivity extends BaseActivity {
 	private boolean isComment = false;// 是否是发表评论
 	private boolean isoperation = false;// 当前页面是否做了操作
 	private int isstr = -1;// 好文和不好文标记
+	private RelativeLayout layout_video;
+	private HomeEntity homeEntity;
+	private CommentListViewAdapter contentadapter;
+	boolean isrequest = false;// 请求时否完成
+	boolean istotime = false;// 请求时间是否结束
+	private VideoPay videoPay;
+	private ProgressBar pb_waiting;
+	private List<String> asList;
+	private PullToRefreshScrollView mScrollView;
+	private TextView tv_addtime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -505,17 +518,6 @@ public class ContentDataActivity extends BaseActivity {
 			}
 		};
 	};
-	private RelativeLayout layout_video;
-	private HomeEntity homeEntity;
-	private CommentListViewAdapter contentadapter;
-	boolean isrequest = false;// 请求时否完成
-	boolean istotime = false;// 请求时间是否结束
-	private VideoPay videoPay;
-	private ProgressBar pb_waiting;
-	private boolean pays = false;
-	private List<String> asList;
-	private PullToRefreshScrollView mScrollView;
-	private TextView tv_addtime;
 
 	public void loadData(final int type) {
 		new Thread() {
@@ -559,11 +561,26 @@ public class ContentDataActivity extends BaseActivity {
 		mHandler.sendMessage(_Msg);
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (event.KEYCODE_BACK == keyCode && isoperation) {
 			setResult(0, new Intent());
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

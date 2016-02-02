@@ -12,6 +12,7 @@ import com.app.civillife.R;
 import com.aysy_mytool.ToastUtil;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.os.Bundle;
@@ -31,6 +32,10 @@ public class RetrievePassWordActivity extends BaseActivity {
 	private EditText mEd_Email;
 	private EditText mEd_PassWd;
 	private EditText mEd_Re_PassWd;
+	private boolean Type = true;
+	private String user;
+	private String email;
+	private String passWd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +44,6 @@ public class RetrievePassWordActivity extends BaseActivity {
 		initViews();
 		initEvents();
 		init();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.register, menu);
-		return true;
 	}
 
 	@Override
@@ -81,8 +80,6 @@ public class RetrievePassWordActivity extends BaseActivity {
 			break;
 		}
 	}
-
-	private boolean Type = true;
 
 	// 提交数据
 	private void RetrievePassWord() {
@@ -136,7 +133,8 @@ public class RetrievePassWordActivity extends BaseActivity {
 				if (Type) {// 说明是验证的
 					Type = false;
 					new RequestTask(RetrievePassWordActivity.this, ReturnAL.VerificationMap(user, passWd, email),
-							listener, false, true, "修改中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
+							listener, false, true, "修改中").executeOnExecutor(Executors.newCachedThreadPool(),
+									Httpurl.URL);
 				} else {// 修改成功的
 					showShortToast("修改成功！");
 					Bundle bundle = new Bundle();
@@ -159,8 +157,18 @@ public class RetrievePassWordActivity extends BaseActivity {
 
 		}
 	};
-	private String user;
-	private String email;
-	private String passWd;
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

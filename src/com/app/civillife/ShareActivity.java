@@ -6,6 +6,7 @@ import java.util.Map;
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.DataInfo.Constants;
 import com.aysy_mytool.Qlog;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -64,14 +65,14 @@ public class ShareActivity extends BaseActivity {
 		// 配置需要分享的相关平台
 		configPlatforms();
 		// 设置分享内容
-		String title=getIntent().getStringExtra("Title");
-		String Content=getIntent().getStringExtra("Content");
-		String shareURL=getIntent().getStringExtra("shareURL");
-		String imageurl=getIntent().getStringExtra("imageurl");
-		Log.e("", "shareURL  "+shareURL);
-		setShareContent(title,Content,shareURL,imageurl);
+		String title = getIntent().getStringExtra("Title");
+		String Content = getIntent().getStringExtra("Content");
+		String shareURL = getIntent().getStringExtra("shareURL");
+		String imageurl = getIntent().getStringExtra("imageurl");
+		Log.e("", "shareURL  " + shareURL);
+		setShareContent(title, Content, shareURL, imageurl);
 		// 初始化平台map
-		initPlatformMap();    
+		initPlatformMap();
 	}
 
 	@Override
@@ -172,18 +173,18 @@ public class ShareActivity extends BaseActivity {
 	/**
 	 * 根据不同的平台设置不同的分享内容</br>
 	 */
-	private void setShareContent(String title,String Content,String shareURL,String imageurl) {
+	private void setShareContent(String title, String Content, String shareURL, String imageurl) {
 
-//		// 分享后点击的url
-//		String shareURL = "http://www.umeng.com/social";
-//		// 本地图片
-//		// UMImage localImage = new UMImage(this, R.drawable.ic_launcher);
-//		// 网络图片
+		// // 分享后点击的url
+		// String shareURL = "http://www.umeng.com/social";
+		// // 本地图片
+		// // UMImage localImage = new UMImage(this, R.drawable.ic_launcher);
+		// // 网络图片
 		UMImage urlImage = new UMImage(this, imageurl);
-//		// 分享的标题
-//		String title = "我是土木分享的标题";
-//		// 分享的内容
-//		String Content = "哈喽！大家好。我是土木分享的内容哦。这个app真的好。里面帅锅靓女";
+		// // 分享的标题
+		// String title = "我是土木分享的标题";
+		// // 分享的内容
+		// String Content = "哈喽！大家好。我是土木分享的内容哦。这个app真的好。里面帅锅靓女";
 
 		// 设置微信好友分享的内容
 		WeiXinShareContent weixinContent = new WeiXinShareContent();
@@ -254,4 +255,17 @@ public class ShareActivity extends BaseActivity {
 		}
 	}
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

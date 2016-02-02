@@ -34,6 +34,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.umeng.analytics.MobclickAgent;
 
 import Downloadimage.ImageCompression;
 import Downloadimage.ImageUtils;
@@ -69,20 +70,20 @@ import android.widget.TextView;
  * @author mac
  * 
  */
-@SuppressLint("SimpleDateFormat")
-public class MyinfoActivity extends BaseActivity  {
+@SuppressLint({ "SimpleDateFormat", "HandlerLeak" })
+public class MyinfoActivity extends BaseActivity {
 
 	private CircleImageView mIm_Pic;
 	private ImageView mIm_Background;
 	private Button mBtn_Save;
 	private EditText mEd_Speciality;
 	private TextView mEd_YearsOfWorking;
-//	private EditText mEd_Occupation;
-//	private EditText mEd_Education;
+	// private EditText mEd_Occupation;
+	// private EditText mEd_Education;
 	private TextView mTx_Hometown;
 	private Spinner Spinner_Profession;
 	private EditText mEd_Phonemodel;
-	private TextView mTx_NativePlace;
+	// private TextView mTx_NativePlace;
 	private TextView mTx_Birthday;
 	private TextView mTx_Sex;
 	private TextView mTx_Hint;
@@ -110,7 +111,7 @@ public class MyinfoActivity extends BaseActivity  {
 	private String BigPicUrl = "";
 	private Bitmap bm;
 	private Calendar calendar = Calendar.getInstance();
-	
+
 	private String birthday;
 	private TextView mTx_Modification;
 	private List<String> Id_list = new ArrayList<String>();
@@ -120,19 +121,28 @@ public class MyinfoActivity extends BaseActivity  {
 	private ArrayList<String> BGimageurllist = new ArrayList<String>();// 大罩图片地址容器
 	private int Sex = 1;
 
-	private boolean isUpPic = false;// 头像上传是否完成  
+	private boolean isUpPic = false;// 头像上传是否完成
 	private boolean isUpBig = false;// 大罩上传是否完成
 
 	private ProgressBar locationPB;
-	private String NickName;  
-	OnDateSetListener onDateSetListener=new OnDateSetListener() {//生日 
-		
+	private String NickName;
+	private boolean StartUpPIC = true;// 开启上传头像
+	private boolean StartUpBIG = true;// 开启上传大罩
+	private String Education = "中专以下";// 学历
+	private String Occupation = "初级";// 职称
+	/** 学历 **/
+	private Spinner sp_schooling;
+	/** 职称 **/
+	private Spinner sp_professionaltitle;
+	private EditText ed_graduatedSchool;
+	private TextView ed_years_working;
+	OnDateSetListener onDateSetListener = new OnDateSetListener() {// 生日
+
 		@Override
 		public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
 			try {
 				birthday = year + "/" + month + "/" + day;
-				String Constellation = GetAgeOrConstellation
-						.GetConstellation(birthday);
+				String Constellation = GetAgeOrConstellation.GetConstellation(birthday);
 				String age = GetAgeOrConstellation.getAge(birthday);
 				mTx_Birthday.setText(age + " • " + Constellation);
 			} catch (Exception e) {
@@ -140,27 +150,25 @@ public class MyinfoActivity extends BaseActivity  {
 			}
 		}
 	};
-	OnDateSetListener onDateSetListener1=new OnDateSetListener() {//毕业时间
-		
+	OnDateSetListener onDateSetListener1 = new OnDateSetListener() {// 毕业时间
+
 		@Override
 		public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
-			mEd_YearsOfWorking.setText(year + "/" + month + "/" + day );
+			mEd_YearsOfWorking.setText(year + "/" + month + "/" + day);
 			ed_years_working.setText(Time.handYeas(year + "/" + month + "/" + day));
 		}
 	};
-	DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(//生日弹窗
-			onDateSetListener, calendar.get(Calendar.YEAR),
-			calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-			false);
-	DatePickerDialog datePickerDialog1 = DatePickerDialog.newInstance(//毕业时间
-			onDateSetListener1, calendar.get(Calendar.YEAR),
-			calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-			false);
-	
+	DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(// 生日弹窗
+			onDateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+			calendar.get(Calendar.DAY_OF_MONTH), false);
+	DatePickerDialog datePickerDialog1 = DatePickerDialog.newInstance(// 毕业时间
+			onDateSetListener1, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+			calendar.get(Calendar.DAY_OF_MONTH), false);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_myinfo);  
+		setContentView(R.layout.activity_myinfo);
 		initViews();
 		initEvents();
 		init();
@@ -178,33 +186,32 @@ public class MyinfoActivity extends BaseActivity  {
 		mEd_Nickname = (EditText) findViewById(R.id.ed_nickname);
 		mEd_Mailbox = (EditText) findViewById(R.id.ed_mailbox);
 		mTx_Sex = (TextView) findViewById(R.id.tx_sex);
-		ed_years_working = (TextView) findViewById(R.id.ed_years_working);//毕业时间
+		ed_years_working = (TextView) findViewById(R.id.ed_years_working);// 毕业时间
 		mTx_Hint = (TextView) findViewById(R.id.tx_hint);
 		mTx_Birthday = (TextView) findViewById(R.id.tx_birthday);
-		mTx_NativePlace = (TextView) findViewById(R.id.tx_native_place);
+		// mTx_NativePlace = (TextView) findViewById(R.id.tx_native_place);
 		mEd_Phonemodel = (EditText) findViewById(R.id.ed_phonemodel);
 		Spinner_Profession = (Spinner) findViewById(R.id.spinner_profession);
 		mTx_Hometown = (TextView) findViewById(R.id.tx_hometown);
 		sp_schooling = (Spinner) findViewById(R.id.sp_schooling);
-		  
+
 		TackType(sp_schooling, GlobalVariable.al_schooling);
-		
-		
-		
+
 		sp_schooling.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				Education = GlobalVariable.al_schooling.get(position).toString();
-				
+
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {}
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
 		});
 		sp_schooling.setEnabled(false);
 		sp_professionaltitle = (Spinner) findViewById(R.id.sp_professionaltitle);
-		
+
 		sp_professionaltitle.setEnabled(false);
 		TackType(sp_professionaltitle, GlobalVariable.al_professionaltitle);
 		sp_professionaltitle.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -215,10 +222,11 @@ public class MyinfoActivity extends BaseActivity  {
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {}
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
 		});
-		
-		mEd_YearsOfWorking = (TextView) findViewById(R.id.ed_years_of_working);//毕业时间  
+
+		mEd_YearsOfWorking = (TextView) findViewById(R.id.ed_years_of_working);// 毕业时间
 		mEd_Speciality = (EditText) findViewById(R.id.ed_speciality);
 		mRa_Password = (RelativeLayout) findViewById(R.id.layout_password);
 		mRa_Affirmpw = (RelativeLayout) findViewById(R.id.layout_affirmpw);
@@ -254,6 +262,7 @@ public class MyinfoActivity extends BaseActivity  {
 		mRa_Background.setEnabled(false);
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	protected void init() {
 		GetDistance.location(mApplication, null).start();
@@ -270,31 +279,29 @@ public class MyinfoActivity extends BaseActivity  {
 				}
 			}
 		});
-		
+
 		String PhoneBrand = new PubUtils().GetPhoneBrand();// 获取手机品牌
 		mEd_Phonemodel.setText(PhoneBrand);
 
 		// 获取个人资料
-		new RequestTask(this, listener, false, true, "加载中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl
-				.GetMyData());
+		new RequestTask(this, listener, false, true, "加载中").executeOnExecutor(Executors.newCachedThreadPool(),
+				Httpurl.GetMyData());
 		// 获取行业数据
 		new RequestTask(this, Industrylistener, false, false, "加载行业中")
 				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetIndustryData());
 
-		Spinner_Profession
-				.setOnItemSelectedListener(new OnItemSelectedListener() {
+		Spinner_Profession.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-					@Override
-					public void onItemSelected(AdapterView<?> parent,
-							View view, int position, long id) {
-						ProfessionID = Id_list.get(position);
-					}
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				ProfessionID = Id_list.get(position);
+			}
 
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
 
-					}
-				});
+			}
+		});
 		Spinner_Profession.setEnabled(false);
 	}
 
@@ -309,8 +316,7 @@ public class MyinfoActivity extends BaseActivity  {
 			Modification(true);
 			break;
 		case R.id.laout_modification_photo:// 修改上传头像 裁剪成正方形
-			startActivityForResult(SeleImageActivity.class, null, 10001,
-					R.anim.push_bootom_in2, R.anim.start);
+			startActivityForResult(SeleImageActivity.class, null, 10001, R.anim.push_bootom_in2, R.anim.start);
 			break;
 		case R.id.image_pic:// 查看头像大图
 			if (Picimageurllist.size() == 0) {
@@ -318,8 +324,7 @@ public class MyinfoActivity extends BaseActivity  {
 				return;
 			}
 			Intent intent = new Intent(this, ImagePagerActivity.class);
-			intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
-					Picimageurllist);
+			intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, Picimageurllist);
 			intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
 			startActivity(intent);
 			break;
@@ -348,12 +353,10 @@ public class MyinfoActivity extends BaseActivity  {
 
 			break;
 		case R.id.layout_hometown:// 修改家乡
-			startActivityForResult(CitiesActivity.class, null, 1001,
-					R.anim.push_bootom_in2, R.anim.start);
+			startActivityForResult(CitiesActivity.class, null, 1001, R.anim.push_bootom_in2, R.anim.start);
 			break;
 		case R.id.layout_background:// 修改大罩 裁剪成长方形 1：1.8比例
-			startActivityForResult(SeleImageActivity2.class, null, 10002,
-					R.anim.push_bootom_in2, R.anim.start);
+			startActivityForResult(SeleImageActivity2.class, null, 10002, R.anim.push_bootom_in2, R.anim.start);
 			break;
 		case R.id.image_background:// 查看大罩
 			if (BGimageurllist.size() == 0) {
@@ -361,8 +364,7 @@ public class MyinfoActivity extends BaseActivity  {
 				return;
 			}
 			Intent intent2 = new Intent(this, ImagePagerActivity.class);
-			intent2.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
-					BGimageurllist);
+			intent2.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, BGimageurllist);
 			intent2.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
 			startActivity(intent2);
 
@@ -379,8 +381,7 @@ public class MyinfoActivity extends BaseActivity  {
 	RequestListener Industrylistener = new RequestListener() {
 		@Override
 		public void responseResult(String jsonObject) {
-			GetIndustryJson Industryjson = GetIndustryJson
-					.readJsonToSendmsgObject(MyinfoActivity.this, jsonObject);
+			GetIndustryJson Industryjson = GetIndustryJson.readJsonToSendmsgObject(MyinfoActivity.this, jsonObject);
 			if (Industryjson == null) {
 				return;
 			}
@@ -392,12 +393,10 @@ public class MyinfoActivity extends BaseActivity  {
 				Name_list.add(list.get(i).getIndustryClassName());
 			}
 			// 适配器
-			ArrayAdapter<String> arr_adapter = new ArrayAdapter<String>(
-					MyinfoActivity.this, android.R.layout.simple_spinner_item,
-					Name_list);
+			ArrayAdapter<String> arr_adapter = new ArrayAdapter<String>(MyinfoActivity.this,
+					android.R.layout.simple_spinner_item, Name_list);
 			// 设置样式
-			arr_adapter
-					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// 加载适配器
 			Spinner_Profession.setAdapter(arr_adapter);
 		}
@@ -411,8 +410,7 @@ public class MyinfoActivity extends BaseActivity  {
 	RequestListener listener = new RequestListener() {
 		@Override
 		public void responseResult(String jsonObject) {
-			GetMyIngoJson publicjson = GetMyIngoJson.readJsonToSendmsgObject(
-					MyinfoActivity.this, jsonObject);
+			GetMyIngoJson publicjson = GetMyIngoJson.readJsonToSendmsgObject(MyinfoActivity.this, jsonObject);
 			if (publicjson == null) {
 				return;
 			}
@@ -430,23 +428,19 @@ public class MyinfoActivity extends BaseActivity  {
 		// 设置头像
 		if (!TextUtils.isEmpty(infoEntity.getPicUrl())) {
 			// 获取后台返回的图片不为空时显示
-			ImageUtils.loadImage1(MyinfoActivity.this, infoEntity.getPicUrl(),
-					mIm_Pic, R.drawable.ic_my_nolog_selector,
+			ImageUtils.loadImage1(MyinfoActivity.this, infoEntity.getPicUrl(), mIm_Pic, R.drawable.ic_my_nolog_selector,
 					R.drawable.ic_my_nolog_selector, GlobalVariable.WifiDown);
 			picUrl = infoEntity.getPicUrl();
 			GlobalVariable.UserImage = infoEntity.getPicUrl();
 		} else if (!TextUtils.isEmpty(GlobalVariable.UserImage)) {
 			// 如果后台返回数据为空 缓存的图片不为空显示缓存的图片
-			ImageUtils.loadImage1(MyinfoActivity.this,
-					GlobalVariable.UserImage, mIm_Pic,
-					R.drawable.ic_my_nolog_selector,
-					R.drawable.ic_my_nolog_selector, GlobalVariable.WifiDown);
+			ImageUtils.loadImage1(MyinfoActivity.this, GlobalVariable.UserImage, mIm_Pic,
+					R.drawable.ic_my_nolog_selector, R.drawable.ic_my_nolog_selector, GlobalVariable.WifiDown);
 		}
 		// 设置大罩
 		if (!TextUtils.isEmpty(infoEntity.getBigPicUrl())) {
 			// 获取后台返回的图片不为空时显示
-			ImageUtils.loadImage(MyinfoActivity.this,
-					infoEntity.getBigPicUrl(), mIm_Background,
+			ImageUtils.loadImage(MyinfoActivity.this, infoEntity.getBigPicUrl(), mIm_Background,
 					GlobalVariable.WifiDown);
 			BigPicUrl = infoEntity.getBigPicUrl();
 		}
@@ -493,8 +487,7 @@ public class MyinfoActivity extends BaseActivity  {
 		} else {
 			try {
 				birthday = infoEntity.getBirthday();
-				String Constellation = GetAgeOrConstellation
-						.GetConstellation(birthday);
+				String Constellation = GetAgeOrConstellation.GetConstellation(birthday);
 				String age = GetAgeOrConstellation.getAge(birthday);
 				mTx_Birthday.setText(age + " • " + Constellation);
 
@@ -514,7 +507,7 @@ public class MyinfoActivity extends BaseActivity  {
 			// mEd_Phonemodel.setText(infoEntity.getPhonemodel());
 			// }
 			// 行业
-		// 行业家乡
+			// 家乡
 		if (TextUtils.isEmpty(infoEntity.getCensus())) {
 			mTx_Hometown.setText("未设置");
 		} else {
@@ -540,23 +533,19 @@ public class MyinfoActivity extends BaseActivity  {
 		} else {
 			mEd_Speciality.setText(infoEntity.getSpecialty());
 		}
-		
+
 		int indexOf = GlobalVariable.al_schooling.indexOf(infoEntity.getDegree());
-		if (indexOf!=-1) {
-			sp_schooling.setSelection(indexOf, true);  
+		if (indexOf != -1) {
+			sp_schooling.setSelection(indexOf, true);
 		}
 		int indexOf1 = GlobalVariable.al_professionaltitle.indexOf(infoEntity.getOffice());
-		if (indexOf1!=-1) {
+		if (indexOf1 != -1) {
 			sp_professionaltitle.setSelection(indexOf1, true);
 		}
-		
+
 	}
 
-	boolean StartUpPIC = true;// 开启上传头像
-	boolean StartUpBIG = true;// 开启上传大罩
-	String Education = "中专以下";//学历
-	String Occupation = "初级";//职称
-	// 保存资料 
+	// 保存资料
 
 	private void SaveData() {
 		String PassWord = mEd_PassWord.getText().toString();
@@ -565,10 +554,10 @@ public class MyinfoActivity extends BaseActivity  {
 		String Mailbox = mEd_Mailbox.getText().toString();
 		String Phonemodel = mEd_Phonemodel.getText().toString();
 		String Hometown = mTx_Hometown.getText().toString();
-		String CurrentAddress = mTx_NativePlace.getText().toString();
-		String graduatedSchool = ed_graduatedSchool.getText().toString();//毕业时间
+		// String CurrentAddress = mTx_NativePlace.getText().toString();
+		String graduatedSchool = ed_graduatedSchool.getText().toString();// 毕业时间
 
-//		
+		//
 		String YearsOfWorking = mEd_YearsOfWorking.getText().toString();
 		String Speciality = mEd_Speciality.getText().toString();
 		if (!PassWord.equals(Affirmpw)) {
@@ -632,9 +621,8 @@ public class MyinfoActivity extends BaseActivity  {
 			if (StartUpPIC) {// 可以开启上传头像
 				StartUpPIC = !StartUpPIC; // 已经在上传就变成上传过程
 				isUpPic = false;// 开启上传显示为上传未成功
-//				Log.e("", "上传头像开始");
-				new BaseUpload(this).Upload(PIClocalFilePath, UpPicrl, true,
-						"上传头像");
+				// Log.e("", "上传头像开始");
+				new BaseUpload(this).Upload(PIClocalFilePath, UpPicrl, true, "上传头像");
 			} else {// 不用上传头像
 				isUpPic = true;
 			}
@@ -645,9 +633,8 @@ public class MyinfoActivity extends BaseActivity  {
 			if (StartUpBIG) {// 可以开启上传大罩
 				StartUpBIG = !StartUpBIG;// 已经在上传就变成上传过程
 				isUpBig = false;// 开启上传显示为上传未成功
-//				Log.e("", "上传大罩开始");
-				new BaseUpload(this).Upload(BiglocalFilePath, UpBigrl, true,
-						"上传大罩");
+				// Log.e("", "上传大罩开始");
+				new BaseUpload(this).Upload(BiglocalFilePath, UpBigrl, true, "上传大罩");
 			} else {// 不用上传头像
 				isUpBig = true;
 			}
@@ -655,10 +642,9 @@ public class MyinfoActivity extends BaseActivity  {
 			isUpBig = true;
 		}
 		if (isUpBig && isUpPic) {
-			ArrayList<BasicNameValuePair> infoMap = ReturnAL.ContentInfoMap(
-					picUrl, PassWord, PassWord, NickName, Sex, Mailbox,
-					birthday, Phonemodel, ProfessionID, Hometown, BigPicUrl,
-					Education, Occupation, YearsOfWorking,graduatedSchool, Speciality);
+			ArrayList<BasicNameValuePair> infoMap = ReturnAL.ContentInfoMap(picUrl, PassWord, PassWord, NickName, Sex,
+					Mailbox, birthday, Phonemodel, ProfessionID, Hometown, BigPicUrl, Education, Occupation,
+					YearsOfWorking, graduatedSchool, Speciality);
 			new RequestTask(this, infoMap, UpDatalistener, false, true, "保存数据")
 					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 		}
@@ -675,7 +661,7 @@ public class MyinfoActivity extends BaseActivity  {
 				break;
 			case 3:
 				showShortToast("头像上传失败！");
-				break;  
+				break;
 			}
 			super.handleMessage(msg);
 		}
@@ -685,7 +671,7 @@ public class MyinfoActivity extends BaseActivity  {
 
 		@Override
 		public void responseResult(String jsonObject) {
-//			Log.e("", "上传头像成功 "+jsonObject);
+			// Log.e("", "上传头像成功 "+jsonObject);
 			picUrl = jsonObject;// 设置返回URL
 			isUpPic = true;// 设置上传成功
 			Picimageurllist.remove(0);// 清空查看大图的容器
@@ -693,11 +679,11 @@ public class MyinfoActivity extends BaseActivity  {
 			Message message = new Message();
 			message.what = 1;
 			myHandler.sendMessage(message);
-		}  
+		}
 
 		@Override
 		public void responseException(String errorMessage) {
-			 showShortToast("头像上传失败！");
+			showShortToast("头像上传失败！");
 			isUpPic = false;
 			StartUpPIC = !StartUpPIC;
 
@@ -712,7 +698,7 @@ public class MyinfoActivity extends BaseActivity  {
 
 		@Override
 		public void responseResult(String jsonObject) {
-//			Log.e("", "上传大罩成功 "+jsonObject);
+			// Log.e("", "上传大罩成功 "+jsonObject);
 			BigPicUrl = jsonObject;
 			isUpBig = true;
 			BGimageurllist.remove(0);// 清空查看大图的容器
@@ -724,7 +710,7 @@ public class MyinfoActivity extends BaseActivity  {
 
 		@Override
 		public void responseException(String errorMessage) {
-			 showShortToast("大罩上传失败！");
+			showShortToast("大罩上传失败！");
 			isUpBig = false;
 			StartUpBIG = !StartUpBIG;
 
@@ -779,9 +765,8 @@ public class MyinfoActivity extends BaseActivity  {
 
 		@Override
 		public void responseResult(String jsonObject) {
-//			Qlog.e("", "保存成功？");
-			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(
-					MyinfoActivity.this, jsonObject);
+			// Qlog.e("", "保存成功？");
+			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(MyinfoActivity.this, jsonObject);
 			if (publicjson == null) {
 				return;
 			}
@@ -797,16 +782,13 @@ public class MyinfoActivity extends BaseActivity  {
 			showShortToast(publicEntity.getMessage());
 			// 保存昵称
 			GlobalVariable.Nickname = NickName;
-			SpUtils.saveString(MyinfoActivity.this, GlobalVariable.NICKNAME,
-					GlobalVariable.Nickname);
+			SpUtils.saveString(MyinfoActivity.this, GlobalVariable.NICKNAME, GlobalVariable.Nickname);
 			// 保存头像
 			GlobalVariable.UserImage = picUrl;
-			SpUtils.saveString(MyinfoActivity.this, GlobalVariable.USERIMAGE,
-					GlobalVariable.UserImage);
+			SpUtils.saveString(MyinfoActivity.this, GlobalVariable.USERIMAGE, GlobalVariable.UserImage);
 			// 保存密码
 			GlobalVariable.UserPassWord = publicEntity.getPassWord();
-			SpUtils.saveString(MyinfoActivity.this, GlobalVariable.USERPW,
-					GlobalVariable.UserPassWord);
+			SpUtils.saveString(MyinfoActivity.this, GlobalVariable.USERPW, GlobalVariable.UserPassWord);
 		}
 
 		@Override
@@ -814,22 +796,13 @@ public class MyinfoActivity extends BaseActivity  {
 			showShortToast(errorMessage);
 		}
 	};
-	/**学历**/
-	private Spinner sp_schooling;
-	/**职称**/
-	private Spinner sp_professionaltitle;
-	private String name;
-	private EditText ed_graduatedSchool;
-	private TextView ed_years_working;
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (data != null) {
 			if (resultCode == Activity.RESULT_OK) {
-				String localFilePath = data
-						.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
+				String localFilePath = data.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
 				bm = ImageCompression.getSmallBitmap(localFilePath);// 图片压缩
 				if (requestCode == 10001) {
 					mIm_Pic.setImageBitmap(bm);
@@ -857,17 +830,31 @@ public class MyinfoActivity extends BaseActivity  {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-	//下拉框
+
+	// 下拉框
 	@SuppressLint("NewApi")
-	private void TackType(Spinner spinner,final ArrayList<String>  al) {
-		
+	private void TackType(Spinner spinner, final ArrayList<String> al) {
+
 		ArrayAdapter<String> arr_adapter2 = new ArrayAdapter<String>(MyinfoActivity.this,
 				android.R.layout.simple_spinner_item, al);
 		// 设置样式
 		arr_adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// 加载适配器
 		spinner.setAdapter(arr_adapter2);
-		
+
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

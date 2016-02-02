@@ -14,6 +14,7 @@ import com.app.civillife.ContentDataActivity;
 import com.app.civillife.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
@@ -55,6 +56,8 @@ public class Homeclassify_Fragment extends BaseFragment {
 	private LinearLayout mLayout_DataNull;
 	private LinearLayout mLayout_NetworkError;
 	private Button mBtn_Refresh;
+	private HomeListViewAdapter adapter;
+	private ListView listView;
 
 	public Homeclassify_Fragment(String str) {
 
@@ -63,9 +66,9 @@ public class Homeclassify_Fragment extends BaseFragment {
 
 	public String RequesturlUrl(int page) {
 		String requesturl = Httpurl.newtitle(page);
-		if (str.equals("-1")) {//固定标题  段子
+		if (str.equals("-1")) {// 固定标题 段子
 			requesturl = Httpurl.newtitle(page);
-		} else if (str.equals("-2")) {  //固定标题  精华
+		} else if (str.equals("-2")) { // 固定标题 精华
 			requesturl = Httpurl.essencetitle(page);
 		} else {
 			requesturl = Httpurl.nofixedtitle(str, page);
@@ -227,16 +230,19 @@ public class Homeclassify_Fragment extends BaseFragment {
 				switch (type) {
 				case 0:
 					page = 1;
-					//Executors.newCachedThreadPool()  无限制的线程池
+					// Executors.newCachedThreadPool() 无限制的线程池
 					new RequestTask(getActivity(), listlistener, false, false, "加载内容")
 							.executeOnExecutor(Executors.newCachedThreadPool(), RequesturlUrl(page));
-					//AsyncTask.THREAD_POOL_EXECUTOR   调用默认设置好的5个线程池
-//					new RequestTask(getActivity(), listlistener, false, false, "加载内容")
-//							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, RequesturlUrl(page));
+					// AsyncTask.THREAD_POOL_EXECUTOR 调用默认设置好的5个线程池
+					// new RequestTask(getActivity(), listlistener, false,
+					// false, "加载内容")
+					// .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+					// RequesturlUrl(page));
 					break;
 				case 1:
 					page++;
-					new RequestTask(getActivity(), listlistener, false, false, "加载内容").executeOnExecutor(Executors.newCachedThreadPool(), RequesturlUrl(page));
+					new RequestTask(getActivity(), listlistener, false, false, "加载内容")
+							.executeOnExecutor(Executors.newCachedThreadPool(), RequesturlUrl(page));
 					break;
 				}
 				try {
@@ -268,8 +274,6 @@ public class Homeclassify_Fragment extends BaseFragment {
 			}
 		};
 	};
-	private HomeListViewAdapter adapter;
-	private ListView listView;
 
 	public void stoprequest() {
 		if (isrequest && istotime) {
@@ -286,12 +290,12 @@ public class Homeclassify_Fragment extends BaseFragment {
 			adapter.ispay = -1;
 			adapter.notifyDataSetChanged();
 		}
+		MobclickAgent.onPageEnd("Homeclassify_Fragment");// 统计页面，"MainScreen"为页面名称，可自定义
 		super.onPause();
 	}
 
-	@Override
-	public void onDestroy() {
-
-		super.onDestroy();
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("Homeclassify_Fragment"); // 统计页面，"MainScreen"为页面名称，可自定义
 	}
 }

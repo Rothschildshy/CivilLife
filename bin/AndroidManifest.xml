@@ -107,6 +107,10 @@
             android:name="UMENG_APPKEY"
             android:value="55c098e9e0f55a9054003160" >
         </meta-data>
+        <!-- 发布渠道  Channel ID 替换为您应用的推广渠道名称，channel id自定义 -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="CIVILLIFE_SHY" />
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

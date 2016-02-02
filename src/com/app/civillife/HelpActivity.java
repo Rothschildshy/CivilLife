@@ -1,5 +1,8 @@
 package com.app.civillife;
 
+import com.CivilLife.Base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -8,10 +11,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-
-import com.CivilLife.Base.BaseActivity;
-import com.app.civillife.BookStoreActivity.MyWebView;
-import com.app.civillife.BookStoreActivity.WebChrome;
 
 /**
  * 使用帮助
@@ -24,6 +23,7 @@ public class HelpActivity extends BaseActivity {
 	private WebView webview;
 	private WebSettings webSettings;
 	private String Url = "http://tmssh.conitm.com/help.html";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,6 +83,7 @@ public class HelpActivity extends BaseActivity {
 			break;
 		}
 	}
+
 	class MyWebView extends WebViewClient {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -105,4 +106,17 @@ public class HelpActivity extends BaseActivity {
 
 	}
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

@@ -20,6 +20,7 @@ import com.app.civillife.Util.ViewLoadManager2;
 import com.app.civillife.Util.ViewLoadManager2.IMAGE_LOAD_TYPE;
 import com.aysy_mytool.GetAgeOrConstellation;
 import com.aysy_mytool.Time;
+import com.umeng.analytics.MobclickAgent;
 
 import Downloadimage.ImageUtils;
 import Requset_getORpost.RequestListener;
@@ -284,5 +285,17 @@ public class MyInFo_Fragment extends BaseFragment {
 			showShortToast(errorMessage);
 		}
 	};
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("MyInFo_F"); // 统计页面，"MainScreen"为页面名称，可自定义
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("MyInFo_F");// 统计页面，"MainScreen"为页面名称，可自定义
+	}
 
 }

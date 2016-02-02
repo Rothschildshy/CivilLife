@@ -21,6 +21,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.baoyz.swipemenulistview.SwipeMenuListView.XOnRefreshListener;
 import com.baoyz.widget.PullRefreshLayout;
 import com.baoyz.widget.PullRefreshLayout.OnRefreshListener;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
@@ -62,8 +63,7 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 	private Button mBtn_Refresh;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return FragmentCache(R.layout.tab_message, inflater, container);
 	}
 
@@ -82,37 +82,27 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 	protected void initEvents() {
 
 	}
-	@Override
-	public void onResume() {  
-		super.onResume();
-		loadData(0);
-
-	}
 
 	@Override
 	protected void init() {
-		
+
 		// 先设置颜色在设置风格，颜色固定4个，否则异常
-		mLayout.setColorSchemeColors(new int[] { Color.RED, Color.BLUE,
-				Color.YELLOW, Color.GREEN });
+		mLayout.setColorSchemeColors(new int[] { Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN });
 		mLayout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);
 
-		mAdapter = new MessageListViewAdapter(mApplication, getActivity(), null,this);
+		mAdapter = new MessageListViewAdapter(mApplication, getActivity(), null, this);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				
-					
-					Bundle bundle = new Bundle();
-					MessageEntity item = (MessageEntity) mAdapter.getDatas().get(
-							arg2);
-					bundle.putString("ToUserId", "" + item.getSendID());// 需要传ID
-					bundle.putString("ToUserName", ""+item.getTitle());// 需要对方名称
-					startActivity(MessageActivity.class, bundle);
-				
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+				Bundle bundle = new Bundle();
+				MessageEntity item = (MessageEntity) mAdapter.getDatas().get(arg2);
+				bundle.putString("ToUserId", "" + item.getSendID());// 需要传ID
+				bundle.putString("ToUserName", "" + item.getTitle());// 需要对方名称
+				startActivity(MessageActivity.class, bundle);
+
 			}
 		});
 
@@ -131,8 +121,7 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 		mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public void onMenuItemClick(int position, SwipeMenu menu, int index) {
-				MessageEntity datas = (MessageEntity) mAdapter.getDatas().get(
-						position);
+				MessageEntity datas = (MessageEntity) mAdapter.getDatas().get(position);
 				delete(datas.getID());
 				// mAppList.remove(position);
 				mAdapter.notifyDataSetChanged();
@@ -145,11 +134,9 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 			public void create(SwipeMenu menu) {
 
 				// create "delete" item
-				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity()
-						.getApplicationContext());
+				SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity().getApplicationContext());
 				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-						0x3F, 0x25)));
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
 				// set item width
 				deleteItem.setWidth(dp2px(90));
 				// set a icon
@@ -188,8 +175,7 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 	}
 
 	private int dp2px(int dp) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-				getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 
 	// 获取消息列表回调
@@ -198,24 +184,23 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void responseResult(String jsonObject) {
-			MessageJson messageJson = MessageJson.readJsonToSendmsgObject(
-					getActivity(), jsonObject);
+			MessageJson messageJson = MessageJson.readJsonToSendmsgObject(getActivity(), jsonObject);
 			if (messageJson == null) {
 				isrequest = true;
 				stoprequest();
-				if (page == 1) { 
-					mAdapter.getmDatas().clear(); 
+				if (page == 1) {
+					mAdapter.getmDatas().clear();
 					mLayout_Hint.setVisibility(View.VISIBLE);
 					mLayout_DataNull.setVisibility(View.VISIBLE);
 					mLayout_NetworkError.setVisibility(View.GONE);
-				}else{
+				} else {
 					showShortToast("最后一页");
 				}
 				page -= 1;
 				return;
 			}
 			if (page != 1) {
-				messageJson.getAl().addAll(0,(Collection<? extends MessageEntity>) mAdapter.getDatas());
+				messageJson.getAl().addAll(0, (Collection<? extends MessageEntity>) mAdapter.getDatas());
 			}
 			if (page == 1 && messageJson.getAl().size() > 9) {
 				// 当第一页数据超过九条的时候设置可上拉加载
@@ -257,8 +242,7 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 
 		@Override
 		public void responseResult(String jsonObject) {
-			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(
-					getActivity(), jsonObject);
+			PublicUpJson publicjson = PublicUpJson.readJsonToSendmsgObject(getActivity(), jsonObject);
 			if (publicjson == null) {
 				return;
 			}
@@ -292,26 +276,24 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 				switch (type) {
 				case 0:
 					page = 1;
-					new RequestTask(getActivity(), GetMessageList, false,
-							false, "Login..")
+					new RequestTask(getActivity(), GetMessageList, false, false, "Login..")
 							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.MessageList(page));
 
 					break;
 				case 1:
 					page++;
-					new RequestTask(getActivity(), GetMessageList, false,
-							false, "Login..")
+					new RequestTask(getActivity(), GetMessageList, false, false, "Login..")
 							.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.MessageList(page));
 
 					break;
 				}
-				
+
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
+
 				istotime = true;
 				stoprequest();
 			}
@@ -345,4 +327,16 @@ public class Tab_Message extends BaseFragment implements XOnRefreshListener {
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		loadData(0);
+		MobclickAgent.onPageStart("Tab_Message"); // 统计页面，"MainScreen"为页面名称，可自定义
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Tab_Message");// 统计页面，"MainScreen"为页面名称，可自定义
+	}
 }

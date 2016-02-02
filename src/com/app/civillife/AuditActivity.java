@@ -19,6 +19,7 @@ import com.app.civillife.Util.ImagePagerActivity;
 import com.app.civillife.Util.VideoPay;
 import com.app.civillife.Util.Videolistener;
 import com.aysy_mytool.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import Downloadimage.ImageUtils;
 import Requset_getORpost.RequestListener;
@@ -48,24 +49,25 @@ public class AuditActivity extends BaseActivity {
 
 	private RelativeLayout mLa_Start;
 	private RelativeLayout mLa_Audit;
-	private CircleImageView mIm_Pic;// 头像  
+	private CircleImageView mIm_Pic;// 头像
 	private TextView mTx_Name;// 昵称
 	private TextView mTx_Content;// 评论内容
 	private VideoView video;// 视频
 	private GridForScrollView mImageGR;// 图标墙
-	private RelativeLayout mLa_Video;// 视频布局
 	private ImageView mIm_Play;// 视频播放
 	private int page = 1;
 	private HomeEntity homeEntity;// 文章实体类
 	private ArrayList<String> imageurllist = new ArrayList<String>();// 图片地址容器
 	private ProgressBar pb_waiting;
-	private boolean pays = false;
 	private VideoPay videoPay;
 
 	private RelativeLayout mLayout_Hint;
 	private LinearLayout mLayout_DataNull;
 	private LinearLayout mLayout_NetworkError;
 	private Button mBtn_Refresh;
+	private RelativeLayout layout_video;
+	private ScrollView sv_auditlayout;
+	private ImageView video_image;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,6 @@ public class AuditActivity extends BaseActivity {
 		mTx_Content = (TextView) findViewById(R.id.tx_content);
 		mImageGR = (GridForScrollView) findViewById(R.id.image_gridView);
 		video = (VideoView) findViewById(R.id.videoView1);
-		mLa_Video = (RelativeLayout) findViewById(R.id.layout_video);
 		mIm_Play = (ImageView) findViewById(R.id.image_play);
 		video_image = (ImageView) findViewById(R.id.video_image);
 		layout_video = (RelativeLayout) findViewById(R.id.layout_video);
@@ -103,25 +104,22 @@ public class AuditActivity extends BaseActivity {
 
 	@Override
 	protected void initEvents() {
-		findViewById(R.id.image_back).setOnClickListener(this);  
+		findViewById(R.id.image_back).setOnClickListener(this);
 		findViewById(R.id.btn_start).setOnClickListener(this);
 		findViewById(R.id.btn_skip).setOnClickListener(this);
 		findViewById(R.id.btn_funny).setOnClickListener(this);
 		findViewById(R.id.btn_boring).setOnClickListener(this);
 		findViewById(R.id.btn_report).setOnClickListener(this);
-		mIm_Pic.setOnClickListener(this); 
-		mTx_Name.setOnClickListener(this);  
-		layout_video.setOnClickListener(this);  
-		mIm_Play.setOnClickListener(this);  
+		mIm_Pic.setOnClickListener(this);
+		mTx_Name.setOnClickListener(this);
+		layout_video.setOnClickListener(this);
+		mIm_Play.setOnClickListener(this);
 		mImageGR.setOnItemClickListener(new OnItemClickListener() { // 图片查看
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Intent intent = new Intent(AuditActivity.this,
-						ImagePagerActivity.class);
-				intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,
-						imageurllist);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Intent intent = new Intent(AuditActivity.this, ImagePagerActivity.class);
+				intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, imageurllist);
 				intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, arg2);
 				startActivity(intent);
 			}
@@ -150,12 +148,12 @@ public class AuditActivity extends BaseActivity {
 					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			break;
 		case R.id.btn_funny:// 好文
-			new RequestTask(this, Submititlistener, false, true, "努力加载中")
-					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.SubmitAuditArticle(homeEntity.getID(), 1));
+			new RequestTask(this, Submititlistener, false, true, "努力加载中").executeOnExecutor(
+					Executors.newCachedThreadPool(), Httpurl.SubmitAuditArticle(homeEntity.getID(), 1));
 			break;
 		case R.id.btn_boring:// 没劲
-			new RequestTask(this, Submititlistener, false, true, "努力加载中")
-					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.SubmitAuditArticle(homeEntity.getID(), 0));
+			new RequestTask(this, Submititlistener, false, true, "努力加载中").executeOnExecutor(
+					Executors.newCachedThreadPool(), Httpurl.SubmitAuditArticle(homeEntity.getID(), 0));
 			break;
 		case R.id.btn_report:// 举报
 			new RequestTask(this, Reporttitlistener, false, true, "举报中")
@@ -177,20 +175,20 @@ public class AuditActivity extends BaseActivity {
 			break;
 		case R.id.image_play:// 视频播放
 			if (!videoPay.ispay) {
-				videoPay.playvideo();  
+				videoPay.playvideo();
 				video_image.setVisibility(View.GONE);
 				pb_waiting.setVisibility(View.VISIBLE);
-				mIm_Play.setVisibility(View.GONE);  
+				mIm_Play.setVisibility(View.GONE);
 				videoPay.ispay = true;
 			}
 
 			break;
 		case R.id.layout_video:// 视频暂停
-			if (videoPay.ispay) {  
+			if (videoPay.ispay) {
 				mIm_Play.setVisibility(View.VISIBLE);
 				videoPay.setPause();
 				videoPay.ispay = false;
-//				paying = false;
+				// paying = false;
 			}
 
 			break;
@@ -220,6 +218,7 @@ public class AuditActivity extends BaseActivity {
 	/** 获取审核文章 **/
 	RequestListener getauditlistener = new RequestListener() {
 
+		@SuppressWarnings("static-access")
 		@Override
 		public void responseResult(String jsonObject) {
 			imageurllist.clear();
@@ -227,43 +226,36 @@ public class AuditActivity extends BaseActivity {
 			mImageGR.setVisibility(View.GONE);
 			sv_auditlayout.setVisibility(View.VISIBLE);
 			mIm_Pic.setImageResource(R.drawable.ic_my_nolog_selector);
-			HomeJson json = HomeJson.readJsonToSendmsgObject(
-					AuditActivity.this, jsonObject);
+			HomeJson json = HomeJson.readJsonToSendmsgObject(AuditActivity.this, jsonObject);
 			if (json == null) {
 				findViewById(R.id.btn_skip).setEnabled(false);
 				findViewById(R.id.btn_funny).setEnabled(false);
 				findViewById(R.id.btn_boring).setEnabled(false);
 				findViewById(R.id.btn_report).setEnabled(false);
 				sv_auditlayout.setVisibility(View.GONE);
-				mLayout_Hint.setVisibility(View.VISIBLE);  
+				mLayout_Hint.setVisibility(View.VISIBLE);
 				mLayout_DataNull.setVisibility(View.VISIBLE);
 				mLayout_NetworkError.setVisibility(View.GONE);
 				return;
 			}
 			homeEntity = json.getAl().get(0);
-			if (!homeEntity.getNickname().equals("匿名")
-					&& !TextUtils.isEmpty(homeEntity.getUserInfoPicUrl())) {
-				ImageUtils.loadImage1(AuditActivity.this,
-						homeEntity.getUserInfoPicUrl(), mIm_Pic,
-						R.drawable.ic_my_nolog_selector,
-						R.drawable.ic_my_nolog_selector,
-						GlobalVariable.WifiDown);
-			}  
+			if (!homeEntity.getNickname().equals("匿名") && !TextUtils.isEmpty(homeEntity.getUserInfoPicUrl())) {
+				ImageUtils.loadImage1(AuditActivity.this, homeEntity.getUserInfoPicUrl(), mIm_Pic,
+						R.drawable.ic_my_nolog_selector, R.drawable.ic_my_nolog_selector, GlobalVariable.WifiDown);
+			}
 			mTx_Name.setText(homeEntity.getNickname());
 			mTx_Content.setText(homeEntity.getContent());
 			if (!TextUtils.isEmpty(homeEntity.getPicUrl())) {
 				String[] images = homeEntity.getPicUrl().split(",");
 				List<String> list = Arrays.asList(images);
 				imageurllist.addAll(list);
-				HomeimagegridviewAdapter adapter = new HomeimagegridviewAdapter(
-						mApplication, AuditActivity.this, list);
+				HomeimagegridviewAdapter adapter = new HomeimagegridviewAdapter(mApplication, AuditActivity.this, list);
 				mImageGR.setAdapter(adapter);
 				mImageGR.setVisibility(View.VISIBLE);
 			}
 			if (!TextUtils.isEmpty(homeEntity.getVideoUrl())) {
 				layout_video.setVisibility(View.VISIBLE);
-				videoPay = new VideoPay(AuditActivity.this, video,
-						homeEntity.getVideoUrl(), videolistener);
+				videoPay = new VideoPay(AuditActivity.this, video, homeEntity.getVideoUrl(), videolistener);
 			} else {
 				layout_video.setVisibility(View.GONE);
 			}
@@ -302,14 +294,12 @@ public class AuditActivity extends BaseActivity {
 		}
 	};
 
-	private RelativeLayout layout_video;
 	/** 提交审核结果 **/
 	RequestListener Submititlistener = new RequestListener() {
 
 		@Override
 		public void responseResult(String jsonObject) {
-			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(
-					AuditActivity.this, jsonObject);
+			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(AuditActivity.this, jsonObject);
 			if (publicUpJson == null) {
 				showShortToast("审核失败！请稍后在试！");
 				return;
@@ -317,8 +307,7 @@ public class AuditActivity extends BaseActivity {
 			if (publicUpJson.getAl().get(0).getStatus().equals("1")) {
 				showShortToast("审核成功");
 				page++;
-				new RequestTask(AuditActivity.this, getauditlistener, false,
-						true, "努力加载中...")
+				new RequestTask(AuditActivity.this, getauditlistener, false, true, "努力加载中...")
 						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			} else {
 				showShortToast("审核失败！请稍后在试！");
@@ -335,8 +324,7 @@ public class AuditActivity extends BaseActivity {
 
 		@Override
 		public void responseResult(String jsonObject) {
-			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(
-					AuditActivity.this, jsonObject);
+			PublicUpJson publicUpJson = PublicUpJson.readJsonToSendmsgObject(AuditActivity.this, jsonObject);
 			if (publicUpJson == null) {
 				showShortToast("举报失败！请稍后在试！");
 				return;
@@ -344,8 +332,7 @@ public class AuditActivity extends BaseActivity {
 			showShortToast(publicUpJson.getAl().get(0).getMessage());
 			if (publicUpJson.getAl().get(0).getStatus().equals("1")) {
 				page++;
-				new RequestTask(AuditActivity.this, getauditlistener, false,
-						true, "努力加载中...")
+				new RequestTask(AuditActivity.this, getauditlistener, false, true, "努力加载中...")
 						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.GetAuditArticle(page));
 			}
 		}
@@ -355,6 +342,18 @@ public class AuditActivity extends BaseActivity {
 			showShortToast(errorMessage);
 		}
 	};
-	private ScrollView sv_auditlayout;
-	private ImageView video_image;
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

@@ -1,20 +1,5 @@
 package com.CivilLife.Activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.FragmentTabHost;
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.CivilLife.Base.BaseActivity;
 import com.CivilLife.Fragment.Tab_Discover;
 import com.CivilLife.Fragment.Tab_Homepage;
@@ -23,10 +8,23 @@ import com.CivilLife.Fragment.Tab_My;
 import com.CivilLife.Variable.GlobalVariable;
 import com.app.civillife.R;
 import com.app.civillife.Service.MessageService;
-import com.app.civillife.Util.GetDistance;
-import com.aysy_mytool.Qlog;
-import com.umeng.socialize.utils.Log;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentTabHost;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * APP首页
@@ -34,31 +32,33 @@ import com.umeng.update.UmengUpdateAgent;
  * @author mac
  * 
  */
+@SuppressLint("InflateParams")
 public class MainActivity extends BaseActivity {
 	private int imagelist[] = new int[] { R.drawable.tab_sel_home, R.drawable.tab_sel_discover,
 			R.drawable.tab_sel_message, R.drawable.tab_sel_my };
 	private FragmentTabHost mTabHost;
 	private int backnum = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//		GetDistance.location(mApplication,null).start();//开启定位
-		UmengUpdateAgent.update(this);
+		// GetDistance.location(mApplication,null).start();//开启定位
+		UmengUpdateAgent.update(this);// 开启更新检验
 		initViews();
-		initEvents();  
-		init();  
+		initEvents();
+		init();
 		GlobalVariable.SetArrayList();
-		Intent intent=new Intent(this,MessageService.class);
-		startService(intent);    
+		Intent intent = new Intent(this, MessageService.class);
+		startService(intent);
 		
 	}
 
-	@Override  
+	@Override
 	protected void initViews() {
 		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
-	}  
+	}
 
 	@Override
 	protected void initEvents() {
@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void AddTab(String tag, int title, int i, Class cls) {
 		TabSpec tabSpec = mTabHost.newTabSpec(tag);
 		View view = getLayoutInflater().inflate(R.layout.ic_tab_item, null);
@@ -88,8 +89,8 @@ public class MainActivity extends BaseActivity {
 		image.setBackgroundResource(imagelist[i]);
 		mTabHost.addTab(tabSpec.setIndicator(view), cls, null);
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
-			
-			@Override  
+
+			@Override
 			public void onTabChanged(String tabId) {
 				if (tabId.equals("3")) {
 					if (TextUtils.isEmpty(GlobalVariable.UserID)) {
@@ -99,15 +100,17 @@ public class MainActivity extends BaseActivity {
 				}
 			}
 		});
-		
+
 	}
+
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		super.onActivityResult(arg0, arg1, arg2);
-		if (arg2!=null&&arg0==343&&arg1==0) {
+		if (arg2 != null && arg0 == 343 && arg1 == 0) {
 			mTabHost.setCurrentTab(0);
 		}
 	}
+
 	/**
 	 * 双击退出应用
 	 */
@@ -124,14 +127,27 @@ public class MainActivity extends BaseActivity {
 			}, 2000);
 			return true;
 		}
-		return super.onKeyDown(keyCode, event);  
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
 	protected void onDestroy() {
-		Intent intent=new Intent(this,MessageService.class);
+		Intent intent = new Intent(this, MessageService.class);
 		stopService(intent);
 		super.onDestroy();
 	}
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

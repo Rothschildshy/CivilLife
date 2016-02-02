@@ -164,8 +164,8 @@ public final class Httpurl {
 		} else if (type == 2) {// 附近筑友
 			url = URL + "ui.html?mod=friend&page=" + page + "&" + GetInfo() + GetXY();
 		} else if (type == 3) {// 寻同城老乡
-			url = URL + "ui.html?mod=hometown&page=" + page + "&" + GetInfo() + GetXY();
-			// +"&Census=" +GlobalVariable.City;//记得是不用传
+			url = URL + "ui.html?mod=hometown&page=" + page + "&" + GetInfo() + GetXY() + "&CurrentAddress="
+					+ GlobalVariable.City;// 记得是不用传
 		} else if (type == 4) {// 寻同城同行
 			url = URL + "ui.html?mod=industry&page=" + page + "&" + GetInfo() + GetXY();
 		} else if (type == 5) {// 个人主页

@@ -12,6 +12,7 @@ import com.app.civillife.R;
 import com.aysy_mytool.ToastUtil;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.umeng.analytics.MobclickAgent;
 
 import Requset_getORpost.RequestListener;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class RegisterActivity extends BaseActivity {
 	private EditText mEd_Re_PassWd;
 	private String user;
 	private String passWd;
+	private EditText edit_nickname;
+	private String nickname;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,6 @@ public class RegisterActivity extends BaseActivity {
 		init();
 	}
 
-
 	@Override
 	protected void initViews() {
 		findViewById(R.id.tx_back).setOnClickListener(this);
@@ -49,7 +51,7 @@ public class RegisterActivity extends BaseActivity {
 		mEd_User = (EditText) findViewById(R.id.edit_user);
 		mEd_PassWd = (EditText) findViewById(R.id.edit_password);
 		mEd_Re_PassWd = (EditText) findViewById(R.id.edit_repetition_password);
-		edit_nickname = (EditText) findViewById(R.id.edit_nickname);//昵称
+		edit_nickname = (EditText) findViewById(R.id.edit_nickname);// 昵称
 	}
 
 	@Override
@@ -109,8 +111,8 @@ public class RegisterActivity extends BaseActivity {
 			return;
 		}
 		// 下面开始进行请求操作
-		new RequestTask(RegisterActivity.this, ReturnAL.RegisterMap(user, passWd, nickname), listener, false, true, "注册中")
-				.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
+		new RequestTask(RegisterActivity.this, ReturnAL.RegisterMap(user, passWd, nickname), listener, false, true,
+				"注册中").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.URL);
 	}
 
 	// 注册回调
@@ -143,7 +145,18 @@ public class RegisterActivity extends BaseActivity {
 
 		}
 	};
-	private EditText edit_nickname;
-	private String nickname;
 
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

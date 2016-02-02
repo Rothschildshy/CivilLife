@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:dividerHeight="1.0dip" >
+            android:divider="@null" >
         </com.baoyz.swipemenulistview.SwipeMenuListView>
     </com.baoyz.widget.PullRefreshLayout>
 

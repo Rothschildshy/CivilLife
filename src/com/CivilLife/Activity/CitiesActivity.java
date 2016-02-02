@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.app.civillife.R;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -95,7 +96,7 @@ public class CitiesActivity extends Activity implements OnWheelChangedListener {
 			@Override
 			public void onClick(View v) {
 				Intent data = new Intent();
-				String cityname = mCurrentProviceName + "省 " + mCurrentCityName + " " + mCurrentAreaName;
+				String cityname = mCurrentProviceName + "," + mCurrentCityName + "," + mCurrentAreaName;
 				data.putExtra("name", cityname);
 				setResult(resultCode, data);
 				finish();
@@ -254,6 +255,20 @@ public class CitiesActivity extends Activity implements OnWheelChangedListener {
 		} else if (wheel == mArea) {
 			mCurrentAreaName = mAreaDatasMap.get(mCurrentCityName)[newValue];
 		}
-		mselectedcity.setText(mCurrentProviceName + "省 " + mCurrentCityName + " " + mCurrentAreaName);
+		mselectedcity.setText(mCurrentProviceName + mCurrentCityName + mCurrentAreaName);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

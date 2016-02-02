@@ -1,5 +1,8 @@
 package com.app.civillife;
 
+import com.CivilLife.Base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
+
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -10,9 +13,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.CivilLife.Base.BaseActivity;
 
 /**
  * 建筑书城 webview
@@ -28,7 +28,7 @@ public class BookStoreActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);    
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_store);
 		initViews();
 		initEvents();
@@ -36,14 +36,14 @@ public class BookStoreActivity extends BaseActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {  
+	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.book_store, menu);
 		return true;
 	}
 
 	@Override
 	protected void initViews() {
-  
+
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		webview = (WebView) findViewById(R.id.webView1);
 
@@ -68,20 +68,19 @@ public class BookStoreActivity extends BaseActivity {
 		// @Override
 		// public void onReceivedSslError(WebView view,
 		// SslErrorHandler handler, SslError error) {
-		// handler.proceed();   
+		// handler.proceed();
 		// }
 		// });
 		webview.setWebChromeClient(new WebChrome());
 		webview.loadUrl(Url);
-		
-		
+
 		webview.setOnKeyListener(new OnKeyListener() {
 
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
-					if (keyCode == KeyEvent.KEYCODE_BACK
-							&& webview.canGoBack()) { // 表示按返回键 时的操作
+					if (keyCode == KeyEvent.KEYCODE_BACK && webview.canGoBack()) { // 表示按返回键
+																					// 时的操作
 						webview.goBack(); // 后退
 						return true; // 已处理
 					}
@@ -123,5 +122,19 @@ public class BookStoreActivity extends BaseActivity {
 			super.onProgressChanged(view, newProgress);
 		}
 
+	}
+
+	// 友盟统计
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	// 友盟统计
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }
