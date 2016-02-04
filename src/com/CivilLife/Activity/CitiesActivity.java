@@ -46,7 +46,6 @@ public class CitiesActivity extends Activity implements OnWheelChangedListener {
 	 * 区的WheelView控件
 	 */
 	private WheelView mArea;
-
 	/**
 	 * 所有省
 	 */
@@ -59,7 +58,6 @@ public class CitiesActivity extends Activity implements OnWheelChangedListener {
 	 * key - 市 values - 区s
 	 */
 	private Map<String, String[]> mAreaDatasMap = new HashMap<String, String[]>();
-
 	/**
 	 * 当前省的名称
 	 */
@@ -83,14 +81,11 @@ public class CitiesActivity extends Activity implements OnWheelChangedListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.citys);
-
 		initJsonData();
-
 		mProvince = (WheelView) findViewById(R.id.id_province);
 		mCity = (WheelView) findViewById(R.id.id_city);
 		mArea = (WheelView) findViewById(R.id.id_area);
 		mselectedcity = (TextView) findViewById(R.id.tv_selectedcity);
-
 		findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
 
 			@Override
