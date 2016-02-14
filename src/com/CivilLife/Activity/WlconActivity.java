@@ -15,6 +15,8 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * 欢迎界面
@@ -25,6 +27,14 @@ public class WlconActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//设置无标题  
+        requestWindowFeature(Window.FEATURE_NO_TITLE);  
+        //设置全屏  
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+                WindowManager.LayoutParams.FLAG_FULLSCREEN); 
+		
+		
+		
 		setContentView(R.layout.activity_wlcon);
 		GetDistance.location(this, null).start();// 开启定位
 

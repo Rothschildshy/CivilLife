@@ -21,7 +21,6 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 
 	public BaseApplication mApplication;
 
-	@SuppressWarnings("static-access")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
