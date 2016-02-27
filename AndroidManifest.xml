@@ -181,7 +181,7 @@
             android:label="@string/title_activity_manage" >
         </activity>
         <activity
-            android:name=".SearchFriendActivity"
+            android:name=".SearchActivity"
             android:label="@string/title_activity_add_friend" >
         </activity>
         <activity

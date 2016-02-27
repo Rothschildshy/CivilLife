@@ -19,7 +19,7 @@ public final class GlobalVariable {
 	/** 我的坐标 y **/
 	public static String mycoordinates_y = 24.482887 + "";
 	/** 我的当前城市名称 **/
-	public static String City = "福建省,厦门市";
+	public static String City = "";
 	/** 我的当前位置**/
 	public static String address = "福建省,厦门市";
 	/** 用户ID **/

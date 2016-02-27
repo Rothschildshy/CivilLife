@@ -13,8 +13,8 @@ import kankan.wheel.R.string;
 public final class Httpurl {
 
 	// /** 服务器地址 GET**/
-	// public static String URL = "http://tmssh.247.go-ip.cn/";
 	public static String URL = "http://tmssh.conitm.com/";
+	
 
 	/** 获取 UserID UserNameMD5 UserPassWord **/
 	public static String GetInfo() {
@@ -178,7 +178,7 @@ public final class Httpurl {
 		return url;
 	}
 
-	/** 各社区 **/
+	/** 社区 **/
 	public static String Hometown1(int type, int page) {
 		String url = null;
 		if (type == 1) {// 师徒社区
@@ -290,4 +290,5 @@ public final class Httpurl {
 		String url = URL + "message.html?mod=push&" + GetInfo();
 		return url;
 	}
+	public static String HeiHei = "http://7xrad7.com1.z0.glb.clouddn.com/CivilLife.json";
 }

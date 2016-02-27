@@ -10,7 +10,7 @@ import com.app.civillife.HelpActivity;
 import com.app.civillife.ManageActivity;
 import com.app.civillife.MyFriendActivity;
 import com.app.civillife.R;
-import com.app.civillife.SearchFriendActivity;
+import com.app.civillife.SearchActivity;
 import com.app.civillife.SettingActivity;
 import com.app.civillife.Util.GetDistance;
 import com.aysy_mytool.SpUtils;
@@ -139,14 +139,14 @@ public class Tab_My extends BaseFragment {
 				return;
 			}
 			bundle.putInt("type", 1);
-			startActivity(SearchFriendActivity.class, bundle);
+			startActivity(SearchActivity.class, bundle);
 			break;
 		case R.id.layout_addoverman:// 添加师傅
 			if (tologin()) {
 				return;
 			}
 			bundle.putInt("type", 2);
-			startActivity(SearchFriendActivity.class, bundle);
+			startActivity(SearchActivity.class, bundle);
 			break;
 		case R.id.layout_feedback:// 意见反馈
 			startActivity(FeedBackActivity.class, null);

@@ -15,16 +15,19 @@ import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.Variable.RequestCode;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
+import com.app.civillife.Util.GetDistance;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.umeng.analytics.MobclickAgent;
 
+import Downloadimage.ImageUtils;
 import Requset_getORpost.RequestListener;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -87,7 +90,7 @@ public class ArticleListActivity extends BaseActivity {
 		mBtn_Refresh = (Button) findViewById(R.id.btn_refresh);
 		mBtn_Refresh.setOnClickListener(this);
 		image_article.setOnClickListener(this);
-
+		
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -125,7 +128,6 @@ public class ArticleListActivity extends BaseActivity {
 		Types = intent.getIntExtra("type", 0);
 
 		if (Types == 1) {
-
 			image_article.setVisibility(View.VISIBLE);
 			mTx_Title.setText(R.string.discover_overman_community);// 师徒
 		} else if (Types == 2) {
@@ -273,20 +275,20 @@ public class ArticleListActivity extends BaseActivity {
 				case 0:
 					page = 1;
 					if (Types == 4) {
-						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容").executeOnExecutor(
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "").executeOnExecutor(
 								Executors.newCachedThreadPool(), Httpurl.GetPersonalarticles(page, userid));
 					} else {
-						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容")
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "")
 								.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown1(Types, page));
 					}
 					break;
 				case 1:
 					page++;
 					if (Types == 4) {
-						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容").executeOnExecutor(
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "").executeOnExecutor(
 								Executors.newCachedThreadPool(), Httpurl.GetPersonalarticles(page, userid));
 					} else {
-						new RequestTask(ArticleListActivity.this, listlistener, false, false, "加载内容")
+						new RequestTask(ArticleListActivity.this, listlistener, false, false, "")
 								.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Hometown1(Types, page));
 					}
 					break;
@@ -354,20 +356,8 @@ public class ArticleListActivity extends BaseActivity {
 				JSONObject object = new JSONObject(jsonObject);
 				JSONArray DataArray = object.getJSONArray("Data");
 				JSONObject object2 = DataArray.getJSONObject(0);
-				String OnlineUsers = object2.getString("OnlineUsers");
-				tv_rolling.setVisibility(View.VISIBLE);
-				String city = GlobalVariable.City;
-				if (city.equals("null,null")) {
-					city = "福建省，厦门市（定位失败！选择了默认城市）";
-				}
-				if (Types == 3) {
-					City = "同城";
-				} else if (Types == 2) {
-					City = "老乡";
-				}
-				tv_rolling.setText("来自" + city + "的" + City + "人数" + OnlineUsers + "人，请遵守法律法规，共同遵维护社区秩序！");
-				tv_rolling.setFocusableInTouchMode(true);
-				tv_rolling.setFocusable(true);
+				final String OnlineUsers = object2.getString("OnlineUsers");
+				TipsVisible(OnlineUsers);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -375,17 +365,39 @@ public class ArticleListActivity extends BaseActivity {
 
 		@Override
 		public void responseException(String errorMessage) {
-			tv_rolling.setVisibility(View.VISIBLE);
-			if (Types == 3) {
-				City = "同城";
-			} else if (Types == 2) {
-				City = "老乡";
-			}
-			tv_rolling.setText("来自" + GlobalVariable.City + "的" + City + "人数???" + "人，请遵守法律法规，共同遵维护社区秩序！");
-			tv_rolling.setFocusableInTouchMode(true);
-			tv_rolling.setFocusable(true);
+			showShortToast(errorMessage);
+			TipsVisible("(计算错误)");
 		}
 	};
+
+	private void TipsVisible(final String OnlineUsers) {
+		tv_rolling.setVisibility(View.VISIBLE);
+		String city = GlobalVariable.City;
+		if (city.equals("")) {
+			SetCityTips("???", " 定位中... ");
+			// 启动定位 传位置坐标到服务器
+			GetDistance.location(ArticleListActivity.this, new Handler() {
+
+				public void handleMessage(android.os.Message msg) {
+					if (msg.what == 11) {
+						SetCityTips(OnlineUsers, GlobalVariable.City);
+					}
+				};
+			}).start();
+		} else {
+			SetCityTips(OnlineUsers, city);
+		}
+	}
+	private void SetCityTips(String OnlineUsers, String city) {
+		if (Types == 3) {
+			City = "同城";
+		} else if (Types == 2) {
+			City = "老乡";
+		}
+		tv_rolling.setText("来自" + city + "的" + City + "人数" + OnlineUsers + "人，请遵守法律法规，共同遵维护社区秩序！");
+		tv_rolling.setFocusableInTouchMode(true);
+		tv_rolling.setFocusable(true);
+	}
 
 	// 友盟统计
 	@Override

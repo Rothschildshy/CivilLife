@@ -17,7 +17,7 @@ import android.widget.TextView;
  * @author Administrator
  * 
  */
-public class SearchFriendActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity {
 	private TextView mTx_Title;
 	private EditText mEd_Content;
 	private int type;
