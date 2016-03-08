@@ -241,6 +241,15 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12.0dip"
+                android:text="点击更改发表栏目"
+                android:textColor="@color/color_gray"
+                android:textSize="12sp" />
+
             <com.CivilLife.Widget.GridForScrollView
                 android:id="@+id/gv_pic"
                 android:layout_width="match_parent"

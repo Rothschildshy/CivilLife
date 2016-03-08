@@ -26,6 +26,8 @@ import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -65,12 +67,14 @@ public class ShareActivity extends BaseActivity {
 		// 配置需要分享的相关平台
 		configPlatforms();
 		// 设置分享内容
-		String title = getIntent().getStringExtra("Title");
-		String Content = getIntent().getStringExtra("Content");
+//		String title = getIntent().getStringExtra("Title");
+		String title = getResources().getString(R.string.app_name);
+//		String Content = getIntent().getStringExtra("Content");
+		Spanned NewContent = (Html.fromHtml(getIntent().getStringExtra("Content"), null, null));
 		String shareURL = getIntent().getStringExtra("shareURL");
 		String imageurl = getIntent().getStringExtra("imageurl");
 		Log.e("", "shareURL  " + shareURL);
-		setShareContent(title, Content, shareURL, imageurl);
+		setShareContent(title, NewContent.toString(), shareURL, imageurl);
 		// 初始化平台map
 		initPlatformMap();
 	}

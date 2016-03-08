@@ -16,7 +16,6 @@ import com.aysy_mytool.Qlog;
 import com.aysy_mytool.SpUtils;
 import com.aysy_mytool.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
-import com.yixia.camera.util.Log;
 
 import Requset_getORpost.RequestListener;
 import android.app.Activity;
@@ -35,7 +34,6 @@ import android.view.WindowManager;
 /**
  * 欢迎界面
  */
-
 public class WlconActivity extends Activity {
 
 	@Override
@@ -52,7 +50,6 @@ public class WlconActivity extends Activity {
 				try {
 					JSONObject jo = new JSONObject(jsonObject);
 					boolean IsOk = jo.getBoolean("isok");
-					Log.e("", "是否继续"+IsOk);
 					EnterTheSystem(IsOk);
 				} catch (JSONException e) {
 					e.printStackTrace();

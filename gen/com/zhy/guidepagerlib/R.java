@@ -19,9 +19,9 @@ public final class R {
 		public static final int shape_indicator_unselected_rect = 0x7f020113;
 	}
 	public static final class id {
-		public static final int action_settings = 0x7f080210;
-		public static final int indicatorGroup_lib = 0x7f08020f;
-		public static final int viewPager_lib = 0x7f08020e;
+		public static final int action_settings = 0x7f080211;
+		public static final int indicatorGroup_lib = 0x7f080210;
+		public static final int viewPager_lib = 0x7f08020f;
 	}
 	public static final class layout {
 		public static final int viewpager_main = 0x7f030069;
