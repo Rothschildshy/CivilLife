@@ -35,7 +35,7 @@ import android.widget.TextView;
 /**
  * 我的片段
  * 
- * @author Administrator
+ * @author
  * 
  */
 @SuppressLint("HandlerLeak")

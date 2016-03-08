@@ -14,6 +14,7 @@ import com.CivilLife.Json.HomeoneTitleJson;
 import com.CivilLife.Json.PublicUpJson;
 import com.CivilLife.Variable.GlobalVariable;
 import com.CivilLife.Widget.GridForScrollView;
+import com.CivilLife.Widget.URLImageParser;
 import com.CivilLife.net.Httpurl;
 import com.CivilLife.net.RequestTask;
 import com.CivilLife.net.ReturnAL;
@@ -51,6 +52,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Video.Thumbnails;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -285,7 +287,8 @@ public class PublishActivity extends BaseActivity {
 	private void SetData(HomeEntity entity) {
 		layout_video.setVisibility(View.GONE);
 		noScrollgridview.setVisibility(View.GONE);
-		mEd_Content.setText(entity.getContent());
+//		mEd_Content.setText(entity.getContent());
+		mEd_Content.setText(Html.fromHtml(entity.getContent(), null, null));
 		if (entity.getAnonymous().equals("1")) {
 			mCb_Anonymity.setChecked(true);
 		} else {
