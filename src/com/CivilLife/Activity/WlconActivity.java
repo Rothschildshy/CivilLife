@@ -32,7 +32,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
- * 欢迎界面
+ * 欢迎界面  测试修复
  */
 public class WlconActivity extends Activity {
 
