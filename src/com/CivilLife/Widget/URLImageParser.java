@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
-
+  
 public class URLImageParser implements Html.ImageGetter {  
     TextView mTextView;
 	private Context context;
@@ -18,8 +18,8 @@ public class URLImageParser implements Html.ImageGetter {
     public URLImageParser(Context context, TextView textView) {  
         this.context = context;
 		this.mTextView = textView;
-    }  
-  
+    }     
+     
     @Override  
     public Drawable getDrawable(String source) {  
         final URLDrawable urlDrawable = new URLDrawable(context);  
