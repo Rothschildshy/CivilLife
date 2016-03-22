@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
+
 /*
  * 聊天推送
  */
@@ -33,7 +34,8 @@ public class MessageService extends Service {
 	public PushJson savepush;
 
 	// 请求时间间隔
-	private int Time=10000;
+	private int Time = 10000;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return new MyBind();
@@ -54,7 +56,6 @@ public class MessageService extends Service {
 			new RequestTask(MessageService.this, listener, false, false, "")
 					.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.Push());
 		}
-
 	}
 
 	// 延迟请求

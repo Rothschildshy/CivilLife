@@ -137,6 +137,15 @@
             android:layout_centerVertical="true"
             android:visibility="visible" >
         </com.CivilLife.Widget.CustomViewPager>
+        
+         <com.CivilLife.Widget.CustomViewPager
+            android:id="@+id/twoviewpager3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible" >
+        </com.CivilLife.Widget.CustomViewPager>
 
         <com.CivilLife.Widget.CustomViewPager
             android:id="@+id/viewpager"

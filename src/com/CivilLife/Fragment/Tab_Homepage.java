@@ -38,7 +38,7 @@ import android.widget.TextView;
  */
 public class Tab_Homepage extends BaseFragment {
 	// private View layout;
-	private CustomViewPager mViewpagerR, mtwoViewpagerR0, mtwoViewpagerR1, mtwoViewpagerR2;
+	private CustomViewPager mViewpagerR, mtwoViewpagerR0, mtwoViewpagerR1, mtwoViewpagerR2,mtwoViewpagerR3;
 	private TextView mtoptitle;
 	private ImageView image_back, image_logo;
 	private int seleorttwo = -1; // 标记你选中的二级菜单
@@ -67,11 +67,13 @@ public class Tab_Homepage extends BaseFragment {
 		mtwoViewpagerR0 = (CustomViewPager) findViewById(R.id.twoviewpager0);
 		mtwoViewpagerR1 = (CustomViewPager) findViewById(R.id.twoviewpager1);
 		mtwoViewpagerR2 = (CustomViewPager) findViewById(R.id.twoviewpager2);
-		vps = new CustomViewPager[] { mtwoViewpagerR0, mtwoViewpagerR1, mtwoViewpagerR2 };
+		mtwoViewpagerR3 = (CustomViewPager) findViewById(R.id.twoviewpager3);
+		vps = new CustomViewPager[] { mtwoViewpagerR0, mtwoViewpagerR1, mtwoViewpagerR2,mtwoViewpagerR3 };
 		mViewpagerR.setMove(false, false);
 		mtwoViewpagerR0.setMove(false, false);
 		mtwoViewpagerR1.setMove(false, false);
 		mtwoViewpagerR2.setMove(false, false);
+		mtwoViewpagerR3.setMove(false, false);
 		hlv_titlename = (HorizontalListView) findViewById(R.id.hlv_titlename);// 横向listview
 		hlv_twotitlename = (HorizontalListView) findViewById(R.id.hlv_twotitlename);// 横向二级listview
 	}
@@ -158,7 +160,6 @@ public class Tab_Homepage extends BaseFragment {
 			bundle.putInt("TYPE", 1);
 			bundle.putString("seleorttitle1", seleorttitle1);
 			bundle.putString("seleorttitle2", seleorttitle2);
-			// android.util.Log.e("seleorttitle2", seleorttitle2+"");
 			startActivityForResult(PublishActivity.class, bundle, RequestCode.publiccode);
 			break;
 		case R.id.image_back:// 二级返回
@@ -220,33 +221,32 @@ public class Tab_Homepage extends BaseFragment {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 			HomeonetitleEntity object = (HomeonetitleEntity) titleadapter.getDatas().get(arg2);
 			seleorttitle1 = object.getID();
-			if (object.getID().equals("3")) {
+			if (object.getID().equals("3")) {//文苑
 				seleorttwo = 0;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
 						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
 				mtoptitle.setText(object.getArticleClassName());
-				titleadapter.selseortitem = arg2;
-				titleadapter.notifyDataSetChanged();
-			} else if (object.getID().equals("5")) {
+			} else if (object.getID().equals("5")) {//学习
 				seleorttwo = 1;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
 						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
 				mtoptitle.setText(object.getArticleClassName());
-				titleadapter.selseortitem = arg2;
-				titleadapter.notifyDataSetChanged();
-			} else if (object.getID().equals("6")) {
+			} else if (object.getID().equals("6")) {//乐享
 				seleorttwo = 2;
 				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
 						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
 				mtoptitle.setText(object.getArticleClassName());
-				titleadapter.selseortitem = arg2;
-				titleadapter.notifyDataSetChanged();
+			} else if (object.getID().equals("4")) {//机会
+				seleorttwo = 3;
+				new RequestTask(getActivity(), hometwotitlelistener, true, true, "Loading")
+						.executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.hometwotitle(object.getID()));
+				mtoptitle.setText(object.getArticleClassName());
 			} else {
-				titleadapter.selseortitem = arg2;
-				titleadapter.notifyDataSetChanged();
 				mViewpagerR.setCurrentItem(arg2);
 				myAdpter.notifyDataSetChanged();
 			}
+			titleadapter.selseortitem = arg2;
+			titleadapter.notifyDataSetChanged();
 		}
 	}
 

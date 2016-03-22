@@ -287,7 +287,7 @@ public class PublishActivity extends BaseActivity {
 	private void SetData(HomeEntity entity) {
 		layout_video.setVisibility(View.GONE);
 		noScrollgridview.setVisibility(View.GONE);
-//		mEd_Content.setText(entity.getContent());
+		// mEd_Content.setText(entity.getContent());
 		mEd_Content.setText(Html.fromHtml(entity.getContent(), null, null));
 		if (entity.getAnonymous().equals("1")) {
 			mCb_Anonymity.setChecked(true);
@@ -782,7 +782,7 @@ public class PublishActivity extends BaseActivity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (titlelist.get(position).getID().equals("3") || titlelist.get(position).getID().equals("5")
-						|| titlelist.get(position).getID().equals("6")) {
+						|| titlelist.get(position).getID().equals("6") || titlelist.get(position).getID().equals("4")) {
 
 					new RequestTask(PublishActivity.this, hometwotitlelistener, true, true, "Loading")
 							.executeOnExecutor(Executors.newCachedThreadPool(),

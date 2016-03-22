@@ -67,7 +67,6 @@ public class ArticleListActivity extends BaseActivity {
 	private ListView listView;
 	private ImageView image_article;
 	private TextView tv_rolling;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

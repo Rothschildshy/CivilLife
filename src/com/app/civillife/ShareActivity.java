@@ -129,10 +129,8 @@ public class ShareActivity extends BaseActivity {
 	private void configPlatforms() {
 		// 添加新浪SSO授权
 		mController.getConfig().setSsoHandler(new SinaSsoHandler());
-
 		// 添加QQ、QZone平台
 		addQQQZonePlatform();
-
 		// 添加微信、微信朋友圈平台
 		addWXPlatform();
 	}
@@ -224,7 +222,9 @@ public class ShareActivity extends BaseActivity {
 
 		// 设置新浪分享内容
 		SinaShareContent sinaContent = new SinaShareContent();
-		sinaContent.setShareContent(Content);
+		sinaContent.setTitle(title);
+		sinaContent.setShareContent(shareURL);
+//		sinaContent.setTargetUrl(shareURL);
 		mController.setShareMedia(sinaContent);
 
 	}

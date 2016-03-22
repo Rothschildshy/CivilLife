@@ -170,9 +170,9 @@ public final class R {
 		public static final int wiper_switch_slipper_btn = 0x7f0201a1;
 	}
 	public static final class id {
-		public static final int action_settings = 0x7f080211;
-		public static final int ampm_hitspace = 0x7f0801b6;
-		public static final int ampm_label = 0x7f0801b7;
+		public static final int action_settings = 0x7f080212;
+		public static final int ampm_hitspace = 0x7f0801b7;
+		public static final int ampm_label = 0x7f0801b8;
 		public static final int animator = 0x7f08000b;
 		public static final int back_layout = 0x7f0800f2;
 		public static final int both = 0x7f08000d;
@@ -184,7 +184,7 @@ public final class R {
 		public static final int btn_take_photo = 0x7f08016b;
 		public static final int button1 = 0x7f08010a;
 		public static final int cancel_btn = 0x7f0800fd;
-		public static final int center_view = 0x7f0801b0;
+		public static final int center_view = 0x7f0801b1;
 		public static final int confirm_btn = 0x7f0800fe;
 		public static final int date_picker_day = 0x7f080009;
 		public static final int date_picker_header = 0x7f080005;
@@ -195,7 +195,7 @@ public final class R {
 		public static final int dialog_layout = 0x7f08016a;
 		public static final int disabled = 0x7f08000e;
 		public static final int done = 0x7f080004;
-		public static final int done_button = 0x7f0801ba;
+		public static final int done_button = 0x7f0801bb;
 		public static final int fl_inner = 0x7f080166;
 		public static final int flip = 0x7f080014;
 		public static final int gridview = 0x7f080000;
@@ -204,15 +204,15 @@ public final class R {
 		public static final int head_lastUpdatedTextView = 0x7f080108;
 		public static final int head_progressBar = 0x7f080106;
 		public static final int head_tipsTextView = 0x7f080107;
-		public static final int hour_space = 0x7f0801b1;
-		public static final int hours = 0x7f0801b3;
+		public static final int hour_space = 0x7f0801b2;
+		public static final int hours = 0x7f0801b4;
 		public static final int id_area = 0x7f0800f6;
 		public static final int id_city = 0x7f0800f5;
 		public static final int id_province = 0x7f0800f4;
 		public static final int id_tv_loadingmsg = 0x7f080165;
 		public static final int image = 0x7f08011b;
 		public static final int indicator = 0x7f08011e;
-		public static final int indicatorGroup_lib = 0x7f080210;
+		public static final int indicatorGroup_lib = 0x7f080211;
 		public static final int inputView = 0x7f080103;
 		public static final int layout = 0x7f0800fb;
 		public static final int lo_btn = 0x7f0800e4;
@@ -224,8 +224,8 @@ public final class R {
 		public static final int loadingImageView = 0x7f080164;
 		public static final int lv_content = 0x7f0800e2;
 		public static final int manualOnly = 0x7f08000f;
-		public static final int minutes = 0x7f0801b5;
-		public static final int minutes_space = 0x7f0801b4;
+		public static final int minutes = 0x7f0801b6;
+		public static final int minutes_space = 0x7f0801b5;
 		public static final int month_text_view = 0x7f08000c;
 		public static final int numberPassword = 0x7f080016;
 		public static final int pager = 0x7f08011d;
@@ -243,19 +243,19 @@ public final class R {
 		public static final int pull_to_refresh_text = 0x7f080168;
 		public static final int rotate = 0x7f080015;
 		public static final int scrollview = 0x7f080002;
-		public static final int separator = 0x7f0801b2;
+		public static final int separator = 0x7f0801b3;
 		public static final int textPassword = 0x7f080017;
 		public static final int textView1 = 0x7f080069;
 		public static final int textVisiblePassword = 0x7f080018;
 		public static final int textWebPassword = 0x7f080019;
-		public static final int time_picker = 0x7f0801b9;
-		public static final int time_picker_dialog = 0x7f0801b8;
+		public static final int time_picker = 0x7f0801ba;
+		public static final int time_picker_dialog = 0x7f0801b9;
 		public static final int title = 0x7f0800ff;
 		public static final int toast_tv = 0x7f080102;
 		public static final int tv_msg = 0x7f0800e3;
 		public static final int tv_point = 0x7f080100;
 		public static final int tv_title = 0x7f0800df;
-		public static final int viewPager_lib = 0x7f08020f;
+		public static final int viewPager_lib = 0x7f080210;
 		public static final int viewpager = 0x7f080003;
 		public static final int webview = 0x7f080001;
 	}
