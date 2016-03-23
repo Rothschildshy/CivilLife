@@ -941,23 +941,16 @@ public class PublishActivity extends BaseActivity {
 		};
 
 		public void loading() {
-			new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						if (Bimp.max == Bimp.tempSelectBitmap.size()) {
-							Message message = new Message();
-							message.what = 1;
-							handler.sendMessage(message);
-							break;
-						} else {
-							Bimp.max += 1;
-							Message message = new Message();
-							message.what = 1;
-							handler.sendMessage(message);
-						}
-					}
-				}
-			}).start();
+			if (Bimp.max == Bimp.tempSelectBitmap.size()) {
+				Message message = new Message();
+				message.what = 1;
+				handler.sendMessage(message);
+			} else {
+				Bimp.max += 1;
+				Message message = new Message();
+				message.what = 1;
+				handler.sendMessage(message);
+			}
 		}
 	}
 
