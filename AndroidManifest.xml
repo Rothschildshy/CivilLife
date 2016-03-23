@@ -257,11 +257,9 @@
             android:name=".Util.ImagePagerActivity"
             android:screenOrientation="portrait" >
         </activity>
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="wvu8IlTIUV4SxiETbnwhxniP" />
-
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

@@ -25,6 +25,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.waps.AppConnect;
 
 /**
  * APP首页
@@ -135,6 +136,8 @@ public class MainActivity extends BaseActivity {
 		Intent intent = new Intent(this, MessageService.class);
 		stopService(intent);
 		super.onDestroy();
+		//清楚广告资源
+		AppConnect.getInstance(this).close();
 	}
 
 	// 友盟统计

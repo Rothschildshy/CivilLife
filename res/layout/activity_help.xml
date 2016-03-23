@@ -30,6 +30,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
             android:src="@drawable/ic_back_sele" />
+
+        <TextView
+            android:id="@+id/tx_gg"
+            android:layout_width="30dip"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="" />
+
     </RelativeLayout>
 
     <RelativeLayout

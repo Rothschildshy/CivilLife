@@ -11,6 +11,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import cn.waps.AppConnect;
 
 /**
  * 使用帮助
@@ -43,13 +44,12 @@ public class HelpActivity extends BaseActivity {
 	protected void initViews() {
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		webview = (WebView) findViewById(R.id.webView1);
-
 	}
 
 	@Override
 	protected void initEvents() {
 		findViewById(R.id.image_back).setOnClickListener(this);
-
+		findViewById(R.id.tx_gg).setOnClickListener(this);
 	}
 
 	@Override
@@ -78,6 +78,10 @@ public class HelpActivity extends BaseActivity {
 		switch (v.getId()) {
 		case R.id.image_back:
 			finish();
+			break;
+		case R.id.tx_gg:
+			//万普
+			AppConnect.getInstance(this).showOffers(this);
 			break;
 		default:
 			break;

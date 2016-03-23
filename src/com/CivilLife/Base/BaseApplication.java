@@ -23,6 +23,7 @@ import android.os.Environment;
 import android.os.Vibrator;
 import android.util.Log;
 import android.widget.TextView;
+import cn.waps.AppConnect;
 
 public class BaseApplication extends Application {
 	// private List<Activity> activities = new ArrayList<Activity>();
@@ -59,6 +60,9 @@ public class BaseApplication extends Application {
 
 		// 解压assert里面的文件
 		startService(new Intent(this, AssertService.class));
+		
+		//万普通过代码设置 APP_ID 和 APP_PID
+		AppConnect.getInstance("883f4f98e738071a8df26e1213df254e","default",this);
 
 	}
 
