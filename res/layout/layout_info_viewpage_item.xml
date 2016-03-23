@@ -3,8 +3,9 @@
     android:id="@+id/layout_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/personal_bg" >
-
+    android:background="@drawable/personal_bg"
+     >
+<!-- android:background="@drawable/personal_bg"  -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +98,7 @@
 
             <RelativeLayout
                 android:id="@+id/layout_statistics"
-                android:layout_width="100dip"
+                android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -126,42 +127,47 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="6.0dip"
+                        android:layout_marginTop="6.0dip"
+                        android:layout_marginBottom="3.0dip"
                         android:gravity="center" >
 
                         <ImageView
                             android:id="@+id/imageView2"
                             android:layout_width="14.0dip"
                             android:layout_height="14.0dip"
-                            android:src="@drawable/icon_edit_num" />
+                            android:src="@drawable/icon_edit_num"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tx_essay_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="6.0dip"
                             android:text=""
-                            android:textColor="@color/color_white" />
+                            android:textColor="@color/color_white"
+                            android:drawableLeft="@drawable/icon_edit_num"
+                            />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="6.0dip"
+                         android:layout_marginTop="3.0dip"
+                        android:layout_marginBottom="6.0dip"
                         android:gravity="center" >
 
                         <ImageView
                             android:layout_width="14.0dip"
                             android:layout_height="14.0dip"
-                            android:src="@drawable/icon_smile" />
+                            android:src="@drawable/icon_smile"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tx_praise_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="6.0dip"
                             android:text=""
-                            android:textColor="@color/color_white" />
+                            android:textColor="@color/color_white"
+                            android:drawableLeft="@drawable/icon_smile" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
