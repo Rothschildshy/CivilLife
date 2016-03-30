@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,11 +59,19 @@ public class Homeclassify_Fragment extends BaseFragment {
 	private Button mBtn_Refresh;
 	private HomeListViewAdapter adapter;
 	private ListView listView;
-
-	public Homeclassify_Fragment(String str) {
-
-		this.str = str;
+	
+	public static final Fragment newInstance(String strs){
+		Fragment fragment = new Homeclassify_Fragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("str", strs);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
+	
+	
+//	public Homeclassify_Fragment(String str) {
+//		this.str = str;
+//	}
 
 	public String RequesturlUrl(int page) {
 		String requesturl = Httpurl.newtitle(page);
@@ -78,6 +87,7 @@ public class Homeclassify_Fragment extends BaseFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		this.str = getArguments().getString("str");
 		return FragmentCache(R.layout.layout_homeclassify, inflater, container);
 	}
 

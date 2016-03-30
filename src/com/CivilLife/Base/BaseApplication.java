@@ -1,28 +1,22 @@
 package com.CivilLife.Base;
 
 import java.io.File;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.CivilLife.Activity.WlconActivity;
 import com.CivilLife.net.RequestTask;
 import com.aysy_mytool.Qlog;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.Poi;
 import com.yixia.camera.VCamera;
 import com.yixia.camera.demo.service.AssertService;
 import com.yixia.camera.util.DeviceUtils;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.os.Vibrator;
-import android.util.Log;
-import android.widget.TextView;
 import cn.waps.AppConnect;
 
 public class BaseApplication extends Application {
@@ -33,7 +27,7 @@ public class BaseApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		application = this;
 
 		// 设置拍摄视频缓存路径
@@ -47,23 +41,29 @@ public class BaseApplication extends Application {
 		} else {
 			VCamera.setVideoCachePath(dcim + "/WeChatJuns/");
 		}
-		
+
 		// 设置开发debug模式 true为调试模式 打印日志 输出日志
-		boolean IsDebug=true;
+		boolean IsDebug = false;
 		RequestTask.IsLog = IsDebug;
-		Qlog.DEBUG=IsDebug;
+		Qlog.DEBUG = IsDebug;
 		// 开启log输出,ffmpeg输出到logcat
 		VCamera.setDebugMode(IsDebug);
-		
+
 		// 初始化拍摄SDK，必须
 		VCamera.initialize(this);
 
 		// 解压assert里面的文件
 		startService(new Intent(this, AssertService.class));
-		
-		//万普通过代码设置 APP_ID 和 APP_PID
-		AppConnect.getInstance("883f4f98e738071a8df26e1213df254e","default",this);
 
+		// 万普通过代码设置 APP_ID 和 APP_PID
+		AppConnect.getInstance("883f4f98e738071a8df26e1213df254e", "default", this);
+
+		// 以下用来捕获程序崩溃异常
+		// 程序崩溃时触发线程
+		// 调试模式抛出异常 不然看不到错误日志log
+		if (!IsDebug) {
+			Thread.setDefaultUncaughtExceptionHandler(restartHandler);
+		}
 	}
 
 	/**
@@ -126,7 +126,6 @@ public class BaseApplication extends Application {
 
 	@Override
 	public void onTerminate() {
-		// TODO Auto-generated method stub
 		super.onTerminate();
 	}
 
@@ -164,5 +163,21 @@ public class BaseApplication extends Application {
 		} finally {
 			System.exit(0);
 		}
+	}
+
+	// 创建服务用于捕获崩溃异常
+	private UncaughtExceptionHandler restartHandler = new UncaughtExceptionHandler() {
+		public void uncaughtException(Thread thread, Throwable ex) {
+			restartApp();// 发生崩溃异常时,重启应用
+		}
+	};
+
+	public void restartApp() {
+		Qlog.e("", "<--程序异常退出-->");
+		Intent intent = new Intent(this, WlconActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		this.startActivity(intent);
+		// 结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
+		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 }

@@ -231,7 +231,10 @@ public class Tab_My extends BaseFragment {
 				boolean login = (Boolean) msg.obj;
 				if (login) {
 					if (!TextUtils.isEmpty(GlobalVariable.UserImage)) {
-						ImageUtils.loadImage(getActivity(), GlobalVariable.UserImage, mIm_Pic, GlobalVariable.WifiDown);
+						try {
+							ImageUtils.loadImage(getActivity(), GlobalVariable.UserImage, mIm_Pic, GlobalVariable.WifiDown);
+						} catch (Exception e) {
+						}
 					} else {
 						mIm_Pic.setImageResource(R.drawable.ic_my_nolog_selector);
 					}

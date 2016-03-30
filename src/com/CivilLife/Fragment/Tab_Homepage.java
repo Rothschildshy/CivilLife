@@ -195,11 +195,11 @@ public class Tab_Homepage extends BaseFragment {
 		public android.support.v4.app.Fragment getItem(int arg0) {
 			HomeonetitleEntity object = (HomeonetitleEntity) Data.get(arg0);
 			if (object.getArticleClassName().equals("最新")) {
-				return new Homeclassify_Fragment("-1");
+				return new Homeclassify_Fragment().newInstance("-1");
 			} else if (object.getArticleClassName().equals("精华")) {
-				return new Homeclassify_Fragment("-2");
+				return new Homeclassify_Fragment().newInstance("-2");
 			} else {
-				return new Homeclassify_Fragment(object.getID());
+				return new Homeclassify_Fragment().newInstance(object.getID());
 			}
 		}
 
@@ -280,7 +280,7 @@ public class Tab_Homepage extends BaseFragment {
 			// } else if (object.getArticleClassName().equals("精华")) {
 			// return new Homeclassify_Fragment("-2");
 			// } else {
-			return new Homeclassify_Fragment(object.getID());
+			return new Homeclassify_Fragment().newInstance(object.getID());
 			// }
 		}
 
@@ -309,7 +309,7 @@ public class Tab_Homepage extends BaseFragment {
 			hlv_titlename.setVisibility(View.GONE);// 横向listview
 			hlv_twotitlename.setVisibility(View.VISIBLE);
 			mtoptitle.setVisibility(View.VISIBLE);
-			image_logo.setVisibility(View.GONE);
+			image_logo.setVisibility(View.GONE);  
 			image_back.setVisibility(View.VISIBLE);
 
 			Data1.clear();
