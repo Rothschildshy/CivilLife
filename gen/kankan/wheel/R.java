@@ -11,8 +11,8 @@ public final class R {
 		public static final int txt_choice_selector = 0x7f09006b;
 	}
 	public static final class dimen {
-		public static final int activity_horizontal_margin = 0x7f050000;
-		public static final int activity_vertical_margin = 0x7f050001;
+		public static final int activity_horizontal_margin = 0x7f070005;
+		public static final int activity_vertical_margin = 0x7f070006;
 	}
 	public static final class drawable {
 		public static final int background = 0x7f020004;
@@ -38,8 +38,8 @@ public final class R {
 		public static final int main = 0x7f0b0009;
 	}
 	public static final class string {
-		public static final int action_settings = 0x7f060001;
-		public static final int hello_world = 0x7f060002;
-		public static final int title_activity_main = 0x7f060009;
+		public static final int action_settings = 0x7f050008;
+		public static final int hello_world = 0x7f050009;
+		public static final int title_activity_main = 0x7f050007;
 	}
 }
