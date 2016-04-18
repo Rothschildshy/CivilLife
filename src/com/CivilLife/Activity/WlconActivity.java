@@ -44,23 +44,26 @@ public class WlconActivity extends Activity {
 		// 设置全屏
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_wlcon);
-		new RequestTask(this, new RequestListener() {
-			@Override
-			public void responseResult(String jsonObject) {
-				try {
-					JSONObject jo = new JSONObject(jsonObject);
-					boolean IsOk = jo.getBoolean("isok");
-					EnterTheSystem(IsOk);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void responseException(String errorMessage) {
-				ToastUtil.showMessage(WlconActivity.this, "无网络连接!");
-			}
-		}, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.HeiHei);
+		
+		
+		EnterTheSystem(true);
+//		new RequestTask(this, new RequestListener() {
+//			@Override
+//			public void responseResult(String jsonObject) {
+//				try {
+//					JSONObject jo = new JSONObject(jsonObject);
+//					boolean IsOk = jo.getBoolean("isok");
+//					EnterTheSystem(IsOk);
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//
+//			@Override
+//			public void responseException(String errorMessage) {
+//				ToastUtil.showMessage(WlconActivity.this, "无网络连接!");
+//			}
+//		}, false, false, "").executeOnExecutor(Executors.newCachedThreadPool(), Httpurl.HeiHei);
 	}
 
 	private void EnterTheSystem(boolean isOk) {
